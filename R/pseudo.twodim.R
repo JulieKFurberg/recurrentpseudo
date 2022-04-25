@@ -9,13 +9,13 @@
 #' @param Z Covariate(s), Z
 #' @param tk Vector of time points to calculate pseudo-observations at
 #' @param data Data set which contains variables of interest
-#' @keywords bivarpseudo
-#' @export
+#' @keywords recurrentpseudo
 #' @import dplyr survival geepack
 #' @examples
 #' pseudo.twodim()
 
 # Main driving function
+#' @export
 pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
 
   k <- length(tk)

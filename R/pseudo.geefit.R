@@ -5,16 +5,14 @@
 #'
 #' @param pseudodata Data set containing pseudo-observations. Expecting output from pseudo.twodim()
 #' @param covar_names Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")
-#' @keywords bivarpseudo
-#' @export
+#' @keywords recurrentpseudo
 #' @import dplyr survival geepack stringr
 #' @examples
 #' pseudo.geefit()
 
 
 # Main function for making GEE model fit
-
-# Main function for making GEE model fit
+#' @export
 pseudo.geefit <- function(pseudodata, covar_names){
 
   #pseudodata <- bladder1dim_pseudo

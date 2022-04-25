@@ -29,4 +29,4 @@ This function computes bivariate pseudo-observations of the marginal mean functi
 \examples{
 pseudo.twodim()
 }
-\keyword{bivarpseudo}
+\keyword{recurrentpseudo}

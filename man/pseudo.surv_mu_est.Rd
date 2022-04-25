@@ -23,4 +23,4 @@ Help function parsed inside pseudo.twodim()
 \examples{
 pseudo.surv_mu_est()
 }
-\keyword{bivarpseudo}
+\keyword{recurrentpseudo}

@@ -18,4 +18,4 @@ the survival probability as returned by pseudo.twodim()
 \examples{
 pseudo.geefit()
 }
-\keyword{bivarpseudo}
+\keyword{recurrentpseudo}

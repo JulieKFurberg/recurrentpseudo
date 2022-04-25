@@ -11,12 +11,12 @@
 #' @param data Data set which contains variables of interest
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
-#' @export
 #' @import dplyr survival geepack
 #' @examples
 #' pseudo.threedim()
 
 # Main driving function
+#' @export
 pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, deathtype){
 
   k <- length(tk)

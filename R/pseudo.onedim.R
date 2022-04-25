@@ -16,6 +16,7 @@
 #' pseudo.onedim()
 
 # Main driving function
+#' @export
 pseudo.onedim <- function(tstart, tstop, status, covar_names, id, tk, data){
 
   k <- length(tk)
