@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------#
-#------------ recurrentpseudo R package  -------------------------------------------------------------#
+#------------ recurrentpseudo R package  ---------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------#
 
@@ -24,6 +24,8 @@ install("recurrentpseudo")
 
 ?pseudo.twodim
 ?pseudo.onedim
+?pseudo.threedim
+
 ?pseudo.geefit
 
 
@@ -38,7 +40,9 @@ install("recurrentpseudo")
 # Checking examples                                                                               #
 #=================================================================================================#
 
-
+#=================================================================================================#
+# Bladder cancer data                                                                             #
+#=================================================================================================#
 
 # Bare essentials!
 require(survival)
@@ -50,7 +54,7 @@ bladder1$status3 <- ifelse(bladder1$status %in% c(2, 3), 2, bladder1$status)
 # Add one extra day for the two patients with start=stop=0
 bladder1[bladder1$stop <= bladder1$start, ]$stop <- bladder1[bladder1$stop <= bladder1$start, ]$start + 1
 
-## Restrict the data to placebo and thiotepa
+# Restrict the data to placebo and thiotepa
 bladdersub <- subset(bladder1, treatment %in% c("placebo", "thiotepa"))
 
 # Make treatment variable two-level factor
@@ -62,55 +66,100 @@ head(bladdersub)
 
 
 
-#### ----------------------------- ####
+###----------------------- One-dim bladder ---------------------------###
+# Pseudo observations
+pseudo_bladder_1d <- pseudo.onedim(tstart = bladdersub$start,
+                                   tstop = bladdersub$stop,
+                                   status = bladdersub$status3,
+                                   id = bladdersub$id,
+                                   covar_names = "Z",
+                                   tk = c(20, 30, 40),
+                                   data = bladdersub)
+head(pseudo_bladder_1d$outdata)
 
-# Computation of pseudo-observations
-pseudo_bladder <- pseudo.twodim(tstart = bladdersub$start,
-                                tstop = bladdersub$stop,
-                                status = bladdersub$status3,
-                                id = bladdersub$id,
-                                tk = c(20, 30, 40),
-                                data = bladdersub)
-
-# Data in wide format
-head(pseudo_bladder$outdata)
-
-# Data in long format
-head(pseudo_bladder$outdata_long)
-
-
-#### ----------------------------- ####
-
-fit_bladder <- pseudo.geefit(pseudodata = pseudo_bladder,
+# GEE fit
+fit_bladder_1d <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
                              covar_names = c("Z"))
-fit_bladder
-
+fit_bladder_1d
 
 
 # Treatment differences
-xi_diff <- as.matrix(c(fit_bladder$xi[2] - fit_bladder$xi[1],
-                       fit_bladder$xi[4] - fit_bladder$xi[3]), ncol = 1)
+xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2] - fit_bladder_1d$xi[1]), ncol = 1)
+
+mslabels <- c("treat, mu")
+rownames(xi_diff_1d) <- mslabels
+colnames(xi_diff_1d) <- ""
+xi_diff_1d
+
+# Variance matrix for differences
+sigma_diff_1d <- matrix(c(fit_bladder$sigma[1,1] + fit_bladder$sigma[2,2]),
+                     ncol = 1, nrow = 1,
+                     byrow = T)
+
+rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
+sigma_diff_1d
+
+###----------------------- Two-dim bladder ---------------------------###
+
+# Computation of pseudo-observations
+pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
+                                   tstop = bladdersub$stop,
+                                   status = bladdersub$status3,
+                                   id = bladdersub$id,
+                                   covar_names = "Z",
+                                   tk = c(20, 30, 40),
+                                   data = bladdersub)
+
+# Data in wide format
+head(pseudo_bladder_2d$outdata)
+
+# Data in long format
+head(pseudo_bladder_2d$outdata_long)
+
+
+# GEE fit
+fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
+                             covar_names = c("Z"))
+fit_bladder_2d
+
+
+# Treatment differences
+xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[2] - fit_bladder_2d$xi[1],
+                       fit_bladder_2d$xi[4] - fit_bladder_2d$xi[3]), ncol = 1)
 
 mslabels <- c("treat, mu", "treat, surv")
-rownames(xi_diff) <- mslabels
-colnames(xi_diff) <- ""
-
-xi_diff
+rownames(xi_diff_2d) <- mslabels
+colnames(xi_diff_2d) <- ""
+xi_diff_2d
 
 
 # Variance matrix for differences
-sigma_diff <- matrix(c(fit_bladder$sigma[1,1] + fit_bladder$sigma[2,2],
-                       fit_bladder$sigma[1,3] + fit_bladder$sigma[2,4],
-                       fit_bladder$sigma[1,3] + fit_bladder$sigma[2,4],
-                       fit_bladder$sigma[3,3] + fit_bladder$sigma[4,4]),
-                     ncol = 2, nrow = 2,
-                     byrow = T)
+sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[1,1] + fit_bladder_2d$sigma[2,2],
+                          fit_bladder_2d$sigma[1,3] + fit_bladder_2d$sigma[2,4],
+                          fit_bladder_2d$sigma[1,3] + fit_bladder_2d$sigma[2,4],
+                          fit_bladder_2d$sigma[3,3] + fit_bladder_2d$sigma[4,4]),
+                          ncol = 2, nrow = 2,
+                          byrow = T)
 
-rownames(sigma_diff) <- colnames(sigma_diff) <- mslabels
-
-sigma_diff
-
+rownames(sigma_diff_2d) <- colnames(sigma_diff_2d) <- mslabels
+sigma_diff_2d
 
 
+###----------------------- Three-dim bladder ---------------------------###
 
+# Add deathtype variable to bladder data
+# Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
+bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
+table(bladdersub$deathtype, bladdersub$status)
+
+
+# Pseudo-observations
+pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
+                                     tstop = bladdersub$stop,
+                                     status = bladdersub$status3,
+                                     id = bladdersub$id,
+                                     deathtype = bladdersub$deathtype,
+                                     covar_names = "Z",
+                                     tk = c(20, 30, 40),
+                                     data = bladdersub)
 
