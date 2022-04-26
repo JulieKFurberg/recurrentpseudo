@@ -1,6 +1,7 @@
 #' Function that computes 3-dim pseudo-observations
 #'
-#' This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences of death causes 1 and 2
+#' This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences
+#' of death causes 1 and 2
 #' @param tstart Start time - expecting counting process notation
 #' @param tstop Stop time - expecting counting process notation
 #' @param status Status variable (0 = censoring, 1 = recurrent event, 2 = death)
@@ -11,9 +12,40 @@
 #' @param data Data set which contains variables of interest
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack
+#' @import dplyr survival geepack cmprsk mets timereg
 #' @examples
-#' pseudo.threedim()
+#' # Example 1: Bladder cancer data from survival package
+#' require(survival)
+#'
+#' # Make a three level status variable
+#' bladder1$status3 <- ifelse(bladder1$status %in% c(2, 3), 2, bladder1$status)
+#'
+#' # Add one extra day for the two patients with start=stop=0
+#' bladder1[bladder1$stop <= bladder1$start, ]$stop <- bladder1[bladder1$stop <= bladder1$start, ]$start + 1
+#'
+#' # Restrict the data to placebo and thiotepa
+#' bladdersub <- subset(bladder1, treatment %in% c("placebo", "thiotepa"))
+#'
+#' # Make treatment variable two-level factor
+#' bladdersub$Z <- as.factor(ifelse(bladdersub$treatment == "placebo", 0, 1))
+#' levels(bladdersub$Z) <- c("placebo", "thiotepa")
+#' head(bladdersub)
+#'
+#' # Add deathtype variable to bladder data
+#' # Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
+#' bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
+#' table(bladdersub$deathtype, bladdersub$status)
+#'
+#' # Pseudo-observations
+#' pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
+#'                                      tstop = bladdersub$stop,
+#'                                      status = bladdersub$status3,
+#'                                      id = bladdersub$id,
+#'                                      deathtype = bladdersub$deathtype,
+#'                                      covar_names = "Z",
+#'                                      tk = c(20, 30, 40),
+#'                                      data = bladdersub)
+#' pseudo_bladder_3d
 
 # Main driving function
 #' @export
@@ -53,6 +85,8 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
   res_i <- list()
   n <- length(unique(indata$id))
   for(i in 1:n){
+    unisub <- unique(indata$id)
+    idi <- unisub[i]
     dat_i <- subset(indata, id != idi)
 
     esti <- pseudo.surv_cif_mu_est(inputdata = subset(indata, id != idi))
@@ -65,11 +99,11 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
 
     Zi <- indata[indata$id == idi,]$Z[1]
 
-    mu_minus_i_ts  <- sapply(ts_e,  function(x) muesti[which.max(muesti$time[muesti$time <= x]), "mu"])
-    surv_minus_i_ts  <- sapply(ts_d,  function(x) survesti[which.max(survesti$time[survesti$time <= x]), "surv"])
+    mu_minus_i_ts  <- sapply(ts,  function(x) muesti[which.max(muesti$time[muesti$time <= x]), "mu"])
+    surv_minus_i_ts  <- sapply(ts,  function(x) survesti[which.max(survesti$time[survesti$time <= x]), "surv"])
 
-    cif1_minus_i_ts  <- sapply(ts_d,  function(x) cif1_esti[which.max(cif1_esti$time[cif1_esti$time <= x]), "cif"])
-    cif2_minus_i_ts  <- sapply(ts_d,  function(x) cif2_esti[which.max(cif2_esti$time[cif2_esti$time <= x]), "cif"])
+    cif1_minus_i_ts  <- sapply(ts,  function(x) cif1_esti[which.max(cif1_esti$time[cif1_esti$time <= x]), "cif"])
+    cif2_minus_i_ts  <- sapply(ts,  function(x) cif2_esti[which.max(cif2_esti$time[cif2_esti$time <= x]), "cif"])
 
     res_i[[i]] <- list("mu_hat_ps"  = n * mu_ts - (n - 1) * mu_minus_i_ts,
                        "surv_hat_ps"  = n * surv_ts - (n - 1) * surv_minus_i_ts,
@@ -78,8 +112,6 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
                        id = idi,
                        ts = ts)
   }
-  tmp <- data.frame(do.call("rbind", res_i))
-
   tmp <- data.frame(do.call("rbind", res_i))
 
   outdata <- data.frame(mu = unlist(tmp$mu_hat_ps),

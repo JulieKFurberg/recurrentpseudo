@@ -26,9 +26,41 @@ pseudo.threedim(tstart, tstop, status, covar_names, id, tk, data, deathtype)
 \item{Z}{Covariate(s), Z}
 }
 \description{
-This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences of death causes 1 and 2
+This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences
+of death causes 1 and 2
 }
 \examples{
-pseudo.threedim()
+# Example 1: Bladder cancer data from survival package
+require(survival)
+
+# Make a three level status variable
+bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
+
+# Add one extra day for the two patients with start=stop=0
+bladder1[bladder1$stop <= bladder1$start, ]$stop <- bladder1[bladder1$stop <= bladder1$start, ]$start + 1
+
+# Restrict the data to placebo and thiotepa
+bladdersub <- subset(bladder1, treatment \%in\% c("placebo", "thiotepa"))
+
+# Make treatment variable two-level factor
+bladdersub$Z <- as.factor(ifelse(bladdersub$treatment == "placebo", 0, 1))
+levels(bladdersub$Z) <- c("placebo", "thiotepa")
+head(bladdersub)
+
+# Add deathtype variable to bladder data
+# Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
+bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
+table(bladdersub$deathtype, bladdersub$status)
+
+# Pseudo-observations
+pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
+                                     tstop = bladdersub$stop,
+                                     status = bladdersub$status3,
+                                     id = bladdersub$id,
+                                     deathtype = bladdersub$deathtype,
+                                     covar_names = "Z",
+                                     tk = c(20, 30, 40),
+                                     data = bladdersub)
+pseudo_bladder_3d
 }
 \keyword{recurrentpseudo}

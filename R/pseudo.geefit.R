@@ -1,7 +1,7 @@
 #' Function that computes makes GEE model fit
 #'
 #' This function fits a GEE model based bivariate pseudo-observations of the marginal mean function and
-#' the survival probability as returned by pseudo.twodim()
+#' the survival probability as returned by pseudo.onedim(), pseudo.twodim() or pseudo.threedim()
 #'
 #' @param pseudodata Data set containing pseudo-observations. Expecting output from pseudo.twodim()
 #' @param covar_names Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")
@@ -15,7 +15,7 @@
 #' @export
 pseudo.geefit <- function(pseudodata, covar_names){
 
-  #pseudodata <- bladder1dim_pseudo
+  #pseudodata <- pseudo_bladder_3d
   #covar_names <- "Z"
 
   # pull the selected k
@@ -50,7 +50,24 @@ pseudo.geefit <- function(pseudodata, covar_names){
 
     # Link function
     link <- c(rep("log", ksel), rep("cloglog", ksel))
-    }
+  }
+
+
+  if (pseudodata$dim == "threedim"){
+    size <- 3
+    # Subset - remove "surv"
+    pseudo_l <- subset(as.data.frame(pseudodata$outdata_long), esttype != "surv")
+    pseudo_l_o <- pseudo_l[order(pseudo_l$id, pseudo_l$esttype, pseudo_l$ts),]
+    pseudo_l_o2 <- pseudo_l_o
+
+    # Fix covariate terms for analysis
+    terms <- sapply(1:length(covar_names), function(i)  paste0(covar_names[i], ":esttype"))
+
+    # Link function
+    link <- c(rep("cloglog", ksel), rep("cloglog", ksel), rep("log", ksel))
+  }
+
+
 
     # Fit model
     if (length(covar_names) > 1){
@@ -125,6 +142,49 @@ pseudo.geefit <- function(pseudodata, covar_names){
       xi <- as.matrix(xi)
       colnames(xi) <- ""
   }
+
+  if (pseudodata$dim == "threedim"){
+      # Save estimates and
+      # Change to get the right parametrization
+
+      ## For mu, in order of covariates
+      xi_names <- names(fit$beta)
+
+      mu_place <- str_detect(xi_names, "esttypemu")
+      cif1_place <- str_detect(xi_names, "esttypecif1")
+      cif2_place <- str_detect(xi_names, "esttypecif2")
+
+      # Re-order, mu first, then cif1, then cif2
+      xi <- c(fit$beta[mu_place],
+              fit$beta[cif1_place],
+              fit$beta[cif2_place])
+
+
+      sigma_mu <- fit$vbeta[which(mu_place), which(mu_place)]
+      sigma_cif1 <- fit$vbeta[which(cif1_place), which(cif1_place)]
+      sigma_cif2 <- fit$vbeta[which(cif2_place), which(cif2_place)]
+
+      sigma_mucif1 <- fit$vbeta[which(mu_place), which(cif1_place)]
+      sigma_mucif2 <- fit$vbeta[which(mu_place), which(cif2_place)]
+      sigma_cif1cif2 <- fit$vbeta[which(cif1_place), which(cif2_place)]
+
+      sigma <- rbind(cbind(sigma_mu, sigma_mucif1, sigma_mucif2),
+                     cbind(sigma_mucif1, sigma_cif1, sigma_cif1cif2),
+                     cbind(sigma_mucif2, sigma_cif1cif2, sigma_cif2)
+                     )
+
+
+      #Re-name in new order
+      names(xi) <- c(names(fit$beta)[mu_place],
+                     names(fit$beta)[cif1_place],
+                     names(fit$beta)[cif2_place])
+
+      colnames(sigma) <- rownames(sigma) <- names(xi)
+
+      # Make xi a matrix
+      xi <- as.matrix(xi)
+      colnames(xi) <- ""
+    }
 
 
 

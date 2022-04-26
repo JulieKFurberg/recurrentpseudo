@@ -28,13 +28,19 @@ install("recurrentpseudo")
 
 ?pseudo.geefit
 
-
+#devtools::load_all()
 
 # https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
 # https://kbroman.org/github_tutorial/pages/routine.html
 # https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN
 
+#=================================================================================================#
+# Install from GitHub                                                                             #
+#=================================================================================================#
+#library("devtools")
+#install_github("JulieKFurberg/recurrentpseudo")
 
+#library(recurrentpseudo)
 
 #=================================================================================================#
 # Checking examples                                                                               #
@@ -92,7 +98,7 @@ colnames(xi_diff_1d) <- ""
 xi_diff_1d
 
 # Variance matrix for differences
-sigma_diff_1d <- matrix(c(fit_bladder$sigma[1,1] + fit_bladder$sigma[2,2]),
+sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[1,1] + fit_bladder_1d$sigma[2,2]),
                      ncol = 1, nrow = 1,
                      byrow = T)
 
@@ -125,7 +131,7 @@ fit_bladder_2d
 
 # Treatment differences
 xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[2] - fit_bladder_2d$xi[1],
-                       fit_bladder_2d$xi[4] - fit_bladder_2d$xi[3]), ncol = 1)
+                          fit_bladder_2d$xi[4] - fit_bladder_2d$xi[3]), ncol = 1)
 
 mslabels <- c("treat, mu", "treat, surv")
 rownames(xi_diff_2d) <- mslabels
@@ -163,3 +169,53 @@ pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
                                      tk = c(20, 30, 40),
                                      data = bladdersub)
 
+# GEE fit
+fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
+                                covar_names = c("Z"))
+fit_bladder_3d
+
+
+
+
+# Treatment differences
+xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[2] - fit_bladder_3d$xi[1],
+                          fit_bladder_3d$xi[4] - fit_bladder_3d$xi[3],
+                          fit_bladder_3d$xi[6] - fit_bladder_3d$xi[5]), ncol = 1)
+
+mslabels <- c("treat, mu", "treat, cif1", "treat, cif2")
+rownames(xi_diff_3d) <- mslabels
+colnames(xi_diff_3d) <- ""
+xi_diff_3d
+
+
+# Variance matrix for differences
+sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[2,2],
+                          fit_bladder_3d$sigma[1,3] + fit_bladder_3d$sigma[1,5],
+                          fit_bladder_3d$sigma[1,4] + fit_bladder_3d$sigma[1,6],
+
+                          fit_bladder_3d$sigma[1,3] + fit_bladder_3d$sigma[1,5],
+                          fit_bladder_3d$sigma[3,3] + fit_bladder_3d$sigma[4,4],
+                          fit_bladder_3d$sigma[3,5] + fit_bladder_3d$sigma[4,6],
+
+                          fit_bladder_3d$sigma[1,4] + fit_bladder_3d$sigma[1,6],
+                          fit_bladder_3d$sigma[3,5] + fit_bladder_3d$sigma[4,6],
+                          fit_bladder_3d$sigma[5,5] + fit_bladder_3d$sigma[6,6]
+
+                          ),
+                        ncol = 3, nrow = 3,
+                        byrow = T)
+
+rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
+sigma_diff_3d
+
+
+
+###----------------------- Compare - should match for some elements ---------------------------###
+
+xi_diff_1d
+xi_diff_2d
+xi_diff_3d
+
+sigma_diff_1d
+sigma_diff_2d
+sigma_diff_3d

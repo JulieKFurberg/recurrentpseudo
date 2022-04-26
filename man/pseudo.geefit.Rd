@@ -13,7 +13,7 @@ pseudo.geefit(pseudodata, covar_names)
 }
 \description{
 This function fits a GEE model based bivariate pseudo-observations of the marginal mean function and
-the survival probability as returned by pseudo.twodim()
+the survival probability as returned by pseudo.onedim(), pseudo.twodim() or pseudo.threedim()
 }
 \examples{
 pseudo.geefit()

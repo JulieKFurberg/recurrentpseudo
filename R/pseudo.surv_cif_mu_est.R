@@ -7,7 +7,7 @@
 #' @param inputdata Data set which contains variables of interest
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack cmprsk mets
+#' @import dplyr survival geepack cmprsk mets timereg
 #' @examples
 #' pseudo.surv_cif_mu_est()
 
@@ -30,11 +30,8 @@ pseudo.surv_cif_mu_est <- function(inputdata,
 
   # CIF - cause 1 & 2
   last <- inputdata[!duplicated(inputdata$id, fromLast = T),]
-  cause1 <- cif(Event(stoptime, deathtype) ~ 1, data = last, cause = 1)
-  cause2 <- cif(Event(stoptime, deathtype) ~ 1, data = last, cause = 2)
-
-  # CIF - cause 1
-  cause1 <- cif(Event(stoptime, deathtype) ~ 1, data = last, cause = 1)
+  cause1 <- cif(Event(stop, deathtype) ~ 1, data = last, cause = 1)
+  cause2 <- cif(Event(stop, deathtype) ~ 1, data = last, cause = 2)
 
   # Adjust hat(mu)
   mu_adj <- cumsum(KM_fit$surv * c(0, diff(NAa_fit$cumhaz)))
