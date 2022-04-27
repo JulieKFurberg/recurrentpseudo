@@ -8,7 +8,47 @@
 #' @keywords recurrentpseudo
 #' @import dplyr survival geepack stringr
 #' @examples
-#' pseudo.geefit()
+#' # Bladder cancer data from survival package
+#' require(survival)
+#'
+#' # Make a three level status variable
+#' bladder1$status3 <- ifelse(bladder1$status %in% c(2, 3), 2, bladder1$status)
+#'
+#' # Add one extra day for the two patients with start=stop=0
+#' # subset(bladder1, stop <= start)
+#' bladder1[bladder1$id == 1, "stop"] <- 1
+#' bladder1[bladder1$id == 49, "stop"] <- 1
+#'
+#' # Restrict the data to placebo and thiotepa
+#' bladdersub <- subset(bladder1, treatment %in% c("placebo", "thiotepa"))
+#'
+#' # Make treatment variable two-level factor
+#' bladdersub$Z <- as.factor(ifelse(bladdersub$treatment == "placebo", 0, 1))
+#' levels(bladdersub$Z) <- c("placebo", "thiotepa")
+#'
+#' head(bladdersub)
+#'
+#' # Two-dimensional (bivariate pseudo-obs) model fit
+#'
+#' # Computation of pseudo-observations
+#' pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
+#'                                    tstop = bladdersub$stop,
+#'                                    status = bladdersub$status3,
+#'                                    id = bladdersub$id,
+#'                                    covar_names = "Z",
+#'                                    tk = c(20, 30, 40),
+#'                                    data = bladdersub)
+#'
+#' # Data in wide format
+#' head(pseudo_bladder_2d$outdata)
+#'
+#' # Data in long format
+#' head(pseudo_bladder_2d$outdata_long)
+#'
+#' # GEE fit
+#' fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
+#'                                 covar_names = c("Z"))
+#' fit_bladder_2d
 
 
 # Main function for making GEE model fit
@@ -17,6 +57,9 @@ pseudo.geefit <- function(pseudodata, covar_names){
 
   #pseudodata <- pseudo_bladder_3d
   #covar_names <- "Z"
+
+  # Binding variables locally
+  id <- esttype <- ts <- NULL
 
   # pull the selected k
   ksel <- pseudodata$k

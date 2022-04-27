@@ -22,22 +22,22 @@ pseudo.threedim(tstart, tstop, status, covar_names, id, tk, data, deathtype)
 \item{data}{Data set which contains variables of interest}
 
 \item{deathtype}{Type of death (cause 1 or cause 2)}
-
-\item{Z}{Covariate(s), Z}
 }
 \description{
 This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences
 of death causes 1 and 2
 }
 \examples{
-# Example 1: Bladder cancer data from survival package
+# Example: Bladder cancer data from survival package
 require(survival)
 
 # Make a three level status variable
 bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
 
 # Add one extra day for the two patients with start=stop=0
-bladder1[bladder1$stop <= bladder1$start, ]$stop <- bladder1[bladder1$stop <= bladder1$start, ]$start + 1
+# subset(bladder1, stop <= start)
+bladder1[bladder1$id == 1, "stop"] <- 1
+bladder1[bladder1$id == 49, "stop"] <- 1
 
 # Restrict the data to placebo and thiotepa
 bladdersub <- subset(bladder1, treatment \%in\% c("placebo", "thiotepa"))

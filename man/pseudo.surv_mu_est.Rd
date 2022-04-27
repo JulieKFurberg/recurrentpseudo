@@ -21,6 +21,31 @@ pseudo.surv_mu_est(inputdata, tstart, tstop, status, id)
 Help function parsed inside pseudo.twodim()
 }
 \examples{
-pseudo.surv_mu_est()
+# Example: Bladder cancer data from survival package
+require(survival)
+
+# Make a three level status variable
+bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
+
+# Add one extra day for the two patients with start=stop=0
+# subset(bladder1, stop <= start)
+bladder1[bladder1$id == 1, "stop"] <- 1
+bladder1[bladder1$id == 49, "stop"] <- 1
+
+# Restrict the data to placebo and thiotepa
+bladdersub <- subset(bladder1, treatment \%in\% c("placebo", "thiotepa"))
+
+# Make treatment variable two-level factor
+bladdersub$Z <- as.factor(ifelse(bladdersub$treatment == "placebo", 0, 1))
+levels(bladdersub$Z) <- c("placebo", "thiotepa")
+head(bladdersub)
+
+
+# Estimate mu and cif1 and cif2 on data
+pseudo.surv_mu_est(inputdata = bladdersub,
+                       tstart = bladdersub$start,
+                       tstop = bladdersub$stop,
+                       status = bladdersub$status3,
+                       id = bladdersub$id)
 }
 \keyword{recurrentpseudo}

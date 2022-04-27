@@ -6,13 +6,45 @@
 #' @param status Status variable (0 = censoring, 1 = recurrent event, 2 = death)
 #' @param covar_names Vector containing names of covariates intended for further analysis
 #' @param id ID variable for subject
-#' @param Z Covariate(s), Z
 #' @param tk Vector of time points to calculate pseudo-observations at
 #' @param data Data set which contains variables of interest
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack
+#' @import dplyr stats survival geepack
 #' @examples
-#' pseudo.twodim()
+#' # Example: Bladder cancer data from survival package
+#' require(survival)
+#'
+#' # Make a three level status variable
+#' bladder1$status3 <- ifelse(bladder1$status %in% c(2, 3), 2, bladder1$status)
+#'
+#' # Add one extra day for the two patients with start=stop=0
+#' # subset(bladder1, stop <= start)
+#' bladder1[bladder1$id == 1, "stop"] <- 1
+#' bladder1[bladder1$id == 49, "stop"] <- 1
+#'
+#' # Restrict the data to placebo and thiotepa
+#' bladdersub <- subset(bladder1, treatment %in% c("placebo", "thiotepa"))
+#'
+#' # Make treatment variable two-level factor
+#' bladdersub$Z <- as.factor(ifelse(bladdersub$treatment == "placebo", 0, 1))
+#' levels(bladdersub$Z) <- c("placebo", "thiotepa")
+#' head(bladdersub)
+#'
+#' # Pseudo observations
+#' pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
+#'                                    tstop = bladdersub$stop,
+#'                                    status = bladdersub$status3,
+#'                                    id = bladdersub$id,
+#'                                    covar_names = "Z",
+#'                                    tk = c(20, 30, 40),
+#'                                    data = bladdersub)
+#' head(pseudo_bladder_2d$outdata)
+#'
+#' # GEE fit
+#' fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
+#'                                 covar_names = c("Z"))
+#' fit_bladder_2d
+
 
 # Main driving function
 #' @export
@@ -36,7 +68,8 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
   est <- pseudo.surv_mu_est(inputdata = indata,
                             tstart = indata$tstart,
                             tstop = indata$tstop,
-                            id = indata$id)
+                            id = indata$id,
+                            status = indata$status)
   muest <- est$mu
   survest <- est$surv
 
@@ -55,7 +88,8 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
     esti <- pseudo.surv_mu_est(inputdata = dat_i,
                                tstart = dat_i$tstart,
                                tstop = dat_i$tstop,
-                               id = dat_i$id)
+                               id = dat_i$id,
+                               status = dat_i$status)
     muesti <- esti$mu
     survesti <- esti$surv
 
@@ -81,8 +115,8 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
 
   # Add covariates etc - need to make a smaller dataset with first observations
   # (baseline covariates - should be unchanged)
-  first <- as.data.frame(indata %>% group_by(id) %>% filter(row_number(id) == 1))
-
+  #first <- as.data.frame(indata %>% group_by(id) %>% filter(dplyr::row_number(id) == 1))
+  first <- as.data.frame(indata %>% group_by(id) %>% slice(1) %>% ungroup())
 
   outdata_xZ <- left_join(x = outdata,
                           y = first[,c("id", covar_names)],
@@ -93,19 +127,15 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
   # Make it into long format
   outdata_long <- reshape(outdata,
                           varying = c("mu", "surv"),
-                          v.name = "y",
+                          v.names = "y",
                           timevar = "esttype",
                           times = c("mu", "surv"),
                           idvar = c("id", "ts"),
                           new.row.names = 1:(2*k*n),
                           direction = "long")
-  head(outdata_long)
-
 
   # It needs to be ordered by ID! Important
   outdata_long_ord <- outdata_long[order(outdata_long$id, outdata_long$ts),]
-
-  head(outdata_long_ord)
 
   # Add covariates etc
   outdata_long_ord_xZ <- left_join(x = outdata_long_ord,

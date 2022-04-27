@@ -7,21 +7,22 @@
 #' @param status Status variable (0 = censoring, 1 = recurrent event, 2 = death)
 #' @param covar_names Vector containing names of covariates intended for further analysis
 #' @param id ID variable for subject
-#' @param Z Covariate(s), Z
 #' @param tk Vector of time points to calculate pseudo-observations at
 #' @param data Data set which contains variables of interest
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack cmprsk mets timereg
+#' @import dplyr stats survival geepack mets
 #' @examples
-#' # Example 1: Bladder cancer data from survival package
+#' # Example: Bladder cancer data from survival package
 #' require(survival)
 #'
 #' # Make a three level status variable
 #' bladder1$status3 <- ifelse(bladder1$status %in% c(2, 3), 2, bladder1$status)
 #'
 #' # Add one extra day for the two patients with start=stop=0
-#' bladder1[bladder1$stop <= bladder1$start, ]$stop <- bladder1[bladder1$stop <= bladder1$start, ]$start + 1
+#' # subset(bladder1, stop <= start)
+#' bladder1[bladder1$id == 1, "stop"] <- 1
+#' bladder1[bladder1$id == 49, "stop"] <- 1
 #'
 #' # Restrict the data to placebo and thiotepa
 #' bladdersub <- subset(bladder1, treatment %in% c("placebo", "thiotepa"))
@@ -60,19 +61,23 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
   indata$tstop <- tstop
   indata$status <- status
   indata$id <- id
+  indata$deathtype <- deathtype
 
 
   # Selected time points - both for recurrent events + death
   ts <- input_ts
 
   # Creating the estimate on the entire data set
-  est <- pseudo.surv_cif_mu_est(inputdata = indata)
+  est <- pseudo.surv_cif_mu_est(inputdata = indata,
+                                tstart = indata$tstart,
+                                tstop = indata$tstop,
+                                id = indata$id,
+                                status = indata$status,
+                                deathtype = indata$deathtype)
   muest <- est$mu
   survest <- est$surv
   cif1 <- rbind(c(0,1), est$cif1)
   cif2 <- rbind(c(0,1), est$cif2)
-
-  #head(cif_cv_est)
 
   mu_ts  <- sapply(ts,  function(x) muest[which.max(muest$time[muest$time <= x]), "mu"])
   surv_ts  <- sapply(ts,  function(x) survest[which.max(survest$time[survest$time <= x]), "surv"])
@@ -89,7 +94,13 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
     idi <- unisub[i]
     dat_i <- subset(indata, id != idi)
 
-    esti <- pseudo.surv_cif_mu_est(inputdata = subset(indata, id != idi))
+    esti <- pseudo.surv_cif_mu_est(inputdata = dat_i,
+                                   tstart = dat_i$tstart,
+                                   tstop = dat_i$tstop,
+                                   id = dat_i$id,
+                                   status = dat_i$status,
+                                   deathtype = dat_i$deathtype)
+
     muesti <- esti$mu
     survesti <- esti$surv
 
@@ -128,7 +139,7 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
 
   # Add covariates etc - need to make a smaller dataset with first observations
   # (baseline covariates - should be unchanged)
-  first <- as.data.frame(indata %>% group_by(id) %>% filter(row_number(id) == 1))
+  first <- as.data.frame(indata %>% group_by(id) %>% slice(1) %>% ungroup())
 
 
   outdata_xZ <- left_join(x = outdata,
@@ -140,19 +151,15 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
   # Make it into long format
   outdata_long <- reshape(outdata,
                           varying = c("mu", "surv", "cif1", "cif2"),
-                          v.name = "y",
+                          v.names = "y",
                           timevar = "esttype",
                           times = c("mu", "surv", "cif1", "cif2"),
                           idvar = c("id", "ts"),
                           new.row.names = 1:(4*k*n),
                           direction = "long")
-  head(outdata_long)
-
 
   # It needs to be ordered by ID! Important
   outdata_long_ord <- outdata_long[order(outdata_long$id, outdata_long$ts),]
-
-  head(outdata_long_ord)
 
   # Add covariates etc
   outdata_long_ord_xZ <- left_join(x = outdata_long_ord,

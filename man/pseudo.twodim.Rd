@@ -20,13 +20,43 @@ pseudo.twodim(tstart, tstop, status, covar_names, id, tk, data)
 \item{tk}{Vector of time points to calculate pseudo-observations at}
 
 \item{data}{Data set which contains variables of interest}
-
-\item{Z}{Covariate(s), Z}
 }
 \description{
 This function computes bivariate pseudo-observations of the marginal mean function and the survival probability
 }
 \examples{
-pseudo.twodim()
+# Example: Bladder cancer data from survival package
+require(survival)
+
+# Make a three level status variable
+bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
+
+# Add one extra day for the two patients with start=stop=0
+# subset(bladder1, stop <= start)
+bladder1[bladder1$id == 1, "stop"] <- 1
+bladder1[bladder1$id == 49, "stop"] <- 1
+
+# Restrict the data to placebo and thiotepa
+bladdersub <- subset(bladder1, treatment \%in\% c("placebo", "thiotepa"))
+
+# Make treatment variable two-level factor
+bladdersub$Z <- as.factor(ifelse(bladdersub$treatment == "placebo", 0, 1))
+levels(bladdersub$Z) <- c("placebo", "thiotepa")
+head(bladdersub)
+
+# Pseudo observations
+pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
+                                   tstop = bladdersub$stop,
+                                   status = bladdersub$status3,
+                                   id = bladdersub$id,
+                                   covar_names = "Z",
+                                   tk = c(20, 30, 40),
+                                   data = bladdersub)
+head(pseudo_bladder_2d$outdata)
+
+# GEE fit
+fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
+                                covar_names = c("Z"))
+fit_bladder_2d
 }
 \keyword{recurrentpseudo}
