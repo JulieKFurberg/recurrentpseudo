@@ -15,4 +15,5 @@ Imports:
     dplyr, 
     stringr,
     mets,
-    cmprsk
+    cmprsk,
+    timereg
