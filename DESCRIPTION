@@ -13,6 +13,7 @@ Imports:
     survival, 
     geepack, 
     dplyr, 
+    tidyr,
     stringr,
     mets,
     cmprsk,
