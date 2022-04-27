@@ -13,8 +13,6 @@ Imports:
     survival, 
     geepack, 
     dplyr, 
-    tidyr,
+    stats,
     stringr,
-    mets,
-    cmprsk,
-    timereg
+    mets
