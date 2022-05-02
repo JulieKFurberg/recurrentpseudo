@@ -47,6 +47,11 @@
 #'                                      tk = c(20, 30, 40),
 #'                                      data = bladdersub)
 #' pseudo_bladder_3d
+#'
+#' # GEE fit
+#' fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
+#'                                 covar_names = c("Z"))
+#' fit_bladder_3d
 
 # Main driving function
 #' @export

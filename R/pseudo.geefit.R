@@ -55,8 +55,8 @@
 #' @export
 pseudo.geefit <- function(pseudodata, covar_names){
 
-  #pseudodata <- pseudo_bladder_3d
-  #covar_names <- "Z"
+  # pseudodata <- pseudo_bladder_3d
+  # covar_names <- "Z"
 
   # Binding variables locally
   id <- esttype <- ts <- NULL
@@ -67,6 +67,10 @@ pseudo.geefit <- function(pseudodata, covar_names){
   # It needs to be ordered by ID! Important
   pseudo_l <- as.data.frame(pseudodata$outdata_long)
   pseudo_l_o <- pseudo_l[order(pseudo_l$id, pseudo_l$esttype, pseudo_l$ts),]
+
+  # Make time point variable
+  pseudo_l_o$Ztime <- as.factor(pseudo_l_o$ts)
+  levels(pseudo_l_o$Ztime) <- 1:ksel
 
   if (pseudodata$dim == "onedim"){
     size <- 1
@@ -99,7 +103,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   if (pseudodata$dim == "threedim"){
     size <- 3
     # Subset - remove "surv"
-    pseudo_l <- subset(as.data.frame(pseudodata$outdata_long), esttype != "surv")
+    pseudo_l <- subset(pseudo_l_o, esttype != "surv")
     pseudo_l_o <- pseudo_l[order(pseudo_l$id, pseudo_l$esttype, pseudo_l$ts),]
     pseudo_l_o2 <- pseudo_l_o
 
@@ -121,7 +125,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
     # Add response etc
-    a_terms <- formula(paste0("y ~ ", terms2, " - 1"))
+    a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1")) #formula(paste0("y ~ ", terms2, " - 1"))
     a_terms
 
     # Running the model fit
