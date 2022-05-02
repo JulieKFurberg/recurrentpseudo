@@ -222,9 +222,44 @@ require(devtools)
 #> Indlæser krævet pakke: devtools
 #> Indlæser krævet pakke: usethis
 
-devtools::install_github("JulieKFurberg/recurrentpseudo")
-#> Skipping install of 'recurrentpseudo' from a github remote, the SHA1 (9618762e) has not changed since last install.
-#>   Use `force = TRUE` to force installation
+devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
+#> Downloading GitHub repo JulieKFurberg/recurrentpseudo@HEAD
+#> cli      (3.2.0 -> 3.3.0) [CRAN]
+#> magrittr (2.0.2 -> 2.0.3) [CRAN]
+#> Installing 2 packages: cli, magrittr
+#> Warning in download.file(url, destfile, method, mode = "wb", ...): cannot open
+#> URL 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip': HTTP
+#> status was '403 Forbidden'
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
+#> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
+#> download of package 'cli' failed
+#> Warning in download.file(url, destfile, method, mode = "wb", ...): cannot open
+#> URL 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip':
+#> HTTP status was '403 Forbidden'
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
+#> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
+#> download of package 'magrittr' failed
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpKAIZ3J\remotes2db06f3ad99\JulieKFurberg-recurrentpseudo-eb08619/DESCRIPTION' ... OK
+#> * preparing 'recurrentpseudo':
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#>   NB: this package now depends on R (>= 3.5.0)
+#>   WARNING: Added dependency on R >= 3.5.0 because serialized objects in
+#>   serialize/load version 3 cannot be read in older versions of R.
+#>   File(s) containing such objects:
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-3_912c88a619927c49679775b7893da783.RData'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-3_912c88a619927c49679775b7893da783.rdx'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-4_6a979e453e8f1632ad879bbc73f3ab67.RData'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-4_6a979e453e8f1632ad879bbc73f3ab67.rdx'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-5_9fcee8365db3cfebd1cb0af449d6dfa7.RData'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-5_9fcee8365db3cfebd1cb0af449d6dfa7.rdx'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-6_4ebcdc4febce7d6ba26eb96b2a1d433f.RData'
+#>     'recurrentpseudo/README_cache/gfm/unnamed-chunk-6_4ebcdc4febce7d6ba26eb96b2a1d433f.rdx'
+#> * building 'recurrentpseudo_0.0.0.9000.tar.gz'
+#> 
 
 require(recurrentpseudo)
 #> Indlæser krævet pakke: recurrentpseudo

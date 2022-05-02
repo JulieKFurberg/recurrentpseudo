@@ -115,10 +115,10 @@ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen estimates of the 
 # Install package from GitHub
 
 
-```{r eval = T, echo = T}
+```{r eval = T}
 require(devtools)
 
-devtools::install_github("JulieKFurberg/recurrentpseudo")
+devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 
 require(recurrentpseudo)
 ```
@@ -131,7 +131,7 @@ We consider the well-known bladder cancer data from the survival package.
 
 We focus on the comparison between placebo and thiotepa. 
 
-```{r cache = T}
+```{r cache = F}
 # Example: Bladder cancer data from survival package
 require(survival)
 
@@ -156,7 +156,7 @@ head(bladdersub)
 
 One-dimensional pseudo-observations can be computed using the following code
 
-```{r cache = T}
+```{r cache = F}
 # Pseudo observations
 pseudo_bladder_1d <- pseudo.onedim(tstart = bladdersub$start,
                                    tstop = bladdersub$stop,
@@ -193,7 +193,7 @@ sigma_diff_1d
 
 Two-dimensional pseudo-observations can be computed using the following code
 
-```{r cache = T}
+```{r cache = F}
 # Pseudo observations
 pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
                                    tstop = bladdersub$stop,
@@ -233,7 +233,7 @@ sigma_diff_2d
 
 Three-dimensional pseudo-observations can be computed using the following code
 
-```{r cache = T}
+```{r}
 # Add deathtype variable to bladder data
 # Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
 bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
