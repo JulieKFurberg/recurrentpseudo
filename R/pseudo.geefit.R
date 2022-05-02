@@ -104,7 +104,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   if (pseudodata$dim == "threedim"){
     size <- 3
     # Subset - remove "surv"
-    pseudo_l <- subset(pseudo_l, esttype != "surv")
+    pseudo_l <- subset(pseudo_l_o, esttype != "surv")
     pseudo_l_o2 <- pseudo_l[order(pseudo_l$id, pseudo_l$esttype, pseudo_l$ts),]
 
     # Fix covariate terms for analysis
