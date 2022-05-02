@@ -233,7 +233,7 @@ sigma_diff_2d
 
 Three-dimensional pseudo-observations can be computed using the following code
 
-```{r eval = F}
+```{r eval = T}
 # Add deathtype variable to bladder data
 # Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
 bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
@@ -289,7 +289,7 @@ sigma_diff_3d
 ```
 
 
-```{r eval = F}
+```{r eval = T}
 ###----------------------- Compare - should match for some elements ---------------------------###
 
 xi_diff_1d
@@ -302,7 +302,7 @@ sigma_diff_3d
 ```
 
 
-```{r eval = FALSE}
+```{r eval = T}
 # if more than a binary treat
 
 # Treatment, binary variable:

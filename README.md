@@ -241,7 +241,7 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
 #> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
 #> download of package 'magrittr' failed
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp0eArjw\remotes2d9c425c535d\JulieKFurberg-recurrentpseudo-f602b60/DESCRIPTION' ... OK
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpKucQWS\remotes2db411962f0c\JulieKFurberg-recurrentpseudo-9b4b234/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -461,6 +461,11 @@ following code
 # Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
 bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
 table(bladdersub$deathtype, bladdersub$status)
+#>    
+#>       0   1   2   3
+#>   0  55 132   0   0
+#>   1   0   0   2   0
+#>   2   0   0   0  20
 
 # Pseudo-observations
 pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
@@ -472,11 +477,99 @@ pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
                                      tk = c(20, 30, 40),
                                      data = bladdersub)
 head(pseudo_bladder_3d$outdata_long)
+#>   k ts id esttype            y       Z
+#> 1 3 20  1      mu 0.000000e+00 placebo
+#> 2 3 20  1    surv 0.000000e+00 placebo
+#> 3 3 20  1    cif1 0.000000e+00 placebo
+#> 4 3 20  1    cif2 7.283953e+00 placebo
+#> 5 3 30  1      mu 1.421085e-14 placebo
+#> 6 3 30  1    surv 1.421085e-14 placebo
 
 # GEE fit
 fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
                                 covar_names = c("Z"))
 fit_bladder_3d
+#> $xi
+#>                                    
+#> esttypemu              3.598264e-02
+#> esttypemu:Ztime2       4.589506e-01
+#> esttypemu:Ztime3       6.398069e-01
+#> esttypemu:Zthiotepa   -4.034013e-01
+#> esttypecif1           -4.416394e+00
+#> esttypecif1:Ztime2     4.668904e-01
+#> esttypecif1:Ztime3     4.668904e-01
+#> esttypecif1:Zthiotepa  5.701714e-01
+#> esttypecif2            7.082247e+17
+#> esttypecif2:Ztime2     7.176957e+17
+#> esttypecif2:Ztime3     1.138932e+18
+#> esttypecif2:Zthiotepa  1.717020e+15
+#> 
+#> $sigma
+#>                           esttypemu esttypemu:Ztime2 esttypemu:Ztime3
+#> esttypemu              3.232749e-02    -5.114484e-03    -7.562655e-03
+#> esttypemu:Ztime2      -5.114484e-03     5.040221e-03     6.416379e-03
+#> esttypemu:Ztime3      -7.562655e-03     6.416379e-03     1.018010e-02
+#> esttypemu:Zthiotepa   -3.061933e-02     2.665131e-03     6.100456e-03
+#> esttypecif1            1.192316e-02     5.114046e-03     5.114046e-03
+#> esttypecif1:Ztime2    -1.772091e-03     6.227435e-04     6.227435e-04
+#> esttypecif1:Ztime3    -4.916760e-03    -7.913832e-04    -7.913832e-04
+#> esttypecif1:Zthiotepa -1.073970e-02    -2.616266e-03    -2.616266e-03
+#> esttypecif2            4.073032e+13     1.031162e+12     1.031162e+12
+#> esttypecif2:Ztime2    -2.761373e+13    -1.177545e+11    -1.177545e+11
+#> esttypecif2:Ztime3    -6.050363e+13    -4.093913e+11    -4.093913e+11
+#> esttypecif2:Zthiotepa -3.642738e+11    -7.608608e+11    -7.608608e+11
+#>                       esttypemu:Zthiotepa   esttypecif1 esttypecif1:Ztime2
+#> esttypemu                   -3.061933e-02  1.192316e-02       5.114046e-03
+#> esttypemu:Ztime2             2.665131e-03 -1.772091e-03       6.227435e-04
+#> esttypemu:Ztime3             6.100456e-03 -4.916760e-03      -7.913832e-04
+#> esttypemu:Zthiotepa          7.947737e-02 -1.073970e-02      -2.616266e-03
+#> esttypecif1                 -1.141588e-02  6.392335e-01       1.531400e-01
+#> esttypecif1:Ztime2          -3.159043e-03  1.531400e-01       2.705566e-01
+#> esttypecif1:Ztime3          -7.569679e-04  1.531400e-01       2.705566e-01
+#> esttypecif1:Zthiotepa        7.573812e-03 -4.736493e-01      -7.297608e-01
+#> esttypecif2                 -9.177911e+13 -3.101684e+14       4.322033e+13
+#> esttypecif2:Ztime2           6.201602e+13  4.110850e+14       2.210162e+13
+#> esttypecif2:Ztime3           1.363155e+14  4.110850e+14       2.210162e+13
+#> esttypecif2:Zthiotepa        1.443420e+11 -3.192686e+13      -6.164636e+13
+#>                       esttypecif1:Ztime3 esttypecif1:Zthiotepa   esttypecif2
+#> esttypemu                   5.114046e-03         -1.141588e-02  4.073032e+13
+#> esttypemu:Ztime2            6.227435e-04         -3.159043e-03 -2.761373e+13
+#> esttypemu:Ztime3           -7.913832e-04         -7.569679e-04 -6.050363e+13
+#> esttypemu:Zthiotepa        -2.616266e-03          7.573812e-03 -3.642738e+11
+#> esttypecif1                 1.531400e-01         -4.736493e-01 -3.101684e+14
+#> esttypecif1:Ztime2          2.705566e-01         -7.297608e-01  4.110850e+14
+#> esttypecif1:Ztime3          2.705566e-01         -7.297608e-01  4.110850e+14
+#> esttypecif1:Zthiotepa      -7.297608e-01          2.025684e+00 -3.192686e+13
+#> esttypecif2                 4.322033e+13          7.428728e+14  3.523577e+31
+#> esttypecif2:Ztime2          2.210162e+13         -9.793537e+14  9.486203e+30
+#> esttypecif2:Ztime3          2.210162e+13         -9.793537e+14  1.503653e+31
+#> esttypecif2:Zthiotepa      -6.164636e+13          2.000288e+14 -5.868653e+31
+#>                       esttypecif2:Ztime2 esttypecif2:Ztime3
+#> esttypemu                   1.031162e+12       1.031162e+12
+#> esttypemu:Ztime2           -1.177545e+11      -1.177545e+11
+#> esttypemu:Ztime3           -4.093913e+11      -4.093913e+11
+#> esttypemu:Zthiotepa        -7.608608e+11      -7.608608e+11
+#> esttypecif1                 4.322033e+13       4.322033e+13
+#> esttypecif1:Ztime2          2.210162e+13       2.210162e+13
+#> esttypecif1:Ztime3          2.210162e+13       2.210162e+13
+#> esttypecif1:Zthiotepa      -6.164636e+13      -6.164636e+13
+#> esttypecif2                 9.486203e+30       1.503653e+31
+#> esttypecif2:Ztime2          9.586566e+30       1.521112e+31
+#> esttypecif2:Ztime3          1.521112e+31       2.413689e+31
+#> esttypecif2:Zthiotepa      -4.427555e+28      -3.081933e+28
+#>                       esttypecif2:Zthiotepa
+#> esttypemu                     -9.177911e+13
+#> esttypemu:Ztime2               6.201602e+13
+#> esttypemu:Ztime3               1.363155e+14
+#> esttypemu:Zthiotepa            1.443420e+11
+#> esttypecif1                    7.428728e+14
+#> esttypecif1:Ztime2            -9.793537e+14
+#> esttypecif1:Ztime3            -9.793537e+14
+#> esttypecif1:Zthiotepa          2.000288e+14
+#> esttypecif2                   -5.868653e+31
+#> esttypecif2:Ztime2            -4.427555e+28
+#> esttypecif2:Ztime3            -3.081933e+28
+#> esttypecif2:Zthiotepa          1.330765e+32
 
 # Treatment differences
 xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[2] - fit_bladder_3d$xi[1],
@@ -487,6 +580,10 @@ mslabels <- c("treat, mu", "treat, cif1", "treat, cif2")
 rownames(xi_diff_3d) <- mslabels
 colnames(xi_diff_3d) <- ""
 xi_diff_3d
+#>                      
+#> treat, mu    0.422968
+#> treat, cif1 -1.043208
+#> treat, cif2  4.883285
 
 
 # Variance matrix for differences
@@ -508,18 +605,40 @@ sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[2,2],
 
 rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
+#>                treat, mu  treat, cif1  treat, cif2
+#> treat, mu    0.037367709  0.004360506 -0.025505284
+#> treat, cif1  0.004360506  0.089657474 -0.007533026
+#> treat, cif2 -0.025505284 -0.007533026  0.909790069
 ```
 
 ``` r
 ###----------------------- Compare - should match for some elements ---------------------------###
 
 xi_diff_1d
+#>                    
+#> treat, mu 0.4589529
 xi_diff_2d
+#>                       
+#> treat, mu    0.4229679
+#> treat, surv -1.0432080
 xi_diff_3d
+#>                      
+#> treat, mu    0.422968
+#> treat, cif1 -1.043208
+#> treat, cif2  4.883285
 
 sigma_diff_1d
+#>            treat, mu
+#> treat, mu 0.05946639
 sigma_diff_2d
+#>                treat, mu  treat, surv
+#> treat, mu    0.037367709 -0.004897522
+#> treat, surv -0.004897522  0.089657461
 sigma_diff_3d
+#>                treat, mu  treat, cif1  treat, cif2
+#> treat, mu    0.037367709  0.004360506 -0.025505284
+#> treat, cif1  0.004360506  0.089657474 -0.007533026
+#> treat, cif2 -0.025505284 -0.007533026  0.909790069
 ```
 
 ``` r
@@ -541,7 +660,31 @@ fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
                       covar_names = c("Z1_", "Z2_", "Z3_"))
 
 fit1$xi
+#>                        
+#> Ztime1      -0.08441050
+#> Ztime2       0.33194951
+#> Ztime3       0.57310418
+#> Z1_thiotepa -0.42090759
+#> Z2_         -0.03389195
+#> Z3_B         0.34541987
+#> Z3_C         0.17941848
 fit1$sigma
+#>                  Ztime1      Ztime2      Ztime3  Z1_thiotepa          Z2_
+#> Ztime1       0.08476609  0.08130155  0.08268365 -0.018687914 -0.011738765
+#> Ztime2       0.08130155  0.08368418  0.08588052 -0.016981267 -0.011817225
+#> Ztime3       0.08268365  0.08588052  0.09301181 -0.011901788 -0.014028496
+#> Z1_thiotepa -0.01868791 -0.01698127 -0.01190179  0.081627362 -0.003135103
+#> Z2_         -0.01173877 -0.01181722 -0.01402850 -0.003135103  0.003901765
+#> Z3_B        -0.03834250 -0.03968841 -0.04046884 -0.009270712  0.004114268
+#> Z3_C        -0.03683084 -0.04023433 -0.03718317  0.007391325  0.002047425
+#>                     Z3_B         Z3_C
+#> Ztime1      -0.038342503 -0.036830841
+#> Ztime2      -0.039688406 -0.040234331
+#> Ztime3      -0.040468841 -0.037183168
+#> Z1_thiotepa -0.009270712  0.007391325
+#> Z2_          0.004114268  0.002047425
+#> Z3_B         0.051268216  0.032323356
+#> Z3_C         0.032323356  0.066226527
 
 ##
 ```
