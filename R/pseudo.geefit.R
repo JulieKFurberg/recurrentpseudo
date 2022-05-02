@@ -124,9 +124,16 @@ pseudo.geefit <- function(pseudodata, covar_names){
       terms2 <- terms
     }
 
-    # Add response etc
-    a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1")) #formula(paste0("y ~ ", terms2, " - 1"))
-    a_terms
+    if (ksel > 1){
+      # Add response etc
+      a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1")) #formula(paste0("y ~ ", terms2, " - 1"))
+      a_terms
+    }
+    if (ksel == 1){
+      # Add response etc
+      a_terms <- formula(paste0("y ~ esttype + ", terms2, "- 1")) #formula(paste0("y ~ ", terms2, " - 1"))
+      a_terms
+    }
 
     # Running the model fit
     fit <- geese(formula = a_terms,

@@ -2262,6 +2262,25 @@ sigma_diff_3d
 #> treat, cif2 0.000000e+00 2.018283e+14 1.330765e+32
 ```
 
+``` r
+# if more than a binary treat
+
+# Treatment, binary variable:
+pseudo_bladder_1d$outdata_long$Z1_ <- as.factor(pseudo_bladder_1d$outdata_long$Z)
+
+# A continuous variable
+pseudo_bladder_1d$outdata_long$Z2_ <- rnorm(nrow(pseudo_bladder_1d$outdata_long), mean = 3, sd = 1)
+
+# A categorical variable
+pseudo_bladder_1d$outdata_long$Z3_ <- sample(x = c("A", "B", "C"), 
+                                 size = nrow(pseudo_bladder_1d$outdata_long), 
+                                 replace = TRUE, 
+                                 prob = c(1/4, 1/2, 1/4))
+
+fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
+```
+
 # Citation
 
 To cite the `recurrentpseudo` package please use the following
