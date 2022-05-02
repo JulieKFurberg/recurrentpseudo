@@ -33,6 +33,10 @@
 #' bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
 #' table(bladdersub$deathtype, bladdersub$status)
 #'
+#'
+#' bladdersub$tstart <- bladdersub$start
+#' bladdersub$tstop <- bladdersub$stop
+#'
 #' # Estimate mu and cif1 and cif2 on data
 #' pseudo.surv_cif_mu_est(inputdata = bladdersub,
 #'                        tstart = bladdersub$start,
@@ -40,9 +44,6 @@
 #'                        status = bladdersub$status3,
 #'                        deathtype = bladdersub$deathtype,
 #'                        id = bladdersub$id)
-
-
-
 
 # Function that computes S, CIF, mu
 #' @export
@@ -62,6 +63,7 @@ pseudo.surv_cif_mu_est <- function(inputdata,
 
   # CIF - cause 1 & 2
   last <- inputdata[!duplicated(inputdata$id, fromLast = T),]
+  tstop <- deathtype <- NULL
   cause1 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 1)
   cause2 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 2)
 
