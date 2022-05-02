@@ -323,6 +323,7 @@ fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 fit1$xi
 fit1$sigma
 
+##
 ```
 
 # Citation 

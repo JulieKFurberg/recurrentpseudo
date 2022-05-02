@@ -56,6 +56,7 @@
 pseudo.geefit <- function(pseudodata, covar_names){
 
   # pseudodata <- pseudo_bladder_3d
+  #pseudodata <- pseudo_bladder_2d
   # covar_names <- "Z"
 
   # Binding variables locally
@@ -103,9 +104,8 @@ pseudo.geefit <- function(pseudodata, covar_names){
   if (pseudodata$dim == "threedim"){
     size <- 3
     # Subset - remove "surv"
-    pseudo_l <- subset(pseudo_l_o, esttype != "surv")
-    pseudo_l_o <- pseudo_l[order(pseudo_l$id, pseudo_l$esttype, pseudo_l$ts),]
-    pseudo_l_o2 <- pseudo_l_o
+    pseudo_l <- subset(pseudo_l, esttype != "surv")
+    pseudo_l_o2 <- pseudo_l[order(pseudo_l$id, pseudo_l$esttype, pseudo_l$ts),]
 
     # Fix covariate terms for analysis
     terms <- sapply(1:length(covar_names), function(i)  paste0(covar_names[i], ":esttype"))
@@ -113,7 +113,6 @@ pseudo.geefit <- function(pseudodata, covar_names){
     # Link function
     link <- c(rep("cloglog", ksel), rep("cloglog", ksel), rep("log", ksel))
   }
-
 
 
     # Fit model
@@ -124,17 +123,24 @@ pseudo.geefit <- function(pseudodata, covar_names){
       terms2 <- terms
     }
 
-    if (ksel > 1){
-      # Add response etc
-      a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1")) #formula(paste0("y ~ ", terms2, " - 1"))
-      a_terms
+    # Add response etc
+    if (pseudodata$dim %in% c("twodim", "threedim")){
+      if (ksel > 1){
+        a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1"))
+      }
+      if (ksel == 1){
+        a_terms <- formula(paste0("y ~ esttype + ", terms2, "- 1"))
+      }
     }
-    if (ksel == 1){
-      # Add response etc
-      a_terms <- formula(paste0("y ~ esttype + ", terms2, "- 1")) #formula(paste0("y ~ ", terms2, " - 1"))
-      a_terms
-    }
+    if (pseudodata$dim %in% c("onedim")){
+      if (ksel > 1){
+        a_terms <- formula(paste0("y ~ Ztime + ", terms2, "- 1"))
+      }
+      if (ksel == 1){
+        a_terms <- formula(paste0("y ~ ", terms2, "- 1"))
+      }
 
+    }
     # Running the model fit
     fit <- geese(formula = a_terms,
                    data = pseudo_l_o2,
