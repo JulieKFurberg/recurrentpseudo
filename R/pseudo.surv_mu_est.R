@@ -1,4 +1,4 @@
-#' Help function parsed inside pseudo.twodim()
+#' Help function parsed inside pseudo.onedim() and pseudo.twodim()
 #'
 #' @param tstart Start time - expecting counting process notation
 #' @param tstop Stop time - expecting counting process notation
@@ -13,6 +13,7 @@
 #'
 #' # Make a three level status variable
 #' bladder1$status3 <- ifelse(bladder1$status %in% c(2, 3), 2, bladder1$status)
+#' bladder1$status <- bladder1$status3
 #'
 #' # Add one extra day for the two patients with start=stop=0
 #' # subset(bladder1, stop <= start)
@@ -28,12 +29,12 @@
 #' head(bladdersub)
 #'
 #'
-#' # Estimate mu and cif1 and cif2 on data
+#' # Estimate mu and surv on data
 #' pseudo.surv_mu_est(inputdata = bladdersub,
-#'                        tstart = bladdersub$start,
-#'                        tstop = bladdersub$stop,
-#'                        status = bladdersub$status3,
-#'                        id = bladdersub$id)
+#'                    tstart = bladdersub$start,
+#'                    tstop = bladdersub$stop,
+#'                    status = bladdersub$status,
+#'                    id = bladdersub$id)
 
 
 
@@ -44,6 +45,10 @@ pseudo.surv_mu_est <- function(inputdata,
                                tstop,
                                status,
                                id){
+
+
+  # Binding variables locally
+  status <- NULL
 
   NAa_fit <- survfit(Surv(tstart, tstop, status == 1) ~ 1,
                      data = inputdata, id = id,

@@ -14,8 +14,12 @@ knitr::opts_chunk$set(
 # recurrentpseudo: An R package for analysing recurrent events in the presence of terminal events using pseudo-observations
 
 
-This package computes pseudo-observations for recurrent event data in the presence of terminal events. Three versions exist: One-dimensional, two-dimensional or three-dimensional pseudo-observations. 
+This package computes pseudo-observations for recurrent event data in the presence of terminal events. 
+Three versions exist: One-dimensional, two-dimensional or three-dimensional pseudo-observations. 
 
+Following the computation of pseudo-observations, the marginal mean function, survival probability and/or cumulative incidences can be modelled using generalised estimating equations.
+
+See Furberg et al. (*Bivariate pseudo-observations for recurrent event analysis with terminal events (2021)*) for technical details on the procedure.
 
 ## Notation 
 Let $D^*$ denote the survival time and let $N^*(t)$ denote the number of recurrent events by time $t$. 
@@ -28,7 +32,7 @@ We consider the marginal mean function, $\mu (t)$, given by
 $$ 
 \mu(t) = E(N^*(t)) = \int_0^t S(u^-) \, d R(u), \quad d R(t) = E(dN^*(t) \mid D^* \geq t)
 $$
-and the survival probability, $S(t)$ given by
+and the survival probability, $S(t)$, given by
 $$ 
 S(t) = P(D^*> t).
 $$ 
@@ -46,32 +50,27 @@ The following section serves as a fast introduction to pseudo-observations, whic
 
 For more detailed information, please see
 
-1. Andersen and Perme (_Pseudo-observations in survival analysis (2010)_) or 
++ Andersen and Perme (_Pseudo-observations in survival analysis (2010)_) or 
 
-2. Andersen, Klein and Rosthøj (_Generalised linear models for correlated pseudo-observations, with applications to multi-state models (2003)_)
++ Andersen, Klein and Rosthøj (_Generalised linear models for correlated pseudo-observations, with applications to multi-state models (2003)_)
 
 We wish to formulate a model for
 $$ 
 \theta = E(f(X))
 $$ 
-where $X=X_1, \ldots, X_n$ denotes a vector of survival times (or other survival data) for $n$ individuals and $f$ denotes some function. 
+where $X=X_1, \ldots, X_n$ denotes a vector of survival times (or other survival data) for $n$ individuals and $f$ denotes some function. An example would be $\theta = E(I(D^*>t)) = P(D^*>t)$. 
 
-An example would be $\theta = E(I(D^*>t)) = P(D^*>t)$. 
-
-Assume that a sufficiently nice estimator $\hat{\theta}$ of $\theta$ exists. 
-
-For a fixed time, $t \in [0, \tau]$, the pseudo-observation for the i'th individual at $t$ is given by 
+Assume that a sufficiently nice estimator $\hat{\theta}$ of $\theta$ exists. For a fixed time, $t \in [0, \tau]$, the pseudo-observation for the i'th individual at $t$ is given by 
 $$ 
 \hat{\theta}_i (t)= n \cdot \hat{\theta}(t) - (n-1) \cdot \hat{\theta}^{-i}(t)
 $$
 where $\hat{\theta}(t)$ denotes the estimate based on the total data set, and $\hat{\theta}^{-i}(t)$ denotes the estimate based on the same data set but omitting observations from individual i. 
 
-Since the survival times are subject to right-censoring, inference based on likelihood is adjusted to accommodate this. 
+Since the survival times are subject to right-censoring, standard inference on survival data is adjusted to accommodate this, e.g. in likelihood estimation. 
 
 
 However, since all subjects has a valid pseudo-observation, $\hat{\theta}_i (t)$, at one or more times, these can be used as an outcome variable in a generalised linear model. 
-
-Note, that this is regardless of the whether a subject is censored or died at time t. 
+Note, that this is regardless of the whether a subject is alive, censored or died at time t. 
 
 Assume that $g$ denotes a link function, then we wish to fit
 
@@ -81,11 +80,9 @@ $$
 Following, $f(X)$ is replaced by $\hat{\theta}_i (\cdot)$ in the model fit. 
 
 
-The model parameters, $\xi$, are estimated using generalised estimating equations, see Liang and Zeger (_Longitudinal data analysis using generalized linear models (1986)_. 
+The model parameters, $\xi$, are estimated using generalised estimating equations (GEE), see Liang and Zeger (_Longitudinal data analysis using generalized linear models (1986)_). 
 
-This can accomodate the fact that each individual can have several pseudo-observations if more than one time point is used in the computation. 
-
-
+The GEE procedure can accommodate the fact that each individual can have several (pseudo-)observations. 
 
 
 ## One-dimensional pseudo-observations 
@@ -97,19 +94,19 @@ where $\hat{S}(t)$ denotes the Kaplan-Meier estimator of $S(t)$ and $\hat{R}(t)$
 
 We assume that 
 $$
-\log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta^T Z
+\log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta^T Z.
 $$
 
 
 ## Two-dimensional pseudo-observations 
 The two-dimensional pseudo-observations model is based on the parameter $\theta = (\mu(t), S(t))$, which is estimated by
 $$
-\hat{\theta} = \left( \begin{matrix} \hat{\mu}(t) \\ \hat{S}(t) \end{matrix} \right)
+\hat{\theta} = \left( \begin{matrix} \hat{\mu}(t) \\ \hat{S}(t) \end{matrix} \right).
 $$ 
 
 We assume that 
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_0(t)\right) + {\gamma}^T {Z}  \end{matrix} \right)
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_0(t)\right) + {\gamma}^T {Z}  \end{matrix} \right).
 $$
 
 
@@ -140,11 +137,17 @@ require(recurrentpseudo)
 # Example - Bladder cancer data from survival package
 
 
-We consider the well-known bladder cancer data from the survival package.
+The functions in `recurrentpseudo`` will be exemplified using the well-known bladder cancer data from the survival package.
+This data set considers data from a clinical cancer trial conducted by the Veterans Administration Cooperative Urological Research Group (Byar: _The veterans administration study of chemoprophylaxis for recurrent stage I bladder tumours: comparisons of placebo, pyridoxine and topical thiotepa._(1980))
+Here, $118$ patients with stage I bladder cancer were randomised to receive placebo, pyridoxine or thiotepa. 
+After randomisation, information on occurrences of superficial bladder tumours and any deaths were collected. 
 
-We focus on the comparison between placebo and thiotepa.
+We focus on the comparison between placebo and thiotepa ($n=86$ in total). 
+We model recurrent bladder tumours, and adjust for death (cause 1: bladder cancer disease death, cause 2: other causes).
 
-We model recurrent bladder cancer (status = 1), and adjust for death (cause 1: bladder cancer disease death, cause 2: other causes).
+One-, two- and three-dimensional pseudo-observations are computed based on a single time point ($t=30$) months. 
+
+For the comparison between placebo and thiotepa on recurrent bladder tumours, the effect measure of interest is the mean ratio $\exp(\beta)$.
 
 ```{r cache = F}
 # Example: Bladder cancer data from survival package
@@ -173,7 +176,6 @@ We fit the univariate pseudo-observation model using the binary treatment indica
 $$
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta Z
 $$
-We focus on a single time point ($t=30$) in this computation. 
 
 One-dimensional pseudo-observations and GEE fit can be computed using the following code
 
@@ -209,6 +211,9 @@ sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
 rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
 ```
+
+Thus, the estimated mean ratio is $\exp(\hat{\beta}=$ `r exp(xi_diff_1d)` (standard error and confidence intervals can be found using the Delta method).
+
 
 Alternatively, the bivariate pseudo-observation model using the binary treatment indicator as covariate can be modelled, i.e. 
 $$
@@ -272,7 +277,7 @@ pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
                                      id = bladdersub$id,
                                      deathtype = bladdersub$deathtype,
                                      covar_names = "Z",
-                                     tk = c(30), #c(20, 30, 40)
+                                     tk = c(30), 
                                      data = bladdersub)
 head(pseudo_bladder_3d$outdata_long)
 
@@ -318,7 +323,7 @@ sigma_diff_3d
 
 We can compare the three model fits. Note, that the $\mu$ components match each other. 
 ```{r eval = T}
-# //----------------------- Compare - should match for mu elements ---------------------------//
+# Compare - should match for mu elements 
 xi_diff_1d
 xi_diff_2d
 xi_diff_3d
@@ -330,14 +335,12 @@ sigma_diff_3d
 
 
 ### More covariates
-Assume that we wish to add an extra continuous baseline covariate to the model fit. 
+Assume that we wish to add an extra baseline covariates to the model fit. For the sake of illustration, we have simulated a continuous covariate, $Z_2$, and a categorical covariate, $Z_3$. The covariate $Z_1$ corresponds to the binary treatment covariate ($Z=1$ is thiotepa and $Z=0$ is placebo).
 
-We have a binary covariate, $Z_1$, a continuous covariate, $Z_2$, and a categorical covariate, $Z_3$.
-
-For the one-dimensional model for $\mu$
+For the one-dimensional model for $\mu$ it holds that,
 
 $$
-\log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta_1 Z_1 + \beta_2 Z_2 + \beta_3 Z_3
+\log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta_1 Z_1 + \beta_2 Z_2 + \beta_3 Z_3.
 $$
 
 ```{r eval = T}
@@ -347,6 +350,8 @@ require(dplyr)
 # A binary variable, Z1_
 # A continuous variable, Z2_
 # A categorical variable, Z3_
+set.seed(0308)
+
 bladdersub <- as.data.frame(
   bladdersub %>% group_by(id) %>% 
   mutate(Z1_ = Z,
@@ -376,14 +381,14 @@ fit1$sigma
 fit1$xi[4]
 ```
 
-Or for two-dimensional pseudo-observations, 
+Or for two-dimensional pseudo-observations, it holds that
 
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + \beta_1 {Z_1} + \beta_2 {Z_2} + \beta_3 {Z_3} \\ \log \left(\Lambda_0(t)\right) + {\gamma_1} Z_1 + {\gamma_2} Z_2 + {\gamma_3} Z_3 \end{matrix} \right)
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + \beta_1 {Z_1} + \beta_2 {Z_2} + \beta_3 {Z_3} \\ \log \left(\Lambda_0(t)\right) + {\gamma_1} Z_1 + {\gamma_2} Z_2 + {\gamma_3} Z_3 \end{matrix} \right).
 $$
-Or for three-dimensional pseudo-observations, 
+Or for three-dimensional pseudo-observations, it holds that
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right)
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
 $$
 
 ```{r eval = T}
@@ -427,6 +432,134 @@ fit3$xi[4]
 ```
 
 ## Plots 
+
+Non-parametric estimates of $\mu$ and $S$ based on data
+```{r}
+require(ggplot2)
+require(gridExtra)
+
+# Re-level 
+bladdersub$status <- bladdersub$status3
+
+# Subset and estimate per group
+Z1dat <- subset(bladdersub, Z == 'thiotepa')
+Z0dat <- subset(bladdersub, Z == 'placebo')
+
+estimates_treated <- pseudo.surv_mu_est(inputdata = Z1dat,
+                                        tstart = Z1dat$start, 
+                                        tstop = Z1dat$stop,
+                                        status = Z1dat$status,
+                                        id = Z1dat$id)
+estimates_nontreated <- pseudo.surv_mu_est(inputdata = Z0dat,
+                                           tstart = Z0dat$start, 
+                                           tstop = Z0dat$stop,
+                                           status = Z0dat$status,
+                                           id = Z0dat$id)
+
+pdata <- data.frame(mu = c(estimates_treated$mu$mu, estimates_nontreated$mu$mu), 
+                    time = c(estimates_treated$mu$time, estimates_nontreated$mu$time), 
+                    surv = c(estimates_treated$surv$surv, estimates_nontreated$surv$surv), 
+                    treat = c(rep("Placebo", length(estimates_treated$mu$mu)),
+                              rep("Thiotepa", length(estimates_nontreated$mu$mu))))
+
+# Mu 
+bladmu <- ggplot(aes(x = time, y = mu, linetype = treat), data = pdata) + 
+  geom_step(size = 1) + 
+  scale_linetype_discrete("Treatment") + 
+  xlab("Time since randomisation (months)") + 
+  ylab(expression(hat(mu)(t))) + 
+  theme_bw() +
+  theme(legend.position="bottom", 
+        text = element_text(size=15)) +
+    guides(color=guide_legend(nrow=2,byrow=TRUE))
+# bladmu
+
+# Surv
+bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) + 
+  geom_step(size = 1) + 
+  scale_linetype_discrete("Treatment") + 
+  xlab("Time since randomisation (months)") + 
+  ylab(expression(hat(S)(t))) + 
+  theme_bw() +
+    theme(legend.position="bottom", 
+        text = element_text(size=15)) +
+    guides(color=guide_legend(nrow=2,byrow=TRUE))
+# bladsurv
+
+blad_both <- grid.arrange(bladmu, bladsurv, ncol = 2)
+blad_both
+
+```
+
+
+Let's make a plot displaying the pseudo-observations of $\mu$ for a given individual over time
+```{r}
+pseudo_allt <- pseudo.twodim(tstart = bladdersub$start,
+                             tstop = bladdersub$stop,
+                             status = bladdersub$status3,
+                             id = bladdersub$id,
+                             covar_names = "Z",
+                             tk = c(1:max(bladdersub$stop)),
+                             data = bladdersub)
+
+# pseudo_allt
+
+# Four types of subjects
+#subset(bladdersub, id == 29)
+#subset(bladdersub, id == 10)
+#subset(bladdersub, id == 11)
+#subset(bladdersub, id == 12)
+
+
+# Restricting attention to these subjects
+id29 <- subset(pseudo_allt$outdata, id == 29)
+id10 <- subset(pseudo_allt$outdata, id == 10)
+id11 <- subset(pseudo_allt$outdata, id == 11)
+id12 <- subset(pseudo_allt$outdata, id == 12)
+
+# Plot 
+pseudo_id29 <- ggplot(aes(x = ts, y = mu), data = id29) + 
+              geom_step(size = 1) + 
+              xlab("Time since randomisation (months)") + 
+              ylab(expression(hat(mu)[i](t))) + theme_bw() + 
+              ggtitle("Subject ID: 29") + ylim(c(-1.1,3.6))
+  
+# pseudo_id29
+
+pseudo_id10 <- ggplot(aes(x = ts, y = mu), data = id10) + 
+              geom_step(size = 1) + 
+              xlab("Time since randomisation (months)") + 
+              ylab(expression(hat(mu)[i](t))) + theme_bw() + 
+              ggtitle("Subject ID: 10") + ylim(c(-1.1,3.6))
+  
+# pseudo_id10
+
+pseudo_id11 <- ggplot(aes(x = ts, y = mu), data = id11) + 
+              geom_step(size = 1) + 
+              xlab("Time since randomisation (months)") + 
+              ylab(expression(hat(mu)[i](t))) + theme_bw() + 
+              ggtitle("Subject ID: 11") + ylim(c(-1.1,3.6))
+  
+# pseudo_id11
+
+pseudo_id12 <- ggplot(aes(x = ts, y = mu), data = id12) + 
+              geom_step(size = 1) + 
+              xlab("Time since randomisation (months)") + 
+              ylab(expression(hat(mu)[i](t))) + 
+              theme_bw() + 
+              ggtitle("Subject ID: 12") + ylim(c(-1.1,3.6))
+  
+# pseudo_id12
+
+# Display all four together
+allp <- grid.arrange(pseudo_id10, pseudo_id12, 
+                     pseudo_id11, pseudo_id29, 
+                     ncol = 2)
+
+allp
+
+
+```
 
 # Citation 
 To cite the `recurrentpseudo` package please use the following references,

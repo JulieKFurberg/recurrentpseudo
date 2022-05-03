@@ -44,7 +44,7 @@
 #'                                      id = bladdersub$id,
 #'                                      deathtype = bladdersub$deathtype,
 #'                                      covar_names = "Z",
-#'                                      tk = c(20, 30, 40),
+#'                                      tk = c(30),
 #'                                      data = bladdersub)
 #' pseudo_bladder_3d
 #'

@@ -36,7 +36,7 @@
 #'                                    status = bladdersub$status3,
 #'                                    id = bladdersub$id,
 #'                                    covar_names = "Z",
-#'                                    tk = c(20, 30, 40),
+#'                                    tk = c(30),
 #'                                    data = bladdersub)
 #' head(pseudo_bladder_2d$outdata)
 #'
@@ -115,7 +115,6 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
 
   # Add covariates etc - need to make a smaller dataset with first observations
   # (baseline covariates - should be unchanged)
-  #first <- as.data.frame(indata %>% group_by(id) %>% filter(dplyr::row_number(id) == 1))
   first <- as.data.frame(indata %>% group_by(id) %>% slice(1) %>% ungroup())
 
   outdata_xZ <- left_join(x = outdata,
@@ -141,7 +140,6 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
   outdata_long_ord_xZ <- left_join(x = outdata_long_ord,
                                    y = first[,c("id", covar_names)],
                                    by = c("id"  = "id"))
-
 
 
   list(outdata_long = outdata_long_ord_xZ,

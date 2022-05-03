@@ -37,7 +37,7 @@
 #'                                    status = bladdersub$status3,
 #'                                    id = bladdersub$id,
 #'                                    covar_names = "Z",
-#'                                    tk = c(20, 30, 40),
+#'                                    tk = c(30),
 #'                                    data = bladdersub)
 #' head(pseudo_bladder_1d$outdata)
 #'
@@ -71,11 +71,8 @@ pseudo.onedim <- function(tstart, tstop, status, covar_names, id, tk, data){
                             id = indata$id,
                             status = indata$status)
   muest <- est$mu
-  #survest <- est$surv
 
   mu_ts <- sapply(ts, function(x) muest[which.max(muest$time[muest$time <= x]), "mu"])
-  #surv_ts <- sapply(ts, function(x) survest[which.max(survest$time[survest$time <= x]), "surv"])
-
 
   # Compute the leave-one out estimates
   res_i <- list()
@@ -94,17 +91,14 @@ pseudo.onedim <- function(tstart, tstop, status, covar_names, id, tk, data){
     survesti <- esti$surv
 
     mu_minus_i_ts  <- sapply(ts,  function(x) muesti[which.max(muesti$time[muesti$time <= x]), "mu"])
-    #surv_minus_i_ts  <- sapply(ts,  function(x) survesti[which.max(survesti$time[survesti$time <= x]), "surv"])
 
     res_i[[i]] <- list("mu_hat_ps"  = n * mu_ts - (n - 1) * mu_minus_i_ts,
-                       #"surv_hat_ps"  = n * surv_ts - (n - 1) * surv_minus_i_ts,
                        id = idi,
                        ts = ts)
   }
   tmp <- data.frame(do.call("rbind", res_i))
 
   outdata <- data.frame(mu = unlist(tmp$mu_hat_ps),
-                        #surv = unlist(tmp$surv_hat_ps),
                         k = rep(k),
                         ts = unlist(tmp$ts),
                         id = rep(unlist(tmp$id), each = k)
@@ -124,11 +118,9 @@ pseudo.onedim <- function(tstart, tstop, status, covar_names, id, tk, data){
   # Make it into long format
   outdata_long <- reshape(outdata,
                           varying = c("mu"),
-                          #varying = c("mu", "surv"),
                           v.names = "y",
                           timevar = "esttype",
                           times = c("mu"),
-                          #times = c("mu", "surv"),
                           idvar = c("id", "ts"),
                           new.row.names = 1:(1*k*n),
                           direction = "long")

@@ -36,7 +36,7 @@
 #'                                    status = bladdersub$status3,
 #'                                    id = bladdersub$id,
 #'                                    covar_names = "Z",
-#'                                    tk = c(20, 30, 40),
+#'                                    tk = c(30),
 #'                                    data = bladdersub)
 #'
 #' # Data in wide format
@@ -55,13 +55,6 @@
 #' @export
 pseudo.geefit <- function(pseudodata, covar_names){
 
-  # pseudodata <- pseudo_bladder_3d
-  # pseudodata <- pseudo_bladder_2d
-  # covar_names <- "Z"
-
-  # pseudodata <- pseudo_bladder_1d
-  # covar_names <- c("Z1_", "Z2_")
-
   # Binding variables locally
   id <- esttype <- ts <- NULL
 
@@ -74,7 +67,6 @@ pseudo.geefit <- function(pseudodata, covar_names){
 
   # Make time point variable
   pseudo_l_o$Ztime <- as.factor(pseudo_l_o$ts)
-  #levels(pseudo_l_o$Ztime) <- 1:ksel
 
   if (pseudodata$dim == "onedim"){
     size <- 1
@@ -209,7 +201,6 @@ pseudo.geefit <- function(pseudodata, covar_names){
   if (pseudodata$dim == "threedim"){
       # Save estimates and
       # Change to get the right parametrization
-
       ## For mu, in order of covariates
       xi_names <- names(fit$beta)
 
