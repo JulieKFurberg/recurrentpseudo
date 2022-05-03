@@ -257,7 +257,7 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
 #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpauBnXA\remotes482c2e567a0e\JulieKFurberg-recurrentpseudo-2ac8609/DESCRIPTION' ... OK
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpG6qqN1\remotes18bc2eab7b5e\JulieKFurberg-recurrentpseudo-99adf13/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -274,6 +274,9 @@ We consider the well-known bladder cancer data from the survival
 package.
 
 We focus on the comparison between placebo and thiotepa.
+
+We model recurrent bladder cancer (status = 1), and adjust for death
+(cause 1: bladder cancer disease death, cause 2: other causes).
 
 ``` r
 # Example: Bladder cancer data from survival package
@@ -311,8 +314,8 @@ head(bladdersub)
 #> 6 placebo
 ```
 
-One-dimensional pseudo-observations can be computed using the following
-code
+One-dimensional pseudo-observations and GEE fit can be computed using
+the following code
 
 ``` r
 # Pseudo observations at t = 30
@@ -347,28 +350,28 @@ fit_bladder_1d
 #> Zthiotepa 0.00000000 0.04897824
 
 # Treatment differences
-xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2] - fit_bladder_1d$xi[1]), ncol = 1)
+xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2]), ncol = 1)
 
 mslabels <- c("treat, mu")
 rownames(xi_diff_1d) <- mslabels
 colnames(xi_diff_1d) <- ""
 xi_diff_1d
-#>                   
-#> treat, mu -0.46389
+#>                     
+#> treat, mu 0.04648551
 
 # Variance matrix for differences
-sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[1,1] + fit_bladder_1d$sigma[2,2]),
+sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
                           ncol = 1, nrow = 1,
                           byrow = T)
 
 rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
 #>            treat, mu
-#> treat, mu 0.07544189
+#> treat, mu 0.04897824
 ```
 
-Two-dimensional pseudo-observations can be computed using the following
-code
+Two-dimensional pseudo-observations and GEE fit can be computed using
+the following code
 
 ``` r
 # Pseudo observations at t = 30
@@ -439,8 +442,8 @@ sigma_diff_2d
 #> treat, surv -0.001491879  0.260915569
 ```
 
-Three-dimensional pseudo-observations can be computed using the
-following code
+Three-dimensional pseudo-observations and GEE fit can be computed using
+the following code
 
 ``` r
 # Add deathtype variable to bladder data
@@ -543,8 +546,8 @@ sigma_diff_3d
 ``` r
 # //----------------------- Compare - should match for mu elements ---------------------------//
 xi_diff_1d
-#>                   
-#> treat, mu -0.46389
+#>                     
+#> treat, mu 0.04648551
 xi_diff_2d
 #>                        
 #> treat, mu   -0.46388999
@@ -557,7 +560,7 @@ xi_diff_3d
 
 sigma_diff_1d
 #>            treat, mu
-#> treat, mu 0.07544189
+#> treat, mu 0.04897824
 sigma_diff_2d
 #>                treat, mu  treat, surv
 #> treat, mu    0.075441889 -0.001491879
@@ -590,17 +593,17 @@ fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 
 fit1$xi
 #>                        
-#> Z1_placebo   0.36748600
-#> Z1_thiotepa -0.13781223
-#> Z2_          0.05211872
+#> Z1_placebo   0.73935846
+#> Z1_thiotepa  0.27885125
+#> Z2_         -0.06948985
 fit1$sigma
-#>              Z1_placebo Z1_thiotepa         Z2_
-#> Z1_placebo   0.17176970  0.17517720 -0.04898908
-#> Z1_thiotepa  0.17517720  0.25901697 -0.05882843
-#> Z2_         -0.04898908 -0.05882843  0.01642509
+#>             Z1_placebo Z1_thiotepa         Z2_
+#> Z1_placebo   0.1354816  0.12354321 -0.03675550
+#> Z1_thiotepa  0.1235432  0.18324638 -0.04085377
+#> Z2_         -0.0367555 -0.04085377  0.01226271
 
 fit1$xi[1] - fit1$xi[2]
-#> [1] 0.5052982
+#> [1] 0.4605072
 ```
 
 ``` r
@@ -618,31 +621,31 @@ fit2 <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
                       covar_names = c("Z1_", "Z2_"))
 
 fit2$xi
-#>                                    
-#> esttypemu                0.28067527
-#> esttypemu:Z1_thiotepa   -0.10717117
-#> esttypemu:Z2_            0.03129312
-#> esttypesurv             -0.46083104
-#> esttypesurv:Z1_thiotepa -3.81123344
-#> esttypesurv:Z2_         -0.10792767
+#>                                   
+#> esttypemu               -0.3533161
+#> esttypemu:Z1_thiotepa   -0.0812636
+#> esttypemu:Z2_            0.2038928
+#> esttypesurv             -1.5984652
+#> esttypesurv:Z1_thiotepa -2.7570430
+#> esttypesurv:Z2_          0.2538943
 fit2$sigma
 #>                            esttypemu esttypemu:Z1_thiotepa esttypemu:Z2_
-#> esttypemu                0.121042088          -0.019306352  -0.032501707
-#> esttypemu:Z1_thiotepa   -0.019306352           0.078064636  -0.001485717
-#> esttypemu:Z2_           -0.032501707          -0.001485717   0.010875870
-#> esttypesurv             -0.020252511           0.071254599   0.003117402
-#> esttypesurv:Z1_thiotepa -0.003781821           0.372625258   0.004599672
-#> esttypesurv:Z2_          0.007360883          -0.020782498  -0.002385990
+#> esttypemu                0.256235849         -0.0177640154 -0.0604459942
+#> esttypemu:Z1_thiotepa   -0.017764015          0.0701485298 -0.0009778163
+#> esttypemu:Z2_           -0.060445994         -0.0009778163  0.0155841470
+#> esttypesurv             -0.035858405          0.3597988156  0.0078122037
+#> esttypesurv:Z1_thiotepa  0.015047805          0.0987541130 -0.0019621203
+#> esttypesurv:Z2_          0.003901068         -0.0900140953 -0.0010826504
 #>                          esttypesurv esttypesurv:Z1_thiotepa esttypesurv:Z2_
-#> esttypemu               -0.020252511              0.07125460     0.003117402
-#> esttypemu:Z1_thiotepa   -0.003781821              0.37262526     0.004599672
-#> esttypemu:Z2_            0.007360883             -0.02078250    -0.002385990
-#> esttypesurv              0.400610260              0.03742851    -0.125061983
-#> esttypesurv:Z1_thiotepa  0.037428509             22.65568350    -0.036032594
-#> esttypesurv:Z2_         -0.125061983             -0.03603259     0.045621705
+#> esttypemu               -0.035858405              0.35979882     0.007812204
+#> esttypemu:Z1_thiotepa    0.015047805              0.09875411    -0.001962120
+#> esttypemu:Z2_            0.003901068             -0.09001410    -0.001082650
+#> esttypesurv              0.902021026             -0.22524768    -0.253044984
+#> esttypesurv:Z1_thiotepa -0.225247676              4.86189308     0.046873237
+#> esttypesurv:Z2_         -0.253044984              0.04687324     0.075959199
 
 fit2$xi[1] + fit2$xi[2]
-#> [1] 0.1735041
+#> [1] -0.4345797
 
 ## Three-dim
 # Treatment, binary variable:
@@ -659,50 +662,50 @@ fit3 <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
 
 fit3$xi
 #>                                      
-#> esttypemu                5.279682e-01
-#> esttypemu:Z1_thiotepa   -3.210510e-01
-#> esttypemu:Z2_           -2.193935e-02
-#> esttypecif1             -7.493487e+00
-#> esttypecif1:Z1_thiotepa  2.891015e+00
-#> esttypecif1:Z2_          5.018907e-01
-#> esttypecif2              1.430318e+18
-#> esttypecif2:Z1_thiotepa  7.124714e+15
-#> esttypecif2:Z2_         -2.331685e+15
+#> esttypemu                2.336261e-01
+#> esttypemu:Z1_thiotepa   -3.273070e-01
+#> esttypemu:Z2_            6.595601e-02
+#> esttypecif1             -6.199803e+00
+#> esttypecif1:Z1_thiotepa  3.098066e+00
+#> esttypecif1:Z2_          7.751374e-02
+#> esttypecif2              1.418249e+18
+#> esttypecif2:Z1_thiotepa  6.566205e+15
+#> esttypecif2:Z2_          1.768843e+15
 fit3$sigma
 #>                             esttypemu esttypemu:Z1_thiotepa esttypemu:Z2_
-#> esttypemu                1.510203e-01         -4.105274e-03 -4.473755e-02
-#> esttypemu:Z1_thiotepa   -4.105274e-03          8.159973e-02 -7.874587e-03
-#> esttypemu:Z2_           -4.473755e-02         -7.874587e-03  1.601995e-02
-#> esttypecif1             -4.293921e-02          1.234112e-02  4.678279e-03
-#> esttypecif1:Z1_thiotepa -2.401249e-02          1.202641e-02  6.858577e-03
-#> esttypecif1:Z2_          9.882415e-03         -2.417334e-03 -9.065527e-04
-#> esttypecif2              8.733383e+13          3.394446e+14 -8.198234e+13
-#> esttypecif2:Z1_thiotepa  3.446456e+14         -1.900042e+14 -8.890682e+13
-#> esttypecif2:Z2_          8.514285e+13         -2.416817e+13 -2.543097e+13
+#> esttypemu                2.145409e-01         -6.440421e-03 -6.205970e-02
+#> esttypemu:Z1_thiotepa   -6.440421e-03          7.614841e-02 -4.897585e-03
+#> esttypemu:Z2_           -6.205970e-02         -4.897585e-03  1.994574e-02
+#> esttypecif1             -1.193254e-01         -8.197067e-03  3.007743e-02
+#> esttypecif1:Z1_thiotepa  7.447283e-02          1.162312e-02 -1.833435e-02
+#> esttypecif1:Z2_          3.006996e-02          3.890128e-03 -8.133111e-03
+#> esttypecif2              8.168835e+14         -2.731553e+14 -2.237837e+14
+#> esttypecif2:Z1_thiotepa -5.368039e+14         -1.715769e+14  1.968011e+14
+#> esttypecif2:Z2_         -2.551063e+14          1.321460e+14  6.321634e+13
 #>                           esttypecif1 esttypecif1:Z1_thiotepa esttypecif1:Z2_
-#> esttypemu               -4.293921e-02            1.234112e-02    4.678279e-03
-#> esttypemu:Z1_thiotepa   -2.401249e-02            1.202641e-02    6.858577e-03
-#> esttypemu:Z2_            9.882415e-03           -2.417334e-03   -9.065527e-04
-#> esttypecif1              6.829797e+00           -5.185923e-01   -1.627431e+00
-#> esttypecif1:Z1_thiotepa -5.185923e-01            9.469589e-01    3.309061e-02
-#> esttypecif1:Z2_         -1.627431e+00            3.309061e-02    4.111175e-01
-#> esttypecif2             -1.382285e+15           -2.282674e+14    5.109791e+14
-#> esttypecif2:Z1_thiotepa  2.626469e+15            5.787112e+14   -9.701247e+14
-#> esttypecif2:Z2_          1.634798e+14            2.553335e+13   -6.019635e+13
+#> esttypemu               -1.193254e-01           -8.197067e-03    3.007743e-02
+#> esttypemu:Z1_thiotepa    7.447283e-02            1.162312e-02   -1.833435e-02
+#> esttypemu:Z2_            3.006996e-02            3.890128e-03   -8.133111e-03
+#> esttypecif1              4.721972e+00           -8.525528e-01   -1.161607e+00
+#> esttypecif1:Z1_thiotepa -8.525528e-01            1.055503e+00    1.078918e-01
+#> esttypecif1:Z2_         -1.161607e+00            1.078918e-01    3.163248e-01
+#> esttypecif2              1.601111e+13            2.519785e+13   -8.190328e+12
+#> esttypecif2:Z1_thiotepa -3.480475e+15            4.393125e+14    1.070166e+15
+#> esttypecif2:Z2_          5.531245e+14           -5.591012e+13   -1.689369e+14
 #>                           esttypecif2 esttypecif2:Z1_thiotepa esttypecif2:Z2_
-#> esttypemu                8.733383e+13            3.394446e+14   -8.198234e+13
-#> esttypemu:Z1_thiotepa    3.446456e+14           -1.900042e+14   -8.890682e+13
-#> esttypemu:Z2_            8.514285e+13           -2.416817e+13   -2.543097e+13
-#> esttypecif1             -1.382285e+15           -2.282674e+14    5.109791e+14
-#> esttypecif1:Z1_thiotepa  2.626469e+15            5.787112e+14   -9.701247e+14
-#> esttypecif1:Z2_          1.634798e+14            2.553335e+13   -6.019635e+13
-#> esttypecif2              3.601137e+32           -1.818269e+31   -1.078705e+32
-#> esttypecif2:Z1_thiotepa -1.818269e+31            1.620793e+32   -1.822026e+31
-#> esttypecif2:Z2_         -1.078705e+32           -1.822026e+31    3.977844e+31
+#> esttypemu                8.168835e+14           -2.731553e+14   -2.237837e+14
+#> esttypemu:Z1_thiotepa   -5.368039e+14           -1.715769e+14    1.968011e+14
+#> esttypemu:Z2_           -2.551063e+14            1.321460e+14    6.321634e+13
+#> esttypecif1              1.601111e+13            2.519785e+13   -8.190328e+12
+#> esttypecif1:Z1_thiotepa -3.480475e+15            4.393125e+14    1.070166e+15
+#> esttypecif1:Z2_          5.531245e+14           -5.591012e+13   -1.689369e+14
+#> esttypecif2              4.171157e+32           -9.834134e+31   -1.075821e+32
+#> esttypecif2:Z1_thiotepa -9.834134e+31            1.564390e+32    9.464532e+30
+#> esttypecif2:Z2_         -1.075821e+32            9.464532e+30    3.311337e+31
 
 
 fit3$xi[1] + fit3$xi[2]
-#> [1] 0.2069172
+#> [1] -0.09368089
 ```
 
 # Citation

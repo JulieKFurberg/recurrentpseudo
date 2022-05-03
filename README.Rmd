@@ -142,7 +142,9 @@ require(recurrentpseudo)
 
 We consider the well-known bladder cancer data from the survival package.
 
-We focus on the comparison between placebo and thiotepa. 
+We focus on the comparison between placebo and thiotepa.
+
+We model recurrent bladder cancer (status = 1), and adjust for death (cause 1: bladder cancer disease death, cause 2: other causes).
 
 ```{r cache = F}
 # Example: Bladder cancer data from survival package
@@ -167,7 +169,7 @@ head(bladdersub)
 ```
 
 
-One-dimensional pseudo-observations can be computed using the following code
+One-dimensional pseudo-observations and GEE fit can be computed using the following code
 
 ```{r cache = F}
 # Pseudo observations at t = 30
@@ -186,7 +188,7 @@ fit_bladder_1d <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 fit_bladder_1d
 
 # Treatment differences
-xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2] - fit_bladder_1d$xi[1]), ncol = 1)
+xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2]), ncol = 1)
 
 mslabels <- c("treat, mu")
 rownames(xi_diff_1d) <- mslabels
@@ -194,7 +196,7 @@ colnames(xi_diff_1d) <- ""
 xi_diff_1d
 
 # Variance matrix for differences
-sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[1,1] + fit_bladder_1d$sigma[2,2]),
+sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
                           ncol = 1, nrow = 1,
                           byrow = T)
 
@@ -204,7 +206,7 @@ sigma_diff_1d
 
 
 
-Two-dimensional pseudo-observations can be computed using the following code
+Two-dimensional pseudo-observations and GEE fit can be computed using the following code
 
 ```{r cache = F}
 # Pseudo observations at t = 30
@@ -244,7 +246,7 @@ rownames(sigma_diff_2d) <- colnames(sigma_diff_2d) <- mslabels
 sigma_diff_2d
 ```
 
-Three-dimensional pseudo-observations can be computed using the following code
+Three-dimensional pseudo-observations and GEE fit can be computed using the following code
 
 ```{r eval = T}
 # Add deathtype variable to bladder data
