@@ -13,8 +13,6 @@ knitr::opts_chunk$set(
 
 # recurrentpseudo: An R package for analysing recurrent events in the presence of terminal events using pseudo-observations
 
-<!-- badges: start -->
-<!-- badges: end -->
 
 This package computes pseudo-observations for recurrent event data in the presence of terminal events. Three versions exist: One-dimensional, two-dimensional or three-dimensional pseudo-observations. 
 
@@ -46,9 +44,11 @@ where $\Delta = \lbrace 1, 2 \rbrace$ represents a cause-of-death indicator.
 
 The following section serves as a fast introduction to pseudo-observations, which the methods of this package is based on. 
 
-For more detailed information, please see 
-+ Andersen and Perme (_Pseudo-observations in survival analysis (2010)_) or 
-+ Andersen, Klein and Rosthøj (_Generalised linear models for correlated pseudo-observations, with applications to multi-state models (2003)_)
+For more detailed information, please see
+
+1. Andersen and Perme (_Pseudo-observations in survival analysis (2010)_) or 
+
+2. Andersen, Klein and Rosthøj (_Generalised linear models for correlated pseudo-observations, with applications to multi-state models (2003)_)
 
 We wish to formulate a model for
 $$ 
@@ -122,7 +122,7 @@ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen estimates of the 
 
 We assume that 
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{01}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{02}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right)
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right)
 $$
 
 # Install package from GitHub
@@ -169,6 +169,12 @@ head(bladdersub)
 ```
 
 
+We fit the univariate pseudo-observation model using the binary treatment indicator as covariate, i.e. we model
+$$
+\log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta Z
+$$
+We focus on a single time point ($t=30$) in this computation. 
+
 One-dimensional pseudo-observations and GEE fit can be computed using the following code
 
 ```{r cache = F}
@@ -204,7 +210,10 @@ rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
 ```
 
-
+Alternatively, the bivariate pseudo-observation model using the binary treatment indicator as covariate can be modelled, i.e. 
+$$
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) = \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta} {Z} \\ \log \left(\Lambda_0(t)\right) + {\gamma} {Z}  \end{matrix} \right)
+$$
 
 Two-dimensional pseudo-observations and GEE fit can be computed using the following code
 
@@ -245,6 +254,8 @@ sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[2,2],
 rownames(sigma_diff_2d) <- colnames(sigma_diff_2d) <- mslabels
 sigma_diff_2d
 ```
+
+Finally, one could fit the three-dimensional pseudo-observation model to the bladder cancer data. 
 
 Three-dimensional pseudo-observations and GEE fit can be computed using the following code
 
@@ -304,6 +315,8 @@ sigma_diff_3d
 ```
 
 
+
+We can compare the three model fits. Note, that the $\mu$ components match each other. 
 ```{r eval = T}
 # //----------------------- Compare - should match for mu elements ---------------------------//
 xi_diff_1d
@@ -316,69 +329,104 @@ sigma_diff_3d
 ```
 
 
+### More covariates
+Assume that we wish to add an extra continuous baseline covariate to the model fit. 
+
+We have a binary covariate, $Z_1$, a continuous covariate, $Z_2$, and a categorical covariate, $Z_3$.
+
+For the one-dimensional model for $\mu$
+
+$$
+\log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta_1 Z_1 + \beta_2 Z_2 + \beta_3 Z_3
+$$
+
 ```{r eval = T}
-# if more than a binary treat
+require(dplyr)
 
 ## One-dim
-# Treatment, binary variable:
-pseudo_bladder_1d$outdata_long$Z1_ <- as.factor(pseudo_bladder_1d$outdata_long$Z)
+# A binary variable, Z1_
+# A continuous variable, Z2_
+# A categorical variable, Z3_
+bladdersub <- as.data.frame(
+  bladdersub %>% group_by(id) %>% 
+  mutate(Z1_ = Z,
+         Z2_ = rnorm(1, mean = 3, sd = 1),
+         Z3_ = sample(x = c("A", "B", "C"), 
+                      size = 1, replace = TRUE, 
+                      prob = c(1/4, 1/2, 1/4))
+         ))
+# head(bladdersub, 20)
 
-# A continuous variable
-pseudo_bladder_1d$outdata_long$Z2_ <- rnorm(nrow(pseudo_bladder_1d$outdata_long), mean = 3, sd = 1)
+# Make pseudo obs at more timepoints (more data)
+# Pseudo observations at t = 20, 30, 40
+pseudo_bladder_1d_3t <- pseudo.onedim(tstart = bladdersub$start,
+                                      tstop = bladdersub$stop,
+                                      status = bladdersub$status3,
+                                      id = bladdersub$id,
+                                      covar_names = c("Z1_", "Z2_", "Z3_"),
+                                      tk = c(20, 30, 40),
+                                      data = bladdersub)
 
-# A categorical variable
-pseudo_bladder_1d$outdata_long$Z3_ <- sample(x = c("A", "B", "C"), 
-                                 size = nrow(pseudo_bladder_1d$outdata_long), 
-                                 replace = TRUE, 
-                                 prob = c(1/4, 1/2, 1/4))
-
-fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d, 
-                      covar_names = c("Z1_", "Z2_"))
+fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d_3t, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
 
 fit1$xi
 fit1$sigma
 
-fit1$xi[1] - fit1$xi[2]
+fit1$xi[4]
 ```
+
+Or for two-dimensional pseudo-observations, 
+
+$$
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + \beta_1 {Z_1} + \beta_2 {Z_2} + \beta_3 {Z_3} \\ \log \left(\Lambda_0(t)\right) + {\gamma_1} Z_1 + {\gamma_2} Z_2 + {\gamma_3} Z_3 \end{matrix} \right)
+$$
+Or for three-dimensional pseudo-observations, 
+$$
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right)
+$$
 
 ```{r eval = T}
 ## Two-dim
-# Treatment, binary variable:
-pseudo_bladder_2d$outdata_long$Z1_ <- pseudo_bladder_1d$outdata_long$Z1_ 
+# Pseudo observations at t = 20, 30, 40
+pseudo_bladder_2d_3t <- pseudo.twodim(tstart = bladdersub$start,
+                                      tstop = bladdersub$stop,
+                                      status = bladdersub$status3,
+                                      id = bladdersub$id,
+                                      covar_names = c("Z1_", "Z2_", "Z3_"),
+                                      tk = c(20, 30, 40),
+                                      data = bladdersub)
 
-# A continuous variable
-pseudo_bladder_2d$outdata_long$Z2_ <- pseudo_bladder_1d$outdata_long$Z2_ 
+fit2 <- pseudo.geefit(pseudodata = pseudo_bladder_2d_3t, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
 
-# A categorical variable
-pseudo_bladder_2d$outdata_long$Z3_ <- pseudo_bladder_1d$outdata_long$Z3_
+# fit2$xi
+# fit2$sigma
 
-fit2 <- pseudo.geefit(pseudodata = pseudo_bladder_2d, 
-                      covar_names = c("Z1_", "Z2_"))
-
-fit2$xi
-fit2$sigma
-
-fit2$xi[1] + fit2$xi[2]
 
 ## Three-dim
-# Treatment, binary variable:
-pseudo_bladder_3d$outdata_long$Z1_ <- pseudo_bladder_1d$outdata_long$Z1_ 
+pseudo_bladder_3d_3t <- pseudo.threedim(tstart = bladdersub$start,
+                                        tstop = bladdersub$stop,
+                                        status = bladdersub$status3,
+                                        id = bladdersub$id,
+                                        covar_names = c("Z1_", "Z2_", "Z3_"),
+                                        deathtype = bladdersub$deathtype,
+                                        tk = c(20, 30, 40),
+                                        data = bladdersub)
 
-# A continuous variable
-pseudo_bladder_3d$outdata_long$Z2_ <- pseudo_bladder_1d$outdata_long$Z2_ 
+fit3 <- pseudo.geefit(pseudodata = pseudo_bladder_3d_3t, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
 
-# A categorical variable
-pseudo_bladder_3d$outdata_long$Z3_ <- pseudo_bladder_1d$outdata_long$Z3_
+# fit3$xi
+# fit3$sigma
 
-fit3 <- pseudo.geefit(pseudodata = pseudo_bladder_3d, 
-                      covar_names = c("Z1_", "Z2_"))
-
-fit3$xi
-fit3$sigma
-
-
-fit3$xi[1] + fit3$xi[2]
+## Compare for mu
+fit1$xi[4]
+fit2$xi[4]
+fit3$xi[4]
 ```
+
+## Plots 
 
 # Citation 
 To cite the `recurrentpseudo` package please use the following references,
