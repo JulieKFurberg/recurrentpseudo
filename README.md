@@ -217,45 +217,38 @@ respectively.
 
 # Install package from GitHub
 
-``` r
-require(devtools)
-#> Indlæser krævet pakke: devtools
-#> Indlæser krævet pakke: usethis
-
-devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
-#> Downloading GitHub repo JulieKFurberg/recurrentpseudo@HEAD
-#> cli      (3.2.0 -> 3.3.0) [CRAN]
-#> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> Installing 2 packages: cli, magrittr
-#> Warning in download.file(url, destfile, method, mode = "wb", ...): cannot open
-#> URL 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip': HTTP
-#> status was '403 Forbidden'
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
-#> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
-#> download of package 'cli' failed
-#> Warning in download.file(url, destfile, method, mode = "wb", ...): cannot open
-#> URL 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip':
-#> HTTP status was '403 Forbidden'
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
-#> download of package 'magrittr' failed
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpKucQWS\remotes2db411962f0c\JulieKFurberg-recurrentpseudo-9b4b234/DESCRIPTION' ... OK
-#> * preparing 'recurrentpseudo':
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building 'recurrentpseudo_0.0.0.9000.tar.gz'
-#> 
-
-require(recurrentpseudo)
-#> Indlæser krævet pakke: recurrentpseudo
-#> Warning: replacing previous import 'dplyr::filter' by 'stats::filter' when
-#> loading 'recurrentpseudo'
-#> Warning: replacing previous import 'dplyr::lag' by 'stats::lag' when loading
-#> 'recurrentpseudo'
-```
+    #> Indlæser krævet pakke: devtools
+    #> Indlæser krævet pakke: usethis
+    #> Downloading GitHub repo JulieKFurberg/recurrentpseudo@HEAD
+    #> cli      (3.2.0 -> 3.3.0) [CRAN]
+    #> magrittr (2.0.2 -> 2.0.3) [CRAN]
+    #> Installing 2 packages: cli, magrittr
+    #> Warning in download.file(url, destfile, method, mode = "wb", ...): cannot open
+    #> URL 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip': HTTP
+    #> status was '403 Forbidden'
+    #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+    #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
+    #> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
+    #> download of package 'cli' failed
+    #> Warning in download.file(url, destfile, method, mode = "wb", ...): cannot open
+    #> URL 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip':
+    #> HTTP status was '403 Forbidden'
+    #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+    #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
+    #> Warning in download.packages(pkgs, destdir = tmpd, available = available, :
+    #> download of package 'magrittr' failed
+    #> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp6TEeqY\remotes53b82e9f4537\JulieKFurberg-recurrentpseudo-7b7e30f/DESCRIPTION' ... OK
+    #> * preparing 'recurrentpseudo':
+    #> * checking DESCRIPTION meta-information ... OK
+    #> * checking for LF line-endings in source and make files and shell scripts
+    #> * checking for empty or unneeded directories
+    #> * building 'recurrentpseudo_0.0.0.9000.tar.gz'
+    #> 
+    #> Indlæser krævet pakke: recurrentpseudo
+    #> Warning: replacing previous import 'dplyr::filter' by 'stats::filter' when
+    #> loading 'recurrentpseudo'
+    #> Warning: replacing previous import 'dplyr::lag' by 'stats::lag' when loading
+    #> 'recurrentpseudo'
 
 # Example - Bladder cancer data from survival package
 
@@ -340,24 +333,24 @@ fit_bladder_1d
 #> Zthiotepa -0.03061935 -0.02795419 -0.02451885  0.07947750
 
 # Treatment differences
-xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2] - fit_bladder_1d$xi[1]), ncol = 1)
+xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[4]), ncol = 1)
 
 mslabels <- c("treat, mu")
 rownames(xi_diff_1d) <- mslabels
 colnames(xi_diff_1d) <- ""
 xi_diff_1d
 #>                    
-#> treat, mu 0.4589529
+#> treat, mu -0.403403
 
 # Variance matrix for differences
-sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[1,1] + fit_bladder_1d$sigma[2,2]),
-                     ncol = 1, nrow = 1,
-                     byrow = T)
+sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[4,4]),
+                          ncol = 1, nrow = 1,
+                          byrow = T)
 
 rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
-#>            treat, mu
-#> treat, mu 0.05946639
+#>           treat, mu
+#> treat, mu 0.0794775
 ```
 
 Two-dimensional pseudo-observations can be computed using the following
@@ -426,31 +419,31 @@ fit_bladder_2d
 #> esttypesurv:Zthiotepa      -0.0161918304          0.2289923447
 
 # Treatment differences
-xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[2] - fit_bladder_2d$xi[1],
-                          fit_bladder_2d$xi[4] - fit_bladder_2d$xi[3]), ncol = 1)
+xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[4] - fit_bladder_2d$xi[1],
+                          fit_bladder_2d$xi[8] - fit_bladder_2d$xi[6]), ncol = 1)
 
 mslabels <- c("treat, mu", "treat, surv")
 rownames(xi_diff_2d) <- mslabels
 colnames(xi_diff_2d) <- ""
 xi_diff_2d
 #>                       
-#> treat, mu    0.4229679
-#> treat, surv -1.0432080
+#> treat, mu   -0.4393838
+#> treat, surv -0.3354773
 
 
 # Variance matrix for differences
-sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[1,1] + fit_bladder_2d$sigma[2,2],
-                          fit_bladder_2d$sigma[1,3] + fit_bladder_2d$sigma[2,4],
-                          fit_bladder_2d$sigma[1,3] + fit_bladder_2d$sigma[2,4],
-                          fit_bladder_2d$sigma[3,3] + fit_bladder_2d$sigma[4,4]),
+sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[4,4] + fit_bladder_2d$sigma[1,1],
+                          fit_bladder_2d$sigma[1,4] + fit_bladder_2d$sigma[1,5],
+                          fit_bladder_2d$sigma[5,8] + fit_bladder_2d$sigma[5,4],
+                          fit_bladder_2d$sigma[8,8] + fit_bladder_2d$sigma[5,5]),
                           ncol = 2, nrow = 2,
                           byrow = T)
 
 rownames(sigma_diff_2d) <- colnames(sigma_diff_2d) <- mslabels
 sigma_diff_2d
-#>                treat, mu  treat, surv
-#> treat, mu    0.037367709 -0.004897522
-#> treat, surv -0.004897522  0.089657461
+#>               treat, mu treat, surv
+#> treat, mu    0.11180485 -0.03696585
+#> treat, surv -0.08129291  0.34676038
 ```
 
 Three-dimensional pseudo-observations can be computed using the
@@ -572,32 +565,32 @@ fit_bladder_3d
 #> esttypecif2:Zthiotepa          1.330765e+32
 
 # Treatment differences
-xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[2] - fit_bladder_3d$xi[1],
-                          fit_bladder_3d$xi[4] - fit_bladder_3d$xi[3],
-                          fit_bladder_3d$xi[6] - fit_bladder_3d$xi[5]), ncol = 1)
+xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[4] - fit_bladder_3d$xi[1],
+                          fit_bladder_3d$xi[8] - fit_bladder_3d$xi[5],
+                          fit_bladder_3d$xi[12] - fit_bladder_3d$xi[9]), ncol = 1)
 
 mslabels <- c("treat, mu", "treat, cif1", "treat, cif2")
 rownames(xi_diff_3d) <- mslabels
 colnames(xi_diff_3d) <- ""
 xi_diff_3d
-#>                      
-#> treat, mu    0.422968
-#> treat, cif1 -1.043208
-#> treat, cif2  4.883285
+#>                          
+#> treat, mu   -4.393840e-01
+#> treat, cif1  4.986566e+00
+#> treat, cif2 -7.065077e+17
 
 
 # Variance matrix for differences
-sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[2,2],
-                          fit_bladder_3d$sigma[1,3] + fit_bladder_3d$sigma[1,5],
-                          fit_bladder_3d$sigma[1,4] + fit_bladder_3d$sigma[1,6],
+sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[4,4],
+                          fit_bladder_3d$sigma[1,9] + fit_bladder_3d$sigma[1,5],
+                          fit_bladder_3d$sigma[1,8] + fit_bladder_3d$sigma[1,12],
 
-                          fit_bladder_3d$sigma[1,3] + fit_bladder_3d$sigma[1,5],
-                          fit_bladder_3d$sigma[3,3] + fit_bladder_3d$sigma[4,4],
-                          fit_bladder_3d$sigma[3,5] + fit_bladder_3d$sigma[4,6],
+                          fit_bladder_3d$sigma[1,9] + fit_bladder_3d$sigma[1,5],
+                          fit_bladder_3d$sigma[5,5] + fit_bladder_3d$sigma[8,8],
+                          fit_bladder_3d$sigma[9,5] + fit_bladder_3d$sigma[8,12],
 
-                          fit_bladder_3d$sigma[1,4] + fit_bladder_3d$sigma[1,6],
-                          fit_bladder_3d$sigma[3,5] + fit_bladder_3d$sigma[4,6],
-                          fit_bladder_3d$sigma[5,5] + fit_bladder_3d$sigma[6,6]
+                          fit_bladder_3d$sigma[1,8] + fit_bladder_3d$sigma[1,12],
+                          fit_bladder_3d$sigma[9,5] + fit_bladder_3d$sigma[8,12],
+                          fit_bladder_3d$sigma[9,9] + fit_bladder_3d$sigma[12,12]
 
                           ),
                         ncol = 3, nrow = 3,
@@ -605,45 +598,45 @@ sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[2,2],
 
 rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
-#>                treat, mu  treat, cif1  treat, cif2
-#> treat, mu    0.037367709  0.004360506 -0.025505284
-#> treat, cif1  0.004360506  0.089657474 -0.007533026
-#> treat, cif2 -0.025505284 -0.007533026  0.909790069
+#>                 treat, mu   treat, cif1   treat, cif2
+#> treat, mu    1.118049e-01  4.073032e+13 -9.177911e+13
+#> treat, cif1  4.073032e+13  2.664917e+00 -1.101396e+14
+#> treat, cif2 -9.177911e+13 -1.101396e+14  1.683123e+32
 ```
 
 ``` r
-###----------------------- Compare - should match for some elements ---------------------------###
-
+###----------------------- Compare - should match for mu elements ---------------------------###
 xi_diff_1d
 #>                    
-#> treat, mu 0.4589529
+#> treat, mu -0.403403
 xi_diff_2d
 #>                       
-#> treat, mu    0.4229679
-#> treat, surv -1.0432080
+#> treat, mu   -0.4393838
+#> treat, surv -0.3354773
 xi_diff_3d
-#>                      
-#> treat, mu    0.422968
-#> treat, cif1 -1.043208
-#> treat, cif2  4.883285
+#>                          
+#> treat, mu   -4.393840e-01
+#> treat, cif1  4.986566e+00
+#> treat, cif2 -7.065077e+17
 
 sigma_diff_1d
-#>            treat, mu
-#> treat, mu 0.05946639
+#>           treat, mu
+#> treat, mu 0.0794775
 sigma_diff_2d
-#>                treat, mu  treat, surv
-#> treat, mu    0.037367709 -0.004897522
-#> treat, surv -0.004897522  0.089657461
+#>               treat, mu treat, surv
+#> treat, mu    0.11180485 -0.03696585
+#> treat, surv -0.08129291  0.34676038
 sigma_diff_3d
-#>                treat, mu  treat, cif1  treat, cif2
-#> treat, mu    0.037367709  0.004360506 -0.025505284
-#> treat, cif1  0.004360506  0.089657474 -0.007533026
-#> treat, cif2 -0.025505284 -0.007533026  0.909790069
+#>                 treat, mu   treat, cif1   treat, cif2
+#> treat, mu    1.118049e-01  4.073032e+13 -9.177911e+13
+#> treat, cif1  4.073032e+13  2.664917e+00 -1.101396e+14
+#> treat, cif2 -9.177911e+13 -1.101396e+14  1.683123e+32
 ```
 
 ``` r
 # if more than a binary treat
 
+## One-dim
 # Treatment, binary variable:
 pseudo_bladder_1d$outdata_long$Z1_ <- as.factor(pseudo_bladder_1d$outdata_long$Z)
 
@@ -661,32 +654,356 @@ fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 
 fit1$xi
 #>                        
-#> Ztime1      -0.08441050
-#> Ztime2       0.33194951
-#> Ztime3       0.57310418
-#> Z1_thiotepa -0.42090759
-#> Z2_         -0.03389195
-#> Z3_B         0.34541987
-#> Z3_C         0.17941848
+#> Ztime1       0.09275828
+#> Ztime2       0.55142207
+#> Ztime3       0.72662986
+#> Z1_thiotepa -0.40710686
+#> Z2_          0.02630684
+#> Z3_B        -0.22585328
+#> Z3_C        -0.02844750
 fit1$sigma
-#>                  Ztime1      Ztime2      Ztime3  Z1_thiotepa          Z2_
-#> Ztime1       0.08476609  0.08130155  0.08268365 -0.018687914 -0.011738765
-#> Ztime2       0.08130155  0.08368418  0.08588052 -0.016981267 -0.011817225
-#> Ztime3       0.08268365  0.08588052  0.09301181 -0.011901788 -0.014028496
-#> Z1_thiotepa -0.01868791 -0.01698127 -0.01190179  0.081627362 -0.003135103
-#> Z2_         -0.01173877 -0.01181722 -0.01402850 -0.003135103  0.003901765
-#> Z3_B        -0.03834250 -0.03968841 -0.04046884 -0.009270712  0.004114268
-#> Z3_C        -0.03683084 -0.04023433 -0.03718317  0.007391325  0.002047425
-#>                     Z3_B         Z3_C
-#> Ztime1      -0.038342503 -0.036830841
-#> Ztime2      -0.039688406 -0.040234331
-#> Ztime3      -0.040468841 -0.037183168
-#> Z1_thiotepa -0.009270712  0.007391325
-#> Z2_          0.004114268  0.002047425
-#> Z3_B         0.051268216  0.032323356
-#> Z3_C         0.032323356  0.066226527
+#>                  Ztime1      Ztime2      Ztime3   Z1_thiotepa           Z2_
+#> Ztime1       0.11749038  0.11263636  0.10437049 -0.0354861101 -0.0168131307
+#> Ztime2       0.11263636  0.11381970  0.10598420 -0.0319142043 -0.0166992760
+#> Ztime3       0.10437049  0.10598420  0.10173475 -0.0284372835 -0.0161431538
+#> Z1_thiotepa -0.03548611 -0.03191420 -0.02843728  0.0759590623  0.0007843528
+#> Z2_         -0.01681313 -0.01669928 -0.01614315  0.0007843528  0.0048468887
+#> Z3_B        -0.03854587 -0.04086747 -0.03451887  0.0005540265  0.0008798475
+#> Z3_C        -0.04202068 -0.04458990 -0.03974018  0.0090510884  0.0007701969
+#>                      Z3_B          Z3_C
+#> Ztime1      -0.0385458745 -0.0420206754
+#> Ztime2      -0.0408674657 -0.0445899035
+#> Ztime3      -0.0345188666 -0.0397401824
+#> Z1_thiotepa  0.0005540265  0.0090510884
+#> Z2_          0.0008798475  0.0007701969
+#> Z3_B         0.0539888372  0.0431577356
+#> Z3_C         0.0431577356  0.0723291539
 
-##
+## Two-dim
+# Treatment, binary variable:
+pseudo_bladder_2d$outdata_long$Z1_ <- as.factor(pseudo_bladder_2d$outdata_long$Z)
+
+# A continuous variable
+pseudo_bladder_2d$outdata_long$Z2_ <- rnorm(nrow(pseudo_bladder_2d$outdata_long), mean = 3, sd = 1)
+
+# A categorical variable
+pseudo_bladder_2d$outdata_long$Z3_ <- sample(x = c("A", "B", "C"), 
+                                 size = nrow(pseudo_bladder_2d$outdata_long), 
+                                 replace = TRUE, 
+                                 prob = c(1/4, 1/2, 1/4))
+
+fit2 <- pseudo.geefit(pseudodata = pseudo_bladder_2d, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
+
+fit2$xi
+#>                                    
+#> esttypemu                0.15360980
+#> esttypemu:Ztime2         0.51949570
+#> esttypemu:Ztime3         0.73208507
+#> esttypemu:Z1_thiotepa   -0.33075453
+#> esttypemu:Z2_           -0.11260889
+#> esttypemu:Z3_B           0.24117278
+#> esttypemu:Z3_C          -0.08352569
+#> esttypesurv             -2.52853184
+#> esttypesurv:Ztime2       0.35854004
+#> esttypesurv:Ztime3       0.65991876
+#> esttypesurv:Z1_thiotepa  0.07776168
+#> esttypesurv:Z2_          0.16273002
+#> esttypesurv:Z3_B         0.25275490
+#> esttypesurv:Z3_C         0.08724624
+fit2$sigma
+#>                             esttypemu esttypemu:Ztime2 esttypemu:Ztime3
+#> esttypemu                0.0873756325    -4.097913e-03    -1.145899e-02
+#> esttypemu:Ztime2        -0.0040979133     6.767276e-03     6.800786e-03
+#> esttypemu:Ztime3        -0.0114589907     6.800786e-03     1.105988e-02
+#> esttypemu:Z1_thiotepa   -0.0197027741     4.826740e-03     6.287105e-03
+#> esttypemu:Z2_           -0.0155369811    -1.677928e-03     3.761912e-05
+#> esttypemu:Z3_B          -0.0280132284     1.633483e-03     3.935455e-03
+#> esttypemu:Z3_C          -0.0300203172    -1.662670e-03    -2.552044e-03
+#> esttypesurv             -0.0234326965     5.694566e-05    -1.511837e-03
+#> esttypesurv:Ztime2      -0.0040883673     6.209351e-04     2.042973e-03
+#> esttypesurv:Ztime3      -0.0031989909    -1.038288e-03     1.277269e-03
+#> esttypesurv:Z1_thiotepa  0.0073556048    -1.428732e-03     1.074580e-02
+#> esttypesurv:Z2_         -0.0001059521    -1.382550e-03     1.166261e-03
+#> esttypesurv:Z3_B         0.0138237913     8.881218e-03    -2.182361e-03
+#> esttypesurv:Z3_C        -0.0073179672     2.479895e-02     1.335146e-02
+#>                         esttypemu:Z1_thiotepa esttypemu:Z2_ esttypemu:Z3_B
+#> esttypemu                       -0.0197027741 -1.553698e-02  -0.0280132284
+#> esttypemu:Ztime2                 0.0048267398 -1.677928e-03   0.0016334825
+#> esttypemu:Ztime3                 0.0062871046  3.761912e-05   0.0039354552
+#> esttypemu:Z1_thiotepa            0.0701710910 -1.537067e-03  -0.0061457668
+#> esttypemu:Z2_                   -0.0015370669  7.861276e-03  -0.0038659348
+#> esttypemu:Z3_B                  -0.0061457668 -3.865935e-03   0.0504013342
+#> esttypemu:Z3_C                  -0.0179183289  7.832748e-04   0.0404991191
+#> esttypesurv                      0.0072186559  8.019342e-03  -0.0028089282
+#> esttypesurv:Ztime2              -0.0034872293 -5.349143e-04   0.0044269741
+#> esttypesurv:Ztime3              -0.0005430804 -1.474705e-03   0.0052858472
+#> esttypesurv:Z1_thiotepa          0.0051697726  5.585169e-04  -0.0061959969
+#> esttypesurv:Z2_                  0.0060639486 -1.313812e-03   0.0028008195
+#> esttypesurv:Z3_B                -0.0178520152 -4.020433e-03  -0.0001044836
+#> esttypesurv:Z3_C                -0.0282922914 -1.436075e-03   0.0056408361
+#>                         esttypemu:Z3_C   esttypesurv esttypesurv:Ztime2
+#> esttypemu                -0.0300203172 -0.0234326965       5.694566e-05
+#> esttypemu:Ztime2         -0.0016626703 -0.0040883673       6.209351e-04
+#> esttypemu:Ztime3         -0.0025520440 -0.0031989909      -1.038288e-03
+#> esttypemu:Z1_thiotepa    -0.0179183289  0.0073556048      -1.428732e-03
+#> esttypemu:Z2_             0.0007832748 -0.0001059521      -1.382550e-03
+#> esttypemu:Z3_B            0.0404991191  0.0138237913       8.881218e-03
+#> esttypemu:Z3_C            0.0948566978 -0.0073179672       2.479895e-02
+#> esttypesurv              -0.0036559621  0.4212753675      -4.362838e-02
+#> esttypesurv:Ztime2        0.0018574092 -0.0436283795       4.635154e-02
+#> esttypesurv:Ztime3        0.0006755231 -0.0638528023       3.929298e-02
+#> esttypesurv:Z1_thiotepa  -0.0098923184 -0.0789748613      -1.636594e-02
+#> esttypesurv:Z2_          -0.0018251493 -0.0493988951      -4.717622e-03
+#> esttypesurv:Z3_B          0.0123767030 -0.1801879644       4.600128e-02
+#> esttypesurv:Z3_C          0.0230527728 -0.1143601507       3.961127e-02
+#>                         esttypesurv:Ztime3 esttypesurv:Z1_thiotepa
+#> esttypemu                     -0.001511837            0.0072186559
+#> esttypemu:Ztime2               0.002042973           -0.0034872293
+#> esttypemu:Ztime3               0.001277269           -0.0005430804
+#> esttypemu:Z1_thiotepa          0.010745797            0.0051697726
+#> esttypemu:Z2_                  0.001166261            0.0060639486
+#> esttypemu:Z3_B                -0.002182361           -0.0178520152
+#> esttypemu:Z3_C                 0.013351458           -0.0282922914
+#> esttypesurv                   -0.063852802           -0.0789748613
+#> esttypesurv:Ztime2             0.039292981           -0.0163659431
+#> esttypesurv:Ztime3             0.063889400           -0.0096251028
+#> esttypesurv:Z1_thiotepa       -0.009625103            0.2165398062
+#> esttypesurv:Z2_                0.001095591           -0.0084518698
+#> esttypesurv:Z3_B               0.034818810            0.0341522410
+#> esttypesurv:Z3_C               0.005255703           -0.0259348789
+#>                         esttypesurv:Z2_ esttypesurv:Z3_B esttypesurv:Z3_C
+#> esttypemu                  0.0080193422    -0.0028089282    -0.0036559621
+#> esttypemu:Ztime2          -0.0005349143     0.0044269741     0.0018574092
+#> esttypemu:Ztime3          -0.0014747050     0.0052858472     0.0006755231
+#> esttypemu:Z1_thiotepa      0.0005585169    -0.0061959969    -0.0098923184
+#> esttypemu:Z2_             -0.0013138118     0.0028008195    -0.0018251493
+#> esttypemu:Z3_B            -0.0040204334    -0.0001044836     0.0123767030
+#> esttypemu:Z3_C            -0.0014360753     0.0056408361     0.0230527728
+#> esttypesurv               -0.0493988951    -0.1801879644    -0.1143601507
+#> esttypesurv:Ztime2        -0.0047176216     0.0460012780     0.0396112658
+#> esttypesurv:Ztime3         0.0010955911     0.0348188100     0.0052557029
+#> esttypesurv:Z1_thiotepa   -0.0084518698     0.0341522410    -0.0259348789
+#> esttypesurv:Z2_            0.0164489953     0.0033340598     0.0005736616
+#> esttypesurv:Z3_B           0.0033340598     0.1699882495     0.1191955689
+#> esttypesurv:Z3_C           0.0005736616     0.1191955689     0.2075113314
+
+## Three-dim
+# Treatment, binary variable:
+pseudo_bladder_3d$outdata_long$Z1_ <- as.factor(pseudo_bladder_3d$outdata_long$Z)
+
+# A continuous variable
+pseudo_bladder_3d$outdata_long$Z2_ <- rnorm(nrow(pseudo_bladder_3d$outdata_long), mean = 3, sd = 1)
+
+# A categorical variable
+pseudo_bladder_3d$outdata_long$Z3_ <- sample(x = c("A", "B", "C"), 
+                                 size = nrow(pseudo_bladder_3d$outdata_long), 
+                                 replace = TRUE, 
+                                 prob = c(1/4, 1/2, 1/4))
+
+fit3 <- pseudo.geefit(pseudodata = pseudo_bladder_3d, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
+
+fit3$xi
+#>                                      
+#> esttypemu                1.616224e-01
+#> esttypemu:Ztime2         4.601547e-01
+#> esttypemu:Ztime3         6.269935e-01
+#> esttypemu:Z1_thiotepa   -3.893090e-01
+#> esttypemu:Z2_           -8.458905e-02
+#> esttypemu:Z3_B           2.059225e-01
+#> esttypemu:Z3_C           9.169688e-02
+#> esttypecif1             -8.622534e+00
+#> esttypecif1:Ztime2       4.128854e-01
+#> esttypecif1:Ztime3       2.350243e+00
+#> esttypecif1:Z1_thiotepa  1.894680e+00
+#> esttypecif1:Z2_          8.992164e-02
+#> esttypecif1:Z3_B         1.136376e-01
+#> esttypecif1:Z3_C         2.226589e+00
+#> esttypecif2              6.994085e+17
+#> esttypecif2:Ztime2       7.181823e+17
+#> esttypecif2:Ztime3       1.139299e+18
+#> esttypecif2:Z1_thiotepa  2.170417e+15
+#> esttypecif2:Z2_          1.882221e+15
+#> esttypecif2:Z3_B         3.241383e+15
+#> esttypecif2:Z3_C         4.724683e+15
+fit3$sigma
+#>                             esttypemu esttypemu:Ztime2 esttypemu:Ztime3
+#> esttypemu                1.395621e-01    -1.905509e-03     1.316978e-03
+#> esttypemu:Ztime2        -1.905509e-03     5.571554e-03     6.207043e-03
+#> esttypemu:Ztime3         1.316978e-03     6.207043e-03     1.088515e-02
+#> esttypemu:Z1_thiotepa   -3.749646e-02     3.021630e-03     6.431688e-03
+#> esttypemu:Z2_           -2.683579e-02    -6.900199e-04    -2.081318e-03
+#> esttypemu:Z3_B          -3.323955e-02    -1.457790e-03    -1.870850e-03
+#> esttypemu:Z3_C          -3.684995e-02     2.483832e-03     6.085296e-04
+#> esttypecif1             -1.136451e-02     2.456295e-02     1.222007e-02
+#> esttypecif1:Ztime2      -8.593113e-04    -3.706157e-05    -2.318514e-03
+#> esttypecif1:Ztime3      -9.610749e-03     3.916399e-03     3.562339e-03
+#> esttypecif1:Z1_thiotepa -9.832102e-02    -1.112354e-03     2.164362e-02
+#> esttypecif1:Z2_          1.300499e-02    -7.963401e-03    -5.754039e-03
+#> esttypecif1:Z3_B        -1.340860e-02    -1.843854e-03     4.927305e-03
+#> esttypecif1:Z3_C         4.846277e-05    -5.301887e-03     2.188602e-03
+#> esttypecif2              8.948022e+14    -6.631206e+13    -4.833929e+13
+#> esttypecif2:Ztime2       8.964362e+12    -6.467753e+12    -4.711605e+12
+#> esttypecif2:Ztime3      -1.434208e+14     8.532344e+12     8.027534e+12
+#> esttypecif2:Z1_thiotepa  1.169071e+14    -3.606189e+13    -3.482142e+13
+#> esttypecif2:Z2_         -2.845186e+14     2.221747e+13     1.672654e+13
+#> esttypecif2:Z3_B        -1.537079e+14     2.595247e+13     2.183799e+13
+#> esttypecif2:Z3_C         1.692109e+14    -2.002645e+13    -1.651401e+13
+#>                         esttypemu:Z1_thiotepa esttypemu:Z2_ esttypemu:Z3_B
+#> esttypemu                       -3.749646e-02 -2.683579e-02  -3.323955e-02
+#> esttypemu:Ztime2                 3.021630e-03 -6.900199e-04  -1.457790e-03
+#> esttypemu:Ztime3                 6.431688e-03 -2.081318e-03  -1.870850e-03
+#> esttypemu:Z1_thiotepa            8.282341e-02 -1.602076e-03   1.618451e-02
+#> esttypemu:Z2_                   -1.602076e-03  9.465502e-03  -2.721769e-03
+#> esttypemu:Z3_B                   1.618451e-02 -2.721769e-03   5.395250e-02
+#> esttypemu:Z3_C                   8.807139e-03 -1.339137e-03   3.894948e-02
+#> esttypecif1                      2.339123e-02 -7.789282e-03   6.408404e-03
+#> esttypecif1:Ztime2              -3.297778e-03  9.498716e-04   2.254518e-03
+#> esttypecif1:Ztime3              -7.637118e-04 -6.274746e-05   2.417299e-03
+#> esttypecif1:Z1_thiotepa          2.865047e-02  8.347469e-03   3.124535e-02
+#> esttypecif1:Z2_                 -6.320600e-03  1.151068e-03  -6.123371e-03
+#> esttypecif1:Z3_B                -2.571065e-02  6.668261e-03   2.468811e-02
+#> esttypecif1:Z3_C                -1.776469e-02  3.833420e-03   5.771070e-03
+#> esttypecif2                     -3.885809e+14 -2.266293e+14   2.386178e+14
+#> esttypecif2:Ztime2               6.775220e+13 -1.859230e+13   6.144940e+13
+#> esttypecif2:Ztime3               1.312398e+14 -3.236601e+12   1.460587e+14
+#> esttypecif2:Z1_thiotepa         -3.287492e+13  5.519523e+13  -3.841683e+14
+#> esttypecif2:Z2_                  5.253464e+13  6.962715e+13  -5.765688e+12
+#> esttypecif2:Z3_B                 2.570689e+14  1.146119e+13  -9.058238e+13
+#> esttypecif2:Z3_C                 9.136090e+13 -3.401165e+13  -1.151388e+14
+#>                         esttypemu:Z3_C   esttypecif1 esttypecif1:Ztime2
+#> esttypemu                -3.684995e-02 -1.136451e-02       2.456295e-02
+#> esttypemu:Ztime2          2.483832e-03 -8.593113e-04      -3.706157e-05
+#> esttypemu:Ztime3          6.085296e-04 -9.610749e-03       3.916399e-03
+#> esttypemu:Z1_thiotepa     8.807139e-03 -9.832102e-02      -1.112354e-03
+#> esttypemu:Z2_            -1.339137e-03  1.300499e-02      -7.963401e-03
+#> esttypemu:Z3_B            3.894948e-02 -1.340860e-02      -1.843854e-03
+#> esttypemu:Z3_C            6.744755e-02  4.846277e-05      -5.301887e-03
+#> esttypecif1               2.289196e-02  3.419850e+00       2.362124e-01
+#> esttypecif1:Ztime2       -2.709481e-03  2.362124e-01       3.838640e-01
+#> esttypecif1:Ztime3        3.550010e-03 -6.932968e-02       2.300688e-01
+#> esttypecif1:Z1_thiotepa   3.462944e-02 -1.521723e+00      -3.362002e-01
+#> esttypecif1:Z2_          -1.116020e-02 -5.893573e-01      -1.077410e-01
+#> esttypecif1:Z3_B          1.241832e-02  2.457764e-01       1.089058e-01
+#> esttypecif1:Z3_C          2.474505e-03 -2.668574e-02       5.696371e-02
+#> esttypecif2              -4.062448e+14 -6.097255e+14      -1.669373e+14
+#> esttypecif2:Ztime2       -2.450361e+13  6.081850e+14      -1.072173e+14
+#> esttypecif2:Ztime3        9.826765e+13  8.473057e+14       1.775056e+12
+#> esttypecif2:Z1_thiotepa  -3.056478e+14 -1.759793e+15       2.422822e+14
+#> esttypecif2:Z2_           1.572572e+14 -6.215270e+14       3.061528e+13
+#> esttypecif2:Z3_B          1.191259e+14  2.477648e+15      -1.312119e+14
+#> esttypecif2:Z3_C         -1.714943e+14  9.189270e+14       1.107845e+14
+#>                         esttypecif1:Ztime3 esttypecif1:Z1_thiotepa
+#> esttypemu                     1.222007e-02            2.339123e-02
+#> esttypemu:Ztime2             -2.318514e-03           -3.297778e-03
+#> esttypemu:Ztime3              3.562339e-03           -7.637118e-04
+#> esttypemu:Z1_thiotepa         2.164362e-02            2.865047e-02
+#> esttypemu:Z2_                -5.754039e-03           -6.320600e-03
+#> esttypemu:Z3_B                4.927305e-03           -2.571065e-02
+#> esttypemu:Z3_C                2.188602e-03           -1.776469e-02
+#> esttypecif1                  -6.932968e-02           -1.521723e+00
+#> esttypecif1:Ztime2            2.300688e-01           -3.362002e-01
+#> esttypecif1:Ztime3            3.000138e-01            1.787134e-02
+#> esttypecif1:Z1_thiotepa       1.787134e-02            2.339211e+00
+#> esttypecif1:Z2_              -1.107262e-01           -2.453038e-03
+#> esttypecif1:Z3_B              1.088409e-02           -1.035692e+00
+#> esttypecif1:Z3_C              2.200748e-01            2.464818e-01
+#> esttypecif2                  -1.881514e+14            2.717407e+14
+#> esttypecif2:Ztime2           -7.330289e+13           -2.569508e+14
+#> esttypecif2:Ztime3            3.517847e+13            4.113241e+13
+#> esttypecif2:Z1_thiotepa       2.072825e+14            8.889470e+13
+#> esttypecif2:Z2_               2.043264e+13           -3.493960e+12
+#> esttypecif2:Z3_B             -1.070059e+14           -1.734517e+15
+#> esttypecif2:Z3_C              1.120505e+14           -5.125167e+13
+#>                         esttypecif1:Z2_ esttypecif1:Z3_B esttypecif1:Z3_C
+#> esttypemu                 -7.789282e-03     6.408404e-03     2.289196e-02
+#> esttypemu:Ztime2           9.498716e-04     2.254518e-03    -2.709481e-03
+#> esttypemu:Ztime3          -6.274746e-05     2.417299e-03     3.550010e-03
+#> esttypemu:Z1_thiotepa      8.347469e-03     3.124535e-02     3.462944e-02
+#> esttypemu:Z2_              1.151068e-03    -6.123371e-03    -1.116020e-02
+#> esttypemu:Z3_B             6.668261e-03     2.468811e-02     1.241832e-02
+#> esttypemu:Z3_C             3.833420e-03     5.771070e-03     2.474505e-03
+#> esttypecif1               -5.893573e-01     2.457764e-01    -2.668574e-02
+#> esttypecif1:Ztime2        -1.077410e-01     1.089058e-01     5.696371e-02
+#> esttypecif1:Ztime3        -1.107262e-01     1.088409e-02     2.200748e-01
+#> esttypecif1:Z1_thiotepa   -2.453038e-03    -1.035692e+00     2.464818e-01
+#> esttypecif1:Z2_            2.352698e-01     7.903611e-02    -1.424605e-01
+#> esttypecif1:Z3_B           7.903611e-02     7.332691e-01    -3.344595e-03
+#> esttypecif1:Z3_C          -1.424605e-01    -3.344595e-03     3.604689e-01
+#> esttypecif2               -3.869708e+13     1.572450e+15    -3.249355e+14
+#> esttypecif2:Ztime2        -1.466987e+14     4.505604e+14    -6.696759e+14
+#> esttypecif2:Ztime3        -2.247159e+14    -1.064696e+14    -3.406440e+14
+#> esttypecif2:Z1_thiotepa    5.077477e+14    -6.405420e+14     1.563341e+15
+#> esttypecif2:Z2_            1.820512e+14    -1.593148e+13     2.467884e+14
+#> esttypecif2:Z3_B          -4.594939e+14    -3.956532e+13    -1.048564e+15
+#> esttypecif2:Z3_C          -2.857186e+14    -3.610978e+14     3.284515e+14
+#>                           esttypecif2 esttypecif2:Ztime2 esttypecif2:Ztime3
+#> esttypemu                8.948022e+14      -6.631206e+13      -4.833929e+13
+#> esttypemu:Ztime2         8.964362e+12      -6.467753e+12      -4.711605e+12
+#> esttypemu:Ztime3        -1.434208e+14       8.532344e+12       8.027534e+12
+#> esttypemu:Z1_thiotepa    1.169071e+14      -3.606189e+13      -3.482142e+13
+#> esttypemu:Z2_           -2.845186e+14       2.221747e+13       1.672654e+13
+#> esttypemu:Z3_B          -1.537079e+14       2.595247e+13       2.183799e+13
+#> esttypemu:Z3_C           1.692109e+14      -2.002645e+13      -1.651401e+13
+#> esttypecif1             -6.097255e+14      -1.669373e+14      -1.881514e+14
+#> esttypecif1:Ztime2       6.081850e+14      -1.072173e+14      -7.330289e+13
+#> esttypecif1:Ztime3       8.473057e+14       1.775056e+12       3.517847e+13
+#> esttypecif1:Z1_thiotepa -1.759793e+15       2.422822e+14       2.072825e+14
+#> esttypecif1:Z2_         -6.215270e+14       3.061528e+13       2.043264e+13
+#> esttypecif1:Z3_B         2.477648e+15      -1.312119e+14      -1.070059e+14
+#> esttypecif1:Z3_C         9.189270e+14       1.107845e+14       1.120505e+14
+#> esttypecif2              2.060311e+32       4.572720e+30       1.193382e+31
+#> esttypecif2:Ztime2       4.572720e+30       1.183436e+31       1.719694e+31
+#> esttypecif2:Ztime3       1.193382e+31       1.719694e+31       2.590665e+31
+#> esttypecif2:Z1_thiotepa -7.381207e+31       1.001670e+30       7.893783e+29
+#> esttypecif2:Z2_         -4.034894e+31      -5.926754e+29      -9.425671e+29
+#> esttypecif2:Z3_B        -5.320961e+31       3.205921e+30       3.056467e+30
+#> esttypecif2:Z3_C        -6.341426e+31       1.367861e+31       1.197085e+31
+#>                         esttypecif2:Z1_thiotepa esttypecif2:Z2_
+#> esttypemu                         -3.885809e+14   -2.266293e+14
+#> esttypemu:Ztime2                   6.775220e+13   -1.859230e+13
+#> esttypemu:Ztime3                   1.312398e+14   -3.236601e+12
+#> esttypemu:Z1_thiotepa             -3.287492e+13    5.519523e+13
+#> esttypemu:Z2_                      5.253464e+13    6.962715e+13
+#> esttypemu:Z3_B                     2.570689e+14    1.146119e+13
+#> esttypemu:Z3_C                     9.136090e+13   -3.401165e+13
+#> esttypecif1                        2.717407e+14   -3.869708e+13
+#> esttypecif1:Ztime2                -2.569508e+14   -1.466987e+14
+#> esttypecif1:Ztime3                 4.113241e+13   -2.247159e+14
+#> esttypecif1:Z1_thiotepa            8.889470e+13    5.077477e+14
+#> esttypecif1:Z2_                   -3.493960e+12    1.820512e+14
+#> esttypecif1:Z3_B                  -1.734517e+15   -4.594939e+14
+#> esttypecif1:Z3_C                  -5.125167e+13   -2.857186e+14
+#> esttypecif2                       -7.381207e+31   -4.034894e+31
+#> esttypecif2:Ztime2                 1.001670e+30   -5.926754e+29
+#> esttypecif2:Ztime3                 7.893783e+29   -9.425671e+29
+#> esttypecif2:Z1_thiotepa            1.341243e+32    3.108212e+30
+#> esttypecif2:Z2_                    3.108212e+30    1.259654e+31
+#> esttypecif2:Z3_B                   5.294100e+30    1.553378e+30
+#> esttypecif2:Z3_C                   9.115613e+30    2.712243e+30
+#>                         esttypecif2:Z3_B esttypecif2:Z3_C
+#> esttypemu                   2.386178e+14    -4.062448e+14
+#> esttypemu:Ztime2            6.144940e+13    -2.450361e+13
+#> esttypemu:Ztime3            1.460587e+14     9.826765e+13
+#> esttypemu:Z1_thiotepa      -3.841683e+14    -3.056478e+14
+#> esttypemu:Z2_              -5.765688e+12     1.572572e+14
+#> esttypemu:Z3_B             -9.058238e+13     1.191259e+14
+#> esttypemu:Z3_C             -1.151388e+14    -1.714943e+14
+#> esttypecif1                 1.572450e+15    -3.249355e+14
+#> esttypecif1:Ztime2          4.505604e+14    -6.696759e+14
+#> esttypecif1:Ztime3         -1.064696e+14    -3.406440e+14
+#> esttypecif1:Z1_thiotepa    -6.405420e+14     1.563341e+15
+#> esttypecif1:Z2_            -1.593148e+13     2.467884e+14
+#> esttypecif1:Z3_B           -3.956532e+13    -1.048564e+15
+#> esttypecif1:Z3_C           -3.610978e+14     3.284515e+14
+#> esttypecif2                -5.320961e+31    -6.341426e+31
+#> esttypecif2:Ztime2          3.205921e+30     1.367861e+31
+#> esttypecif2:Ztime3          3.056467e+30     1.197085e+31
+#> esttypecif2:Z1_thiotepa     5.294100e+30     9.115613e+30
+#> esttypecif2:Z2_             1.553378e+30     2.712243e+30
+#> esttypecif2:Z3_B            7.532893e+31     4.348839e+31
+#> esttypecif2:Z3_C            4.348839e+31     9.381073e+31
 ```
 
 # Citation

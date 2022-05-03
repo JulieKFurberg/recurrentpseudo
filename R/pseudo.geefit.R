@@ -56,8 +56,11 @@
 pseudo.geefit <- function(pseudodata, covar_names){
 
   # pseudodata <- pseudo_bladder_3d
-  #pseudodata <- pseudo_bladder_2d
+  # pseudodata <- pseudo_bladder_2d
   # covar_names <- "Z"
+
+  # pseudodata <- pseudo_bladder_1d
+  # covar_names <- c("Z1_", "Z2_", "Z3_")
 
   # Binding variables locally
   id <- esttype <- ts <- NULL
@@ -134,7 +137,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
     if (pseudodata$dim %in% c("onedim")){
       if (ksel > 1){
-        a_terms <- formula(paste0("y ~ Ztime + ", terms2, "- 1"))
+        a_terms <- formula(paste0("y ~ Ztime +", terms2, ""))
       }
       if (ksel == 1){
         a_terms <- formula(paste0("y ~ ", terms2, "- 1"))

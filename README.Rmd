@@ -115,7 +115,7 @@ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen estimates of the 
 # Install package from GitHub
 
 
-```{r eval = T}
+```{r eval = T, echo = FALSE}
 require(devtools)
 
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
@@ -173,7 +173,7 @@ fit_bladder_1d <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 fit_bladder_1d
 
 # Treatment differences
-xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2] - fit_bladder_1d$xi[1]), ncol = 1)
+xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[4]), ncol = 1)
 
 mslabels <- c("treat, mu")
 rownames(xi_diff_1d) <- mslabels
@@ -181,9 +181,9 @@ colnames(xi_diff_1d) <- ""
 xi_diff_1d
 
 # Variance matrix for differences
-sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[1,1] + fit_bladder_1d$sigma[2,2]),
-                     ncol = 1, nrow = 1,
-                     byrow = T)
+sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[4,4]),
+                          ncol = 1, nrow = 1,
+                          byrow = T)
 
 rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
@@ -210,8 +210,8 @@ fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
 fit_bladder_2d
 
 # Treatment differences
-xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[2] - fit_bladder_2d$xi[1],
-                          fit_bladder_2d$xi[4] - fit_bladder_2d$xi[3]), ncol = 1)
+xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[4] - fit_bladder_2d$xi[1],
+                          fit_bladder_2d$xi[8] - fit_bladder_2d$xi[6]), ncol = 1)
 
 mslabels <- c("treat, mu", "treat, surv")
 rownames(xi_diff_2d) <- mslabels
@@ -220,10 +220,10 @@ xi_diff_2d
 
 
 # Variance matrix for differences
-sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[1,1] + fit_bladder_2d$sigma[2,2],
-                          fit_bladder_2d$sigma[1,3] + fit_bladder_2d$sigma[2,4],
-                          fit_bladder_2d$sigma[1,3] + fit_bladder_2d$sigma[2,4],
-                          fit_bladder_2d$sigma[3,3] + fit_bladder_2d$sigma[4,4]),
+sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[4,4] + fit_bladder_2d$sigma[1,1],
+                          fit_bladder_2d$sigma[1,4] + fit_bladder_2d$sigma[1,5],
+                          fit_bladder_2d$sigma[5,8] + fit_bladder_2d$sigma[5,4],
+                          fit_bladder_2d$sigma[8,8] + fit_bladder_2d$sigma[5,5]),
                           ncol = 2, nrow = 2,
                           byrow = T)
 
@@ -256,9 +256,9 @@ fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
 fit_bladder_3d
 
 # Treatment differences
-xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[2] - fit_bladder_3d$xi[1],
-                          fit_bladder_3d$xi[4] - fit_bladder_3d$xi[3],
-                          fit_bladder_3d$xi[6] - fit_bladder_3d$xi[5]), ncol = 1)
+xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[4] - fit_bladder_3d$xi[1],
+                          fit_bladder_3d$xi[8] - fit_bladder_3d$xi[5],
+                          fit_bladder_3d$xi[12] - fit_bladder_3d$xi[9]), ncol = 1)
 
 mslabels <- c("treat, mu", "treat, cif1", "treat, cif2")
 rownames(xi_diff_3d) <- mslabels
@@ -267,17 +267,17 @@ xi_diff_3d
 
 
 # Variance matrix for differences
-sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[2,2],
-                          fit_bladder_3d$sigma[1,3] + fit_bladder_3d$sigma[1,5],
-                          fit_bladder_3d$sigma[1,4] + fit_bladder_3d$sigma[1,6],
+sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[1,1] + fit_bladder_3d$sigma[4,4],
+                          fit_bladder_3d$sigma[1,9] + fit_bladder_3d$sigma[1,5],
+                          fit_bladder_3d$sigma[1,8] + fit_bladder_3d$sigma[1,12],
 
-                          fit_bladder_3d$sigma[1,3] + fit_bladder_3d$sigma[1,5],
-                          fit_bladder_3d$sigma[3,3] + fit_bladder_3d$sigma[4,4],
-                          fit_bladder_3d$sigma[3,5] + fit_bladder_3d$sigma[4,6],
+                          fit_bladder_3d$sigma[1,9] + fit_bladder_3d$sigma[1,5],
+                          fit_bladder_3d$sigma[5,5] + fit_bladder_3d$sigma[8,8],
+                          fit_bladder_3d$sigma[9,5] + fit_bladder_3d$sigma[8,12],
 
-                          fit_bladder_3d$sigma[1,4] + fit_bladder_3d$sigma[1,6],
-                          fit_bladder_3d$sigma[3,5] + fit_bladder_3d$sigma[4,6],
-                          fit_bladder_3d$sigma[5,5] + fit_bladder_3d$sigma[6,6]
+                          fit_bladder_3d$sigma[1,8] + fit_bladder_3d$sigma[1,12],
+                          fit_bladder_3d$sigma[9,5] + fit_bladder_3d$sigma[8,12],
+                          fit_bladder_3d$sigma[9,9] + fit_bladder_3d$sigma[12,12]
 
                           ),
                         ncol = 3, nrow = 3,
@@ -290,8 +290,7 @@ sigma_diff_3d
 
 
 ```{r eval = T}
-###----------------------- Compare - should match for some elements ---------------------------###
-
+###----------------------- Compare - should match for mu elements ---------------------------###
 xi_diff_1d
 xi_diff_2d
 xi_diff_3d
@@ -305,6 +304,7 @@ sigma_diff_3d
 ```{r eval = T}
 # if more than a binary treat
 
+## One-dim
 # Treatment, binary variable:
 pseudo_bladder_1d$outdata_long$Z1_ <- as.factor(pseudo_bladder_1d$outdata_long$Z)
 
@@ -323,7 +323,44 @@ fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 fit1$xi
 fit1$sigma
 
-##
+## Two-dim
+# Treatment, binary variable:
+pseudo_bladder_2d$outdata_long$Z1_ <- as.factor(pseudo_bladder_2d$outdata_long$Z)
+
+# A continuous variable
+pseudo_bladder_2d$outdata_long$Z2_ <- rnorm(nrow(pseudo_bladder_2d$outdata_long), mean = 3, sd = 1)
+
+# A categorical variable
+pseudo_bladder_2d$outdata_long$Z3_ <- sample(x = c("A", "B", "C"), 
+                                 size = nrow(pseudo_bladder_2d$outdata_long), 
+                                 replace = TRUE, 
+                                 prob = c(1/4, 1/2, 1/4))
+
+fit2 <- pseudo.geefit(pseudodata = pseudo_bladder_2d, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
+
+fit2$xi
+fit2$sigma
+
+## Three-dim
+# Treatment, binary variable:
+pseudo_bladder_3d$outdata_long$Z1_ <- as.factor(pseudo_bladder_3d$outdata_long$Z)
+
+# A continuous variable
+pseudo_bladder_3d$outdata_long$Z2_ <- rnorm(nrow(pseudo_bladder_3d$outdata_long), mean = 3, sd = 1)
+
+# A categorical variable
+pseudo_bladder_3d$outdata_long$Z3_ <- sample(x = c("A", "B", "C"), 
+                                 size = nrow(pseudo_bladder_3d$outdata_long), 
+                                 replace = TRUE, 
+                                 prob = c(1/4, 1/2, 1/4))
+
+fit3 <- pseudo.geefit(pseudodata = pseudo_bladder_3d, 
+                      covar_names = c("Z1_", "Z2_", "Z3_"))
+
+fit3$xi
+fit3$sigma
+
 ```
 
 # Citation 
