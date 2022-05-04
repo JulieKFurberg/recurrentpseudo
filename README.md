@@ -256,11 +256,12 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp42aACy\remotes43fc24002a5a\JulieKFurberg-recurrentpseudo-ef3d681/DESCRIPTION' ... OK
+#> package 'cli' successfully unpacked and MD5 sums checked
+#> package 'magrittr' successfully unpacked and MD5 sums checked
+#> 
+#> The downloaded binary packages are in
+#>  C:\Users\jukf\AppData\Local\Temp\RtmpuMaxvk\downloaded_packages
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpuMaxvk\remotes3e6076b4953\JulieKFurberg-recurrentpseudo-b5207e8/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -272,27 +273,26 @@ require(recurrentpseudo)
 ```
 
 ``` r
-?pseudo.onedim
-#> starting httpd help server ... done
-?pseudo.twodim
-?pseudo.threedim
+# Main functions
+# ?pseudo.onedim
+# ?pseudo.twodim
+# ?pseudo.threedim
 
-?pseudo.geefit
+# ?pseudo.geefit
 ```
 
 # Example - Bladder cancer data from survival package
 
-The functions in \`recurrentpseudo\`\` will be exemplified using the
+The functions in `recurrentpseudo` will be exemplified using the
 well-known bladder cancer data from the survival package. This data set
 considers data from a clinical cancer trial conducted by the Veterans
 Administration Cooperative Urological Research Group (Byar: *The
 veterans administration study of chemoprophylaxis for recurrent stage I
 bladder tumours: comparisons of placebo, pyridoxine and topical
-thiotepa.*(1980)) Here,
-![118](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;118 "118")
-patients with stage I bladder cancer were randomised to receive placebo,
-pyridoxine or thiotepa. After randomisation, information on occurrences
-of superficial bladder tumours and any deaths were collected.
+thiotepa* (1980)) Here, 118 patients with stage I bladder cancer were
+randomised to receive placebo, pyridoxine or thiotepa. After
+randomisation, information on occurrences of superficial bladder tumours
+and any deaths were collected.
 
 We focus on the comparison between placebo and thiotepa
 (![n=86](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n%3D86 "n=86")
@@ -300,8 +300,8 @@ in total). We model recurrent bladder tumours, and adjust for death
 (cause 1: bladder cancer disease death, cause 2: other causes).
 
 One-, two- and three-dimensional pseudo-observations are computed based
-on a single time point
-(![t=30](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%3D30 "t=30"))
+on a single time point,
+![t=30](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%3D30 "t=30")
 months.
 
 For the comparison between placebo and thiotepa on recurrent bladder

@@ -136,26 +136,26 @@ require(recurrentpseudo)
 
 ```{r}
 # Main functions
-?pseudo.onedim
-?pseudo.twodim
-?pseudo.threedim
+# ?pseudo.onedim
+# ?pseudo.twodim
+# ?pseudo.threedim
 
-?pseudo.geefit
+# ?pseudo.geefit
 
 ```
 
 # Example - Bladder cancer data from survival package
 
 
-The functions in `recurrentpseudo`` will be exemplified using the well-known bladder cancer data from the survival package.
-This data set considers data from a clinical cancer trial conducted by the Veterans Administration Cooperative Urological Research Group (Byar: _The veterans administration study of chemoprophylaxis for recurrent stage I bladder tumours: comparisons of placebo, pyridoxine and topical thiotepa._(1980))
-Here, $118$ patients with stage I bladder cancer were randomised to receive placebo, pyridoxine or thiotepa. 
+The functions in `recurrentpseudo` will be exemplified using the well-known bladder cancer data from the survival package.
+This data set considers data from a clinical cancer trial conducted by the Veterans Administration Cooperative Urological Research Group (Byar: _The veterans administration study of chemoprophylaxis for recurrent stage I bladder tumours: comparisons of placebo, pyridoxine and topical thiotepa_ (1980))
+Here, 118 patients with stage I bladder cancer were randomised to receive placebo, pyridoxine or thiotepa. 
 After randomisation, information on occurrences of superficial bladder tumours and any deaths were collected. 
 
 We focus on the comparison between placebo and thiotepa ($n=86$ in total). 
 We model recurrent bladder tumours, and adjust for death (cause 1: bladder cancer disease death, cause 2: other causes).
 
-One-, two- and three-dimensional pseudo-observations are computed based on a single time point ($t=30$) months. 
+One-, two- and three-dimensional pseudo-observations are computed based on a single time point, $t=30$ months. 
 
 For the comparison between placebo and thiotepa on recurrent bladder tumours, the effect measure of interest is the mean ratio $\exp(\beta)$.
 
@@ -222,7 +222,7 @@ rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
 ```
 
-Thus, the estimated mean ratio is $\exp(\hat{\beta}=$ `r exp(xi_diff_1d)` (standard error and confidence intervals can be found using the Delta method).
+Thus, the estimated mean ratio is $\exp(\hat{\beta})=$ `r exp(xi_diff_1d)` (standard error and confidence intervals can be found using the Delta method).
 
 
 Alternatively, the bivariate pseudo-observation model using the binary treatment indicator as covariate can be modelled, i.e. 

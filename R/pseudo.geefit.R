@@ -135,7 +135,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
         a_terms <- formula(paste0("y ~ Ztime +", terms2, ""))
       }
       if (ksel == 1){
-        a_terms <- formula(paste0("y ~ ", terms2, " - 1"))
+        a_terms <- formula(paste0("y ~ ", terms2, ""))
       }
 
     }
