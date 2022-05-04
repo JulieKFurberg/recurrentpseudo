@@ -136,11 +136,11 @@ require(recurrentpseudo)
 
 ```{r}
 # Main functions
-# ?pseudo.onedim
-# ?pseudo.twodim
-# ?pseudo.threedim
+?pseudo.onedim
+?pseudo.twodim
+?pseudo.threedim
 
-# ?pseudo.geefit
+?pseudo.geefit
 
 ```
 

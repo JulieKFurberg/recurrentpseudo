@@ -260,7 +260,7 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
 #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp6F5Myw\remotes5670136514af\JulieKFurberg-recurrentpseudo-4c7035e/DESCRIPTION' ... OK
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp00zNyR\remotes5358279c19d7\JulieKFurberg-recurrentpseudo-dbf81eb/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -273,11 +273,12 @@ require(recurrentpseudo)
 
 ``` r
 # Main functions
-# ?pseudo.onedim
-# ?pseudo.twodim
-# ?pseudo.threedim
+?pseudo.onedim
+#> starting httpd help server ... done
+?pseudo.twodim
+?pseudo.threedim
 
-# ?pseudo.geefit
+?pseudo.geefit
 ```
 
 # Example - Bladder cancer data from survival package
