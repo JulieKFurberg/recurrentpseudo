@@ -260,8 +260,8 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> package 'magrittr' successfully unpacked and MD5 sums checked
 #> 
 #> The downloaded binary packages are in
-#>  C:\Users\jukf\AppData\Local\Temp\RtmpuMaxvk\downloaded_packages
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpuMaxvk\remotes3e6076b4953\JulieKFurberg-recurrentpseudo-b5207e8/DESCRIPTION' ... OK
+#>  C:\Users\jukf\AppData\Local\Temp\RtmpuU7QEu\downloaded_packages
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpuU7QEu\remotes22b420716fa5\JulieKFurberg-recurrentpseudo-305f1f3/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -379,14 +379,14 @@ fit_bladder_1d <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
                                 covar_names = c("Z"))
 fit_bladder_1d
 #> $xi
-#>                     
-#> Zplacebo  0.51037550
-#> Zthiotepa 0.04648551
+#>                       
+#> (Intercept)  0.5103755
+#> Zthiotepa   -0.4638900
 #> 
 #> $sigma
-#>             Zplacebo  Zthiotepa
-#> Zplacebo  0.02646365 0.00000000
-#> Zthiotepa 0.00000000 0.04897824
+#>             (Intercept)   Zthiotepa
+#> (Intercept)  0.02646365 -0.02646365
+#> Zthiotepa   -0.02646365  0.07544189
 
 # Treatment differences
 xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2]), ncol = 1)
@@ -395,8 +395,8 @@ mslabels <- c("treat, mu")
 rownames(xi_diff_1d) <- mslabels
 colnames(xi_diff_1d) <- ""
 xi_diff_1d
-#>                     
-#> treat, mu 0.04648551
+#>                   
+#> treat, mu -0.46389
 
 # Variance matrix for differences
 sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
@@ -406,16 +406,16 @@ sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
 rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
 #>            treat, mu
-#> treat, mu 0.04897824
+#> treat, mu 0.07544189
 ```
 
 Thus, the estimated mean ratio is
-![\\exp(\\hat{\\beta}=](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cexp%28%5Chat%7B%5Cbeta%7D%3D "\exp(\hat{\beta}=")
-1.0475829 (standard error and confidence intervals can be found using
+![\\exp(\\hat{\\beta})=](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cexp%28%5Chat%7B%5Cbeta%7D%29%3D "\exp(\hat{\beta})=")
+0.6288327 (standard error and confidence intervals can be found using
 the Delta method).
 
 Alternatively, the bivariate pseudo-observation model using the binary
-treatment indicator as covariate can be modelled, i.e. 
+treatment indicator as covariate can be fitted, i.e. 
 
 ![
  \\left( \\begin{matrix} \\log \\left(\\mu (t \\mid Z) \\right) \\\\ \\text{cloglog} \\left( S( t \\mid Z) \\right) \\end{matrix} \\right) = \\left( \\begin{matrix} \\log \\left(  \\mu_0(t) \\right)  + {\\beta} {Z} \\\\ \\log \\left(\\Lambda_0(t)\\right) + {\\gamma} {Z}  \\end{matrix} \\right)
@@ -599,6 +599,12 @@ sigma_diff_3d
 #> treat, cif2 1.041862e+12 2.373978e+14 1.535990e+32
 ```
 
+Please note, that the final model fit is not great (see estimates for
+the cumulative incidence for cause 1). This is due to the few number of
+deaths from bladder disease (2 in total, one per treatment). Hence the
+three-dimensional model is fitted to the bladder cancer data to
+illustrate how to fit such a model.
+
 We can compare the three model fits. Note, that the
 ![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
 components match each other.
@@ -606,8 +612,8 @@ components match each other.
 ``` r
 # Compare - should match for mu elements 
 xi_diff_1d
-#>                     
-#> treat, mu 0.04648551
+#>                   
+#> treat, mu -0.46389
 xi_diff_2d
 #>                        
 #> treat, mu   -0.46388999
@@ -620,7 +626,7 @@ xi_diff_3d
 
 sigma_diff_1d
 #>            treat, mu
-#> treat, mu 0.04897824
+#> treat, mu 0.07544189
 sigma_diff_2d
 #>                treat, mu  treat, surv
 #> treat, mu    0.075441889 -0.001491879
@@ -634,9 +640,8 @@ sigma_diff_3d
 
 ### More covariates
 
-Assume that we wish to add an extra baseline covariates to the model
-fit. For the sake of illustration, we have simulated a continuous
-covariate,
+Assume that we wish to add extra baseline covariates to the model fit.
+For the sake of illustration, we have simulated a continuous covariate,
 ![Z_2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_2 "Z_2"),
 and a categorical covariate,
 ![Z_3](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_3 "Z_3").
@@ -646,7 +651,10 @@ corresponds to the binary treatment covariate
 (![Z=1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z%3D1 "Z=1")
 is thiotepa and
 ![Z=0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z%3D0 "Z=0")
-is placebo).
+is placebo). In order to make estimation for these models possible, the
+pseudo-observations are calculated at three time points, namely
+![t=20, 30, 40](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%3D20%2C%2030%2C%2040 "t=20, 30, 40")
+months.
 
 For the one-dimensional model for
 ![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
@@ -657,6 +665,8 @@ it holds that,
 ](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Clog%20%5Cleft%28%20%5Cmu%28t%20%5Cmid%20Z%29%20%5Cright%29%20%3D%20%5Clog%28%5Cmu_0%28t%29%29%20%2B%20%5Cbeta_1%20Z_1%20%2B%20%5Cbeta_2%20Z_2%20%2B%20%5Cbeta_3%20Z_3.%0A "
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta_1 Z_1 + \beta_2 Z_2 + \beta_3 Z_3.
 ")
+
+This can be fitted using the below code,
 
 ``` r
 require(dplyr)
@@ -746,6 +756,8 @@ Or for three-dimensional pseudo-observations, it holds that
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
 ")
 
+These two models are fitted using the below code,
+
 ``` r
 ## Two-dim
 # Pseudo observations at t = 20, 30, 40
@@ -791,11 +803,12 @@ fit3$xi[4]
 
 ## Plots
 
-Non-parametric estimates of
+The following plot shows non-parametric estimates of
 ![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
 and
 ![S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;S "S")
-based on data
+based on data. This is computed using the built-in function
+`pseudo.surv_mu_est`.
 
 ``` r
 require(ggplot2)
@@ -840,7 +853,7 @@ bladmu <- ggplot(aes(x = time, y = mu, linetype = treat), data = pdata) +
   ylab(expression(hat(mu)(t))) + 
   theme_bw() +
   theme(legend.position="bottom", 
-        text = element_text(size=15)) +
+        text = element_text(size=10)) +
     guides(color=guide_legend(nrow=2,byrow=TRUE))
 # bladmu
 
@@ -852,7 +865,7 @@ bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) +
   ylab(expression(hat(S)(t))) + 
   theme_bw() +
     theme(legend.position="bottom", 
-        text = element_text(size=15)) +
+        text = element_text(size=10)) +
     guides(color=guide_legend(nrow=2,byrow=TRUE))
 # bladsurv
 

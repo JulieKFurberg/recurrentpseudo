@@ -225,7 +225,7 @@ sigma_diff_1d
 Thus, the estimated mean ratio is $\exp(\hat{\beta})=$ `r exp(xi_diff_1d)` (standard error and confidence intervals can be found using the Delta method).
 
 
-Alternatively, the bivariate pseudo-observation model using the binary treatment indicator as covariate can be modelled, i.e. 
+Alternatively, the bivariate pseudo-observation model using the binary treatment indicator as covariate can be fitted, i.e. 
 $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) = \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta} {Z} \\ \log \left(\Lambda_0(t)\right) + {\gamma} {Z}  \end{matrix} \right)
 $$
@@ -328,7 +328,9 @@ rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
 
 ```
-
+Please note, that the final model fit is not great (see estimates for the cumulative incidence for cause 1). 
+This is due to the few number of deaths from bladder disease (2 in total, one per treatment). 
+Hence the three-dimensional model is fitted to the bladder cancer data to illustrate how to fit such a model.
 
 
 We can compare the three model fits. Note, that the $\mu$ components match each other. 
@@ -345,7 +347,10 @@ sigma_diff_3d
 
 
 ### More covariates
-Assume that we wish to add an extra baseline covariates to the model fit. For the sake of illustration, we have simulated a continuous covariate, $Z_2$, and a categorical covariate, $Z_3$. The covariate $Z_1$ corresponds to the binary treatment covariate ($Z=1$ is thiotepa and $Z=0$ is placebo).
+Assume that we wish to add extra baseline covariates to the model fit. 
+For the sake of illustration, we have simulated a continuous covariate, $Z_2$, and a categorical covariate, $Z_3$. 
+The covariate $Z_1$ corresponds to the binary treatment covariate ($Z=1$ is thiotepa and $Z=0$ is placebo).
+In order to make estimation for these models possible, the pseudo-observations are calculated at three time points, namely $t=20, 30, 40$ months.
 
 For the one-dimensional model for $\mu$ it holds that,
 
@@ -353,6 +358,7 @@ $$
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta_1 Z_1 + \beta_2 Z_2 + \beta_3 Z_3.
 $$
 
+This can be fitted using the below code,
 ```{r eval = T}
 require(dplyr)
 
@@ -401,6 +407,7 @@ $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
 $$
 
+These two models are fitted using the below code,
 ```{r eval = T}
 ## Two-dim
 # Pseudo observations at t = 20, 30, 40
@@ -443,7 +450,8 @@ fit3$xi[4]
 
 ## Plots 
 
-Non-parametric estimates of $\mu$ and $S$ based on data
+The following plot shows non-parametric estimates of $\mu$ and $S$ based on data. 
+This is computed using the built-in function `pseudo.surv_mu_est`.
 ```{r}
 require(ggplot2)
 require(gridExtra)
@@ -480,7 +488,7 @@ bladmu <- ggplot(aes(x = time, y = mu, linetype = treat), data = pdata) +
   ylab(expression(hat(mu)(t))) + 
   theme_bw() +
   theme(legend.position="bottom", 
-        text = element_text(size=15)) +
+        text = element_text(size=10)) +
     guides(color=guide_legend(nrow=2,byrow=TRUE))
 # bladmu
 
@@ -492,7 +500,7 @@ bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) +
   ylab(expression(hat(S)(t))) + 
   theme_bw() +
     theme(legend.position="bottom", 
-        text = element_text(size=15)) +
+        text = element_text(size=10)) +
     guides(color=guide_legend(nrow=2,byrow=TRUE))
 # bladsurv
 
@@ -502,7 +510,7 @@ blad_both
 ```
 
 
-Let's make a plot displaying the pseudo-observations of $\mu$ for a given individual over time
+Let's make a plot displaying the pseudo-observations of $\mu$ for a given individual over time,
 ```{r}
 pseudo_allt <- pseudo.twodim(tstart = bladdersub$start,
                              tstop = bladdersub$stop,
