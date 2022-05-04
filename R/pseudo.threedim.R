@@ -1,6 +1,7 @@
 #' Function that computes 3-dim pseudo-observations
 #'
-#' This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences
+#' This function computes 3-dimensional pseudo-observations of the marginal mean function
+#' (in the presence of terminal events) and cumulative incidences
 #' of death causes 1 and 2
 #' @param tstart Start time - expecting counting process notation
 #' @param tstop Stop time - expecting counting process notation

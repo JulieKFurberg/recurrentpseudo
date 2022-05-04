@@ -82,7 +82,7 @@ Following, $f(X)$ is replaced by $\hat{\theta}_i (\cdot)$ in the model fit.
 
 The model parameters, $\xi$, are estimated using generalised estimating equations (GEE), see Liang and Zeger (_Longitudinal data analysis using generalized linear models (1986)_). 
 
-The GEE procedure can accommodate the fact that each individual can have several (pseudo-)observations. 
+The GEE procedure accommodates the fact that each individual can have several (pseudo-)observations. 
 
 
 ## One-dimensional pseudo-observations 
@@ -133,6 +133,16 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 require(recurrentpseudo)
 ```
 
+
+```{r}
+# Main functions
+?pseudo.onedim
+?pseudo.twodim
+?pseudo.threedim
+
+?pseudo.geefit
+
+```
 
 # Example - Bladder cancer data from survival package
 

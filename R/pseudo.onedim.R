@@ -1,6 +1,7 @@
 #' Function that computes univariate pseudo-observations
 #'
-#' This function computes univariate pseudo-observations of the marginal mean function (in the presence of terminal events)
+#' This function computes univariate pseudo-observations of the marginal mean function
+#' (in the presence of terminal events)
 #' @param tstart Start time - expecting counting process notation
 #' @param tstop Stop time - expecting counting process notation
 #' @param status Status variable (0 = censoring, 1 = recurrent event, 2 = death)

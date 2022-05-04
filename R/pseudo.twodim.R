@@ -1,6 +1,7 @@
 #' Function that computes bivariate pseudo-observations
 #'
-#' This function computes bivariate pseudo-observations of the marginal mean function and the survival probability
+#' This function computes bivariate pseudo-observations of the marginal mean function
+#' (in the presence of terminal events) and the survival probability
 #' @param tstart Start time - expecting counting process notation
 #' @param tstop Stop time - expecting counting process notation
 #' @param status Status variable (0 = censoring, 1 = recurrent event, 2 = death)

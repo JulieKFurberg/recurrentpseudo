@@ -164,7 +164,7 @@ are estimated using generalised estimating equations (GEE), see Liang
 and Zeger (*Longitudinal data analysis using generalized linear models
 (1986)*).
 
-The GEE procedure can accommodate the fact that each individual can have
+The GEE procedure accommodates the fact that each individual can have
 several (pseudo-)observations.
 
 ## One-dimensional pseudo-observations
@@ -256,17 +256,11 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> tibble   (3.1.6 -> 3.1.7) [CRAN]
-#> 
-#>   There is a binary version available but the source version is later:
-#>        binary source needs_compilation
-#> tibble  3.1.6  3.1.7              TRUE
-#> 
 #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
 #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpApB8tu\remotes2df8701a2a54\JulieKFurberg-recurrentpseudo-a6dc090/DESCRIPTION' ... OK
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp42aACy\remotes43fc24002a5a\JulieKFurberg-recurrentpseudo-ef3d681/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -275,6 +269,15 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> 
 
 require(recurrentpseudo)
+```
+
+``` r
+?pseudo.onedim
+#> starting httpd help server ... done
+?pseudo.twodim
+?pseudo.threedim
+
+?pseudo.geefit
 ```
 
 # Example - Bladder cancer data from survival package
@@ -856,7 +859,7 @@ bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) +
 blad_both <- grid.arrange(bladmu, bladsurv, ncol = 2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 blad_both
@@ -866,8 +869,9 @@ blad_both
 #> 2 2 (1-1,2-2) arrange gtable[layout]
 ```
 
-Let’s make a plot displaying the pseudo-observations for a given
-individual over time
+Let’s make a plot displaying the pseudo-observations of
+![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
+for a given individual over time
 
 ``` r
 pseudo_allt <- pseudo.twodim(tstart = bladdersub$start,
@@ -933,7 +937,7 @@ allp <- grid.arrange(pseudo_id10, pseudo_id12,
                      ncol = 2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 allp
