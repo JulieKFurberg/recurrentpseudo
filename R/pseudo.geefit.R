@@ -122,7 +122,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
     # Add response etc
-    if (pseudodata$dim %in% c("twodim", "threedim")){
+    if (class(pseudodata) %in% c("twodim", "threedim")){
       if (ksel > 1){
         a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1"))
       }
@@ -130,7 +130,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
         a_terms <- formula(paste0("y ~ esttype + ", terms2, "- 1"))
       }
     }
-    if (pseudodata$dim %in% c("onedim")){
+    if (class(pseudodata) %in% c("onedim")){
       if (ksel > 1){
         a_terms <- formula(paste0("y ~ Ztime +", terms2, ""))
       }
