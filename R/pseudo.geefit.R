@@ -2,14 +2,18 @@
 #'
 #' This function fits a GEE model based on pseudo-observations of the marginal mean function, and
 #' the survival probability or cumulative incidences of two death causes
-#' as returned by \code{"pseudo.onedim()"} (marginal mean function), or
-#' \code{"pseudo.twodim()"} (marginal mean function and survival probability), or
-#' \code{"pseudo.threedim()"} (marginal mean function and cumulative incidences of death causes 1 and 2)
+#' as returned by \code{pseudo.onedim()} (marginal mean function), or
+#' \code{pseudo.twodim()} (marginal mean function and survival probability), or
+#' \code{pseudo.threedim()} (marginal mean function and cumulative incidences of death causes 1 and 2)
 #'
 #' @param pseudodata Data set containing pseudo-observations. Expecting output from pseudo.twodim()
 #' @param covar_names Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")
 #' @keywords recurrentpseudo
 #' @import dplyr survival geepack stringr
+#' #' @return
+#' An object of class \code{pseudo.geefit}.
+#' \code{xi} contains the estimated model parameters
+#' \code{sigma} contains the estimated variance matrix corresponding to \code{xi}
 #' @examples
 #' # Bladder cancer data from survival package
 #' require(survival)
@@ -71,7 +75,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   # Make time point variable
   pseudo_l_o$Ztime <- as.factor(pseudo_l_o$ts)
 
-  if (class(pseudodata) == "onedim"){
+  if (class(pseudodata) == "pseudo.onedim"){
     size <- 1
     pseudo_l_o2 <- pseudo_l_o
 
@@ -82,7 +86,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     link <- rep("log", ksel)
   }
 
-  if (class(pseudodata) == "twodim"){
+  if (class(pseudodata) == "pseudo.twodim"){
     size <- 2
     # Due to geese parametrization of "cloglog" we need to fit 1 - surv instead
     # fixing this now
@@ -99,7 +103,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   }
 
 
-  if (class(pseudodata) == "threedim"){
+  if (class(pseudodata) == "pseudo.threedim"){
     size <- 3
     # Subset - remove "surv"
     pseudo_l <- subset(pseudo_l_o, esttype != "surv")
@@ -122,7 +126,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
     # Add response etc
-    if (class(pseudodata) %in% c("twodim", "threedim")){
+    if (class(pseudodata) %in% c("pseudo.twodim", "pseudo.threedim")){
       if (ksel > 1){
         a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1"))
       }
@@ -130,7 +134,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
         a_terms <- formula(paste0("y ~ esttype + ", terms2, "- 1"))
       }
     }
-    if (class(pseudodata) %in% c("onedim")){
+    if (class(pseudodata) %in% c("pseudo.onedim")){
       if (ksel > 1){
         a_terms <- formula(paste0("y ~ Ztime +", terms2, ""))
       }
@@ -153,7 +157,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     summary(fit)
 
     # Save model estimates
-    if (class(pseudodata) == "onedim"){
+    if (class(pseudodata) == "pseudo.onedim"){
       # Save estimates
       xi <- fit$beta
       sigma <- fit$vbeta
@@ -167,7 +171,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
 
-    if (class(pseudodata) == "twodim"){
+    if (class(pseudodata) == "pseudo.twodim"){
       # Save estimates and
       # Change to get the right parametrization
 
@@ -201,7 +205,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
       colnames(xi) <- ""
   }
 
-  if (class(pseudodata) == "threedim"){
+  if (class(pseudodata) == "pseudo.threedim"){
       # Save estimates and
       # Change to get the right parametrization
       ## For mu, in order of covariates
@@ -246,8 +250,10 @@ pseudo.geefit <- function(pseudodata, covar_names){
 
 
 # Output
-list(xi = xi,
+obj <- list(xi = xi,
      sigma = sigma
      )
+class(obj) <- "pseudo.geefit"
+return(obj)
 
 }

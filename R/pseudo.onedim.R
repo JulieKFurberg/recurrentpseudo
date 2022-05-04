@@ -13,13 +13,12 @@
 #' @export
 #' @import dplyr stats survival geepack
 #' @return
-#' Computed one-dimensional pseudo-observations.
-#' \code{outdata} contains the wide version of the computed pseudo-observations (one row per id)
-#' \code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id)
-#' \code{indata} contains the input data which the pseudo-observations are based on
-#' \code{ts} vector with time points used for computation of pseudo-observations
-#' \code{k} number of time points used for computation of pseudo-observations (length(ts))
-#' \code{dim} = "onedim" since pseudo-observations are based on one-dim procedure
+#' An object of class \code{pseudo.onedim}.
+#' \code{outdata} contains the wide version of the computed pseudo-observations (one row per id).
+#' \code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id).
+#' \code{indata} contains the input data which the pseudo-observations are based on.
+#' \code{ts} vector with time points used for computation of pseudo-observations.
+#' \code{k} number of time points used for computation of pseudo-observations (length(ts)).
 #'
 #' @examples
 #' # Example: Bladder cancer data from survival package
@@ -150,7 +149,7 @@ pseudo.onedim <- function(tstart, tstop, status, covar_names, id, tk, data){
               ts = ts,
               indata = indata)
   # Set class
-  class(obj) <- "onedim"
+  class(obj) <- "pseudo.onedim"
 
   return(obj)
 }

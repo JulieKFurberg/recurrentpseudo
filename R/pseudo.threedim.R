@@ -13,6 +13,13 @@
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
 #' @import dplyr stats survival geepack mets
+#' @return
+#' An object of class \code{pseudo.threedim}.
+#' \code{outdata} contains the wide version of the computed pseudo-observations (one row per id).
+#' \code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id).
+#' \code{indata} contains the input data which the pseudo-observations are based on.
+#' \code{ts} vector with time points used for computation of pseudo-observations.
+#' \code{k} number of time points used for computation of pseudo-observations (length(ts)).
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)
@@ -180,6 +187,6 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
               indata = indata)
 
   # Set class
-  class(obj) <- "threedim"
+  class(obj) <- "pseudo.threedim"
   return(obj)
 }
