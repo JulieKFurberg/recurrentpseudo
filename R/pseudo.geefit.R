@@ -71,7 +71,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   # Make time point variable
   pseudo_l_o$Ztime <- as.factor(pseudo_l_o$ts)
 
-  if (pseudodata$dim == "onedim"){
+  if (class(pseudodata) == "onedim"){
     size <- 1
     pseudo_l_o2 <- pseudo_l_o
 
@@ -82,7 +82,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     link <- rep("log", ksel)
   }
 
-  if (pseudodata$dim == "twodim"){
+  if (class(pseudodata) == "twodim"){
     size <- 2
     # Due to geese parametrization of "cloglog" we need to fit 1 - surv instead
     # fixing this now
@@ -99,7 +99,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   }
 
 
-  if (pseudodata$dim == "threedim"){
+  if (class(pseudodata) == "threedim"){
     size <- 3
     # Subset - remove "surv"
     pseudo_l <- subset(pseudo_l_o, esttype != "surv")
@@ -153,7 +153,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     summary(fit)
 
     # Save model estimates
-    if (pseudodata$dim == "onedim"){
+    if (class(pseudodata) == "onedim"){
       # Save estimates
       xi <- fit$beta
       sigma <- fit$vbeta
@@ -167,7 +167,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
 
-    if (pseudodata$dim == "twodim"){
+    if (class(pseudodata) == "twodim"){
       # Save estimates and
       # Change to get the right parametrization
 
@@ -201,7 +201,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
       colnames(xi) <- ""
   }
 
-  if (pseudodata$dim == "threedim"){
+  if (class(pseudodata) == "threedim"){
       # Save estimates and
       # Change to get the right parametrization
       ## For mu, in order of covariates

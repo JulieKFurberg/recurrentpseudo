@@ -24,7 +24,8 @@ pseudo.threedim(tstart, tstop, status, covar_names, id, tk, data, deathtype)
 \item{deathtype}{Type of death (cause 1 or cause 2)}
 }
 \description{
-This function computes 3-dimensional pseudo-observations of the marginal mean function and cumulative incidences
+This function computes 3-dimensional pseudo-observations of the marginal mean function
+(in the presence of terminal events) and cumulative incidences
 of death causes 1 and 2
 }
 \examples{
@@ -59,8 +60,13 @@ pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
                                      id = bladdersub$id,
                                      deathtype = bladdersub$deathtype,
                                      covar_names = "Z",
-                                     tk = c(20, 30, 40),
+                                     tk = c(30),
                                      data = bladdersub)
 pseudo_bladder_3d
+
+# GEE fit
+fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
+                                covar_names = c("Z"))
+fit_bladder_3d
 }
 \keyword{recurrentpseudo}

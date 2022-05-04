@@ -2,7 +2,7 @@
 % Please edit documentation in R/pseudo.surv_mu_est.R
 \name{pseudo.surv_mu_est}
 \alias{pseudo.surv_mu_est}
-\title{Help function parsed inside pseudo.twodim()}
+\title{Help function parsed inside pseudo.onedim() and pseudo.twodim()}
 \usage{
 pseudo.surv_mu_est(inputdata, tstart, tstop, status, id)
 }
@@ -18,7 +18,7 @@ pseudo.surv_mu_est(inputdata, tstart, tstop, status, id)
 \item{id}{ID variable for subject}
 }
 \description{
-Help function parsed inside pseudo.twodim()
+Help function parsed inside pseudo.onedim() and pseudo.twodim()
 }
 \examples{
 # Example: Bladder cancer data from survival package
@@ -26,6 +26,7 @@ require(survival)
 
 # Make a three level status variable
 bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
+bladder1$status <- bladder1$status3
 
 # Add one extra day for the two patients with start=stop=0
 # subset(bladder1, stop <= start)
@@ -41,11 +42,11 @@ levels(bladdersub$Z) <- c("placebo", "thiotepa")
 head(bladdersub)
 
 
-# Estimate mu and cif1 and cif2 on data
+# Estimate mu and surv on data
 pseudo.surv_mu_est(inputdata = bladdersub,
-                       tstart = bladdersub$start,
-                       tstop = bladdersub$stop,
-                       status = bladdersub$status3,
-                       id = bladdersub$id)
+                   tstart = bladdersub$start,
+                   tstop = bladdersub$stop,
+                   status = bladdersub$status,
+                   id = bladdersub$id)
 }
 \keyword{recurrentpseudo}

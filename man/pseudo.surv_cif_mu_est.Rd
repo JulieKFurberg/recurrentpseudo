@@ -28,6 +28,7 @@ require(survival)
 
 # Make a three level status variable
 bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
+bladdersub$status <- bladdersub$status3
 
 # Add one extra day for the two patients with start=stop=0
 # subset(bladder1, stop <= start)
@@ -55,7 +56,7 @@ bladdersub$tstop <- bladdersub$stop
 pseudo.surv_cif_mu_est(inputdata = bladdersub,
                        tstart = bladdersub$start,
                        tstop = bladdersub$stop,
-                       status = bladdersub$status3,
+                       status = bladdersub$status,
                        deathtype = bladdersub$deathtype,
                        id = bladdersub$id)
 }

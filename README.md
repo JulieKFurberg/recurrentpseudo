@@ -256,12 +256,11 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> package 'cli' successfully unpacked and MD5 sums checked
-#> package 'magrittr' successfully unpacked and MD5 sums checked
-#> 
-#> The downloaded binary packages are in
-#>  C:\Users\jukf\AppData\Local\Temp\RtmpuU7QEu\downloaded_packages
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpuU7QEu\remotes22b420716fa5\JulieKFurberg-recurrentpseudo-305f1f3/DESCRIPTION' ... OK
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpGeI1Xb\remotes56a82cf62f88\JulieKFurberg-recurrentpseudo-12d7647/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -884,7 +883,7 @@ blad_both
 
 Let’s make a plot displaying the pseudo-observations of
 ![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
-for a given individual over time
+for a given individual over time,
 
 ``` r
 pseudo_allt <- pseudo.twodim(tstart = bladdersub$start,
@@ -961,6 +960,12 @@ allp
 #> 3 3 (2-2,1-1) arrange gtable[layout]
 #> 4 4 (2-2,2-2) arrange gtable[layout]
 ```
+
+## Upcoming
+
+To be added
+
+-   Plot of all pseudo-observations for a given individual
 
 # Citation
 

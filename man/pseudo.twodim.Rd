@@ -22,7 +22,8 @@ pseudo.twodim(tstart, tstop, status, covar_names, id, tk, data)
 \item{data}{Data set which contains variables of interest}
 }
 \description{
-This function computes bivariate pseudo-observations of the marginal mean function and the survival probability
+This function computes bivariate pseudo-observations of the marginal mean function
+(in the presence of terminal events) and the survival probability
 }
 \examples{
 # Example: Bladder cancer data from survival package
@@ -50,7 +51,7 @@ pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
                                    status = bladdersub$status3,
                                    id = bladdersub$id,
                                    covar_names = "Z",
-                                   tk = c(20, 30, 40),
+                                   tk = c(30),
                                    data = bladdersub)
 head(pseudo_bladder_2d$outdata)
 

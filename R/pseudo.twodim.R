@@ -142,11 +142,15 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
                                    y = first[,c("id", covar_names)],
                                    by = c("id"  = "id"))
 
+  # Return
+  obj <- list(outdata_long = outdata_long_ord_xZ,
+             outdata = outdata_xZ,
+             k = k,
+             ts = ts,
+             indata = indata)
 
-  list(outdata_long = outdata_long_ord_xZ,
-       outdata = outdata_xZ,
-       k = k,
-       ts = ts,
-       indata = indata,
-       dim = "twodim")
+  # Set class
+  class(obj) <- "twodim"
+
+  return(obj)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/pseudo.geefit.R
 \name{pseudo.geefit}
 \alias{pseudo.geefit}
-\title{Function that computes makes GEE model fit}
+\title{Function that makes GEE model fit for recurrent pseudo-observations}
 \usage{
 pseudo.geefit(pseudodata, covar_names)
 }
@@ -12,8 +12,11 @@ pseudo.geefit(pseudodata, covar_names)
 \item{covar_names}{Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")}
 }
 \description{
-This function fits a GEE model based bivariate pseudo-observations of the marginal mean function and
-the survival probability as returned by pseudo.onedim(), pseudo.twodim() or pseudo.threedim()
+This function fits a GEE model based on pseudo-observations of the marginal mean function, and
+the survival probability or cumulative incidences of two death causes
+as returned by \code{"pseudo.onedim()"} (marginal mean function), or
+\code{"pseudo.twodim()"} (marginal mean function and survival probability), or
+\code{"pseudo.threedim()"} (marginal mean function and cumulative incidences of death causes 1 and 2)
 }
 \examples{
 # Bladder cancer data from survival package
@@ -44,7 +47,7 @@ pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
                                    status = bladdersub$status3,
                                    id = bladdersub$id,
                                    covar_names = "Z",
-                                   tk = c(20, 30, 40),
+                                   tk = c(30),
                                    data = bladdersub)
 
 # Data in wide format
