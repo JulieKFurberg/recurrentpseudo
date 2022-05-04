@@ -450,7 +450,7 @@ fit3$xi[4]
 
 ## Plots 
 
-The following plot shows non-parametric estimates of $\mu$ and $S$ based on data. 
+The following plot shows non-parametric estimates of $\mu$ and $S$ based on the bladder cancer data. 
 This is computed using the built-in function `pseudo.surv_mu_est`.
 ```{r}
 require(ggplot2)

@@ -260,7 +260,7 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
 #> Error in download.file(url, destfile, method, mode = "wb", ...) : 
 #>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpGeI1Xb\remotes56a82cf62f88\JulieKFurberg-recurrentpseudo-12d7647/DESCRIPTION' ... OK
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp6F5Myw\remotes5670136514af\JulieKFurberg-recurrentpseudo-4c7035e/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -386,6 +386,9 @@ fit_bladder_1d
 #>             (Intercept)   Zthiotepa
 #> (Intercept)  0.02646365 -0.02646365
 #> Zthiotepa   -0.02646365  0.07544189
+#> 
+#> attr(,"class")
+#> [1] "pseudo.geefit"
 
 # Treatment differences
 xi_diff_1d <- as.matrix(c(fit_bladder_1d$xi[2]), ncol = 1)
@@ -465,6 +468,9 @@ fit_bladder_2d
 #> esttypemu:Zthiotepa            -0.001491879
 #> esttypesurv                    -0.123251791
 #> esttypesurv:Zthiotepa           0.260915569
+#> 
+#> attr(,"class")
+#> [1] "pseudo.geefit"
 
 # Treatment differences
 xi_diff_2d <- as.matrix(c(fit_bladder_2d$xi[2],
@@ -557,6 +563,9 @@ fit_bladder_3d
 #> esttypecif1:Zthiotepa          2.013052e+00 -1.102815e+14          2.373978e+14
 #> esttypecif2                   -1.102815e+14  6.782195e+31         -6.782195e+31
 #> esttypecif2:Zthiotepa          2.373978e+14 -6.782195e+31          1.535990e+32
+#> 
+#> attr(,"class")
+#> [1] "pseudo.geefit"
 
 # Treatment differences
 xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[2],
@@ -806,8 +815,8 @@ The following plot shows non-parametric estimates of
 ![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
 and
 ![S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;S "S")
-based on data. This is computed using the built-in function
-`pseudo.surv_mu_est`.
+based on the bladder cancer data. This is computed using the built-in
+function `pseudo.surv_mu_est`.
 
 ``` r
 require(ggplot2)
