@@ -11,12 +11,16 @@ pseudo.geefit(pseudodata, covar_names)
 
 \item{covar_names}{Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")}
 }
+\value{
+An object of class \code{pseudo.geefit}. \code{xi} contains the estimated model parameters
+\code{sigma} contains the estimated variance matrix corresponding to \code{xi}
+}
 \description{
 This function fits a GEE model based on pseudo-observations of the marginal mean function, and
 the survival probability or cumulative incidences of two death causes
-as returned by \code{"pseudo.onedim()"} (marginal mean function), or
-\code{"pseudo.twodim()"} (marginal mean function and survival probability), or
-\code{"pseudo.threedim()"} (marginal mean function and cumulative incidences of death causes 1 and 2)
+as returned by \code{pseudo.onedim()} (marginal mean function), or
+\code{pseudo.twodim()} (marginal mean function and survival probability), or
+\code{pseudo.threedim()} (marginal mean function and cumulative incidences of death causes 1 and 2)
 }
 \examples{
 # Bladder cancer data from survival package

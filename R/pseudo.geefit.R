@@ -9,11 +9,9 @@
 #' @param pseudodata Data set containing pseudo-observations. Expecting output from pseudo.twodim()
 #' @param covar_names Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack stringr
-#' #' @return
-#' An object of class \code{pseudo.geefit}.
-#' \code{xi} contains the estimated model parameters
+#' @return An object of class \code{pseudo.geefit}. \code{xi} contains the estimated model parameters
 #' \code{sigma} contains the estimated variance matrix corresponding to \code{xi}
+#' @import dplyr survival geepack stringr
 #' @examples
 #' # Bladder cancer data from survival package
 #' require(survival)

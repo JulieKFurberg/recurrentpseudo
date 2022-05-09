@@ -256,11 +256,12 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmp00zNyR\remotes5358279c19d7\JulieKFurberg-recurrentpseudo-dbf81eb/DESCRIPTION' ... OK
+#> package 'cli' successfully unpacked and MD5 sums checked
+#> package 'magrittr' successfully unpacked and MD5 sums checked
+#> 
+#> The downloaded binary packages are in
+#>  C:\Users\jukf\AppData\Local\Temp\RtmpG21Daz\downloaded_packages
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpG21Daz\remotesbc04c07740e\JulieKFurberg-recurrentpseudo-5ee630e/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -354,7 +355,7 @@ treatment indicator as covariate, i.e. we model
 ")
 
 One-dimensional pseudo-observations and GEE fit can be computed using
-the following code
+the following code,
 
 ``` r
 # Pseudo observations at t = 30

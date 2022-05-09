@@ -187,7 +187,7 @@ $$
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta Z
 $$
 
-One-dimensional pseudo-observations and GEE fit can be computed using the following code
+One-dimensional pseudo-observations and GEE fit can be computed using the following code,
 
 ```{r cache = F}
 # Pseudo observations at t = 30

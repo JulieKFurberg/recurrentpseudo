@@ -23,6 +23,14 @@ pseudo.threedim(tstart, tstop, status, covar_names, id, tk, data, deathtype)
 
 \item{deathtype}{Type of death (cause 1 or cause 2)}
 }
+\value{
+An object of class \code{pseudo.threedim}.
+\code{outdata} contains the wide version of the computed pseudo-observations (one row per id).
+\code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id).
+\code{indata} contains the input data which the pseudo-observations are based on.
+\code{ts} vector with time points used for computation of pseudo-observations.
+\code{k} number of time points used for computation of pseudo-observations (length(ts)).
+}
 \description{
 This function computes 3-dimensional pseudo-observations of the marginal mean function
 (in the presence of terminal events) and cumulative incidences
