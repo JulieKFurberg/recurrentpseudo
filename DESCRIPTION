@@ -5,7 +5,6 @@ Date: 2022-05-09
 Authors@R: 
     person("Julie Kjærulff", "Furberg", , "julie_furberg@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8785-1462"))
-Maintainer: Julie Kjærulff Furberg <julie_furberg@hotmail.com>
 Description: This package computes one-, two- and three-dimensional 
     pseudo-observations based on recurrent events and terminal events. 
     Generalised linear models are fitted using generalised estimating 
