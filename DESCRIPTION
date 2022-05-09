@@ -1,11 +1,16 @@
 Package: recurrentpseudo
 Title: Creates pseudo-observations and analysis for recurrent event data
-Version: 0.0.0.9000
+Version: 1.0.1
+Date: 2022-05-09
 Authors@R: 
     person("Julie Kjærulff", "Furberg", , "julie_furberg@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8785-1462"))
-Description: This package computes one-, two- and three-dimensional pseudo-observations based on recurrent events and terminal events. Generalised linear models are fitted using generalised estimating equations. 
+Maintainer: Julie Kjærulff Furberg <julie_furberg@hotmail.com>
+Description: This package computes one-, two- and three-dimensional pseudo-observations based on recurrent events and terminal events. 
+Generalised linear models are fitted using generalised estimating equations. Technical details on the bivariate procedure can be found in `Bivariate pseudo-observations for recurrent event analysis
+with terminal events` (Furberg et al., 2021) 
 License: GPL (>= 2)
+URL: https://github.com/JulieKFurberg/recurrentpseudo
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
