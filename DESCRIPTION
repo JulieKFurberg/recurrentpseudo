@@ -27,7 +27,7 @@ Imports:
     magrittr, 
     ggplot2, 
     gridExtra, 
-    qdf
+    qpdf
 Suggests: 
     knitr,
     rmarkdown,
