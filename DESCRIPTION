@@ -20,7 +20,9 @@ Imports:
     stringr,
     mets,
     timereg,
-    magrittr
+    magrittr, 
+    ggplot2, 
+    gridExtra
 Suggests: 
     knitr,
     rmarkdown,
