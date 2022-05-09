@@ -127,11 +127,12 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpAV27r5\remotes5dac2f6a4c29\JulieKFurberg-recurrentpseudo-72fa2c9/DESCRIPTION' ... OK
+#> package 'cli' successfully unpacked and MD5 sums checked
+#> package 'magrittr' successfully unpacked and MD5 sums checked
+#> 
+#> The downloaded binary packages are in
+#> 	C:\Users\jukf\AppData\Local\Temp\RtmpCqsPhd\downloaded_packages
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpCqsPhd\remotes5f8c2e701cc7\JulieKFurberg-recurrentpseudo-9e5166c/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -637,6 +638,8 @@ fit3$xi[4]
 #> [1] -0.3215754
 ```
 
+
+<!--
 ## Plots 
 
 The following plot shows non-parametric estimates of $\mu$ and $S$ based on the bladder cancer data. 
@@ -793,7 +796,6 @@ allp
 #> 3 3 (2-2,1-1) arrange gtable[layout]
 #> 4 4 (2-2,2-2) arrange gtable[layout]
 ```
-<!--
 ## Upcoming
 To be added
 

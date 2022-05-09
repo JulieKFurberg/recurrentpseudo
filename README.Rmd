@@ -448,6 +448,8 @@ fit2$xi[4]
 fit3$xi[4]
 ```
 
+
+<!--
 ## Plots 
 
 The following plot shows non-parametric estimates of $\mu$ and $S$ based on the bladder cancer data. 
@@ -578,7 +580,6 @@ allp
 
 
 ```
-<!--
 ## Upcoming
 To be added
 
