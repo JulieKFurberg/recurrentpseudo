@@ -583,6 +583,8 @@ allp
 To be added
 
 - Plot of all pseudo-observations for a given individual
+
+..
 -->
 
 

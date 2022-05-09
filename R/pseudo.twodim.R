@@ -18,6 +18,7 @@
 #' \code{indata} contains the input data which the pseudo-observations are based on.
 #' \code{ts} vector with time points used for computation of pseudo-observations.
 #' \code{k} number of time points used for computation of pseudo-observations (length(ts)).
+#' @references Furberg, J.K., Andersen, P.K., Korn, S. et al. Bivariate pseudo-observations for recurrent event analysis with terminal events. Lifetime Data Anal (2021). https://doi.org/10.1007/s10985-021-09533-5
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)

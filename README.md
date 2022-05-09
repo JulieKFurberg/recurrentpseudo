@@ -254,8 +254,19 @@ We assume that
 require(devtools)
 
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
-#> Error: Failed to install 'recurrentpseudo' from GitHub:
-#>   Line starting 'Generalised linear m ...' is malformed!
+#> cli      (3.2.0 -> 3.3.0) [CRAN]
+#> magrittr (2.0.2 -> 2.0.3) [CRAN]
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpAV27r5\remotes5dac2f6a4c29\JulieKFurberg-recurrentpseudo-72fa2c9/DESCRIPTION' ... OK
+#> * preparing 'recurrentpseudo':
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#> * building 'recurrentpseudo_1.0.0.tar.gz'
+#> 
 
 require(recurrentpseudo)
 ```
@@ -964,6 +975,8 @@ allp
 To be added
 
 - Plot of all pseudo-observations for a given individual
+
+..
 -->
 
 # Citation
