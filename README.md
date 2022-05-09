@@ -260,8 +260,8 @@ devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> package 'magrittr' successfully unpacked and MD5 sums checked
 #> 
 #> The downloaded binary packages are in
-#>  C:\Users\jukf\AppData\Local\Temp\RtmpCqsPhd\downloaded_packages
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpCqsPhd\remotes5f8c2e701cc7\JulieKFurberg-recurrentpseudo-9e5166c/DESCRIPTION' ... OK
+#>  C:\Users\jukf\AppData\Local\Temp\RtmpYh1MaN\downloaded_packages
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpYh1MaN\remotes42e88df31e6\JulieKFurberg-recurrentpseudo-03df329/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -810,171 +810,113 @@ fit3$xi[4]
 #> [1] -0.3215754
 ```
 
-<!--
-## Plots 
-
-The following plot shows non-parametric estimates of $\mu$ and $S$ based on the bladder cancer data. 
-This is computed using the built-in function `pseudo.surv_mu_est`.
-
-```r
-require(ggplot2)
-#> Indlæser krævet pakke: ggplot2
-require(gridExtra)
-#> Indlæser krævet pakke: gridExtra
-#> 
-#> Vedhæfter pakke: 'gridExtra'
-#> Det følgende objekt er maskeret fra 'package:dplyr':
-#> 
-#>     combine
-
-# Re-level 
-bladdersub$status <- bladdersub$status3
-
-# Subset and estimate per group
-Z1dat <- subset(bladdersub, Z == 'thiotepa')
-Z0dat <- subset(bladdersub, Z == 'placebo')
-
-estimates_treated <- pseudo.surv_mu_est(inputdata = Z1dat,
-                                        tstart = Z1dat$start, 
-                                        tstop = Z1dat$stop,
-                                        status = Z1dat$status,
-                                        id = Z1dat$id)
-estimates_nontreated <- pseudo.surv_mu_est(inputdata = Z0dat,
-                                           tstart = Z0dat$start, 
-                                           tstop = Z0dat$stop,
-                                           status = Z0dat$status,
-                                           id = Z0dat$id)
-
-pdata <- data.frame(mu = c(estimates_treated$mu$mu, estimates_nontreated$mu$mu), 
-                    time = c(estimates_treated$mu$time, estimates_nontreated$mu$time), 
-                    surv = c(estimates_treated$surv$surv, estimates_nontreated$surv$surv), 
-                    treat = c(rep("Placebo", length(estimates_treated$mu$mu)),
-                              rep("Thiotepa", length(estimates_nontreated$mu$mu))))
-
-# Mu 
-bladmu <- ggplot(aes(x = time, y = mu, linetype = treat), data = pdata) + 
-  geom_step(size = 1) + 
-  scale_linetype_discrete("Treatment") + 
-  xlab("Time since randomisation (months)") + 
-  ylab(expression(hat(mu)(t))) + 
-  theme_bw() +
-  theme(legend.position="bottom", 
-        text = element_text(size=10)) +
-    guides(color=guide_legend(nrow=2,byrow=TRUE))
-# bladmu
-
-# Surv
-bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) + 
-  geom_step(size = 1) + 
-  scale_linetype_discrete("Treatment") + 
-  xlab("Time since randomisation (months)") + 
-  ylab(expression(hat(S)(t))) + 
-  theme_bw() +
-    theme(legend.position="bottom", 
-        text = element_text(size=10)) +
-    guides(color=guide_legend(nrow=2,byrow=TRUE))
-# bladsurv
-
-blad_both <- grid.arrange(bladmu, bladsurv, ncol = 2)
-```
-
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-``` r
-blad_both
-#> TableGrob (1 x 2) "arrange": 2 grobs
-#>   z     cells    name           grob
-#> 1 1 (1-1,1-1) arrange gtable[layout]
-#> 2 2 (1-1,2-2) arrange gtable[layout]
-```
-
-Let’s make a plot displaying the pseudo-observations of
-![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
-for a given individual over time,
-
-``` r
-pseudo_allt <- pseudo.twodim(tstart = bladdersub$start,
-                             tstop = bladdersub$stop,
-                             status = bladdersub$status3,
-                             id = bladdersub$id,
-                             covar_names = "Z",
-                             tk = c(1:max(bladdersub$stop)),
-                             data = bladdersub)
-
-# pseudo_allt
-
-# Four types of subjects
-#subset(bladdersub, id == 29)
-#subset(bladdersub, id == 10)
-#subset(bladdersub, id == 11)
-#subset(bladdersub, id == 12)
-
-
-# Restricting attention to these subjects
-id29 <- subset(pseudo_allt$outdata, id == 29)
-id10 <- subset(pseudo_allt$outdata, id == 10)
-id11 <- subset(pseudo_allt$outdata, id == 11)
-id12 <- subset(pseudo_allt$outdata, id == 12)
-
-# Plot 
-pseudo_id29 <- ggplot(aes(x = ts, y = mu), data = id29) + 
-              geom_step(size = 1) + 
-              xlab("Time since randomisation (months)") + 
-              ylab(expression(hat(mu)[i](t))) + theme_bw() + 
-              ggtitle("Subject ID: 29") + ylim(c(-1.1,3.6))
-  
-# pseudo_id29
-
-pseudo_id10 <- ggplot(aes(x = ts, y = mu), data = id10) + 
-              geom_step(size = 1) + 
-              xlab("Time since randomisation (months)") + 
-              ylab(expression(hat(mu)[i](t))) + theme_bw() + 
-              ggtitle("Subject ID: 10") + ylim(c(-1.1,3.6))
-  
-# pseudo_id10
-
-pseudo_id11 <- ggplot(aes(x = ts, y = mu), data = id11) + 
-              geom_step(size = 1) + 
-              xlab("Time since randomisation (months)") + 
-              ylab(expression(hat(mu)[i](t))) + theme_bw() + 
-              ggtitle("Subject ID: 11") + ylim(c(-1.1,3.6))
-  
-# pseudo_id11
-
-pseudo_id12 <- ggplot(aes(x = ts, y = mu), data = id12) + 
-              geom_step(size = 1) + 
-              xlab("Time since randomisation (months)") + 
-              ylab(expression(hat(mu)[i](t))) + 
-              theme_bw() + 
-              ggtitle("Subject ID: 12") + ylim(c(-1.1,3.6))
-  
-# pseudo_id12
-
-# Display all four together
-allp <- grid.arrange(pseudo_id10, pseudo_id12, 
-                     pseudo_id11, pseudo_id29, 
-                     ncol = 2)
-```
-
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
-
-``` r
-allp
-#> TableGrob (2 x 2) "arrange": 4 grobs
-#>   z     cells    name           grob
-#> 1 1 (1-1,1-1) arrange gtable[layout]
-#> 2 2 (1-1,2-2) arrange gtable[layout]
-#> 3 3 (2-2,1-1) arrange gtable[layout]
-#> 4 4 (2-2,2-2) arrange gtable[layout]
-```
-
-## Upcoming
-
-To be added
-
--   Plot of all pseudo-observations for a given individual
-
-.. –>
+<!-- ## Plots  -->
+<!-- The following plot shows non-parametric estimates of $\mu$ and $S$ based on the bladder cancer data.  -->
+<!-- This is computed using the built-in function `pseudo.surv_mu_est`. -->
+<!-- ```{r} -->
+<!-- require(ggplot2) -->
+<!-- require(gridExtra) -->
+<!-- # Re-level  -->
+<!-- bladdersub$status <- bladdersub$status3 -->
+<!-- # Subset and estimate per group -->
+<!-- Z1dat <- subset(bladdersub, Z == 'thiotepa') -->
+<!-- Z0dat <- subset(bladdersub, Z == 'placebo') -->
+<!-- estimates_treated <- pseudo.surv_mu_est(inputdata = Z1dat, -->
+<!--                                         tstart = Z1dat$start,  -->
+<!--                                         tstop = Z1dat$stop, -->
+<!--                                         status = Z1dat$status, -->
+<!--                                         id = Z1dat$id) -->
+<!-- estimates_nontreated <- pseudo.surv_mu_est(inputdata = Z0dat, -->
+<!--                                            tstart = Z0dat$start,  -->
+<!--                                            tstop = Z0dat$stop, -->
+<!--                                            status = Z0dat$status, -->
+<!--                                            id = Z0dat$id) -->
+<!-- pdata <- data.frame(mu = c(estimates_treated$mu$mu, estimates_nontreated$mu$mu),  -->
+<!--                     time = c(estimates_treated$mu$time, estimates_nontreated$mu$time),  -->
+<!--                     surv = c(estimates_treated$surv$surv, estimates_nontreated$surv$surv),  -->
+<!--                     treat = c(rep("Placebo", length(estimates_treated$mu$mu)), -->
+<!--                               rep("Thiotepa", length(estimates_nontreated$mu$mu)))) -->
+<!-- # Mu  -->
+<!-- bladmu <- ggplot(aes(x = time, y = mu, linetype = treat), data = pdata) +  -->
+<!--   geom_step(size = 1) +  -->
+<!--   scale_linetype_discrete("Treatment") +  -->
+<!--   xlab("Time since randomisation (months)") +  -->
+<!--   ylab(expression(hat(mu)(t))) +  -->
+<!--   theme_bw() + -->
+<!--   theme(legend.position="bottom",  -->
+<!--         text = element_text(size=10)) + -->
+<!--     guides(color=guide_legend(nrow=2,byrow=TRUE)) -->
+<!-- # bladmu -->
+<!-- # Surv -->
+<!-- bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) +  -->
+<!--   geom_step(size = 1) +  -->
+<!--   scale_linetype_discrete("Treatment") +  -->
+<!--   xlab("Time since randomisation (months)") +  -->
+<!--   ylab(expression(hat(S)(t))) +  -->
+<!--   theme_bw() + -->
+<!--     theme(legend.position="bottom",  -->
+<!--         text = element_text(size=10)) + -->
+<!--     guides(color=guide_legend(nrow=2,byrow=TRUE)) -->
+<!-- # bladsurv -->
+<!-- blad_both <- grid.arrange(bladmu, bladsurv, ncol = 2) -->
+<!-- blad_both -->
+<!-- ``` -->
+<!-- Let's make a plot displaying the pseudo-observations of $\mu$ for a given individual over time, -->
+<!-- ```{r} -->
+<!-- pseudo_allt <- pseudo.twodim(tstart = bladdersub$start, -->
+<!--                              tstop = bladdersub$stop, -->
+<!--                              status = bladdersub$status3, -->
+<!--                              id = bladdersub$id, -->
+<!--                              covar_names = "Z", -->
+<!--                              tk = c(1:max(bladdersub$stop)), -->
+<!--                              data = bladdersub) -->
+<!-- # pseudo_allt -->
+<!-- # Four types of subjects -->
+<!-- #subset(bladdersub, id == 29) -->
+<!-- #subset(bladdersub, id == 10) -->
+<!-- #subset(bladdersub, id == 11) -->
+<!-- #subset(bladdersub, id == 12) -->
+<!-- # Restricting attention to these subjects -->
+<!-- id29 <- subset(pseudo_allt$outdata, id == 29) -->
+<!-- id10 <- subset(pseudo_allt$outdata, id == 10) -->
+<!-- id11 <- subset(pseudo_allt$outdata, id == 11) -->
+<!-- id12 <- subset(pseudo_allt$outdata, id == 12) -->
+<!-- # Plot  -->
+<!-- pseudo_id29 <- ggplot(aes(x = ts, y = mu), data = id29) +  -->
+<!--               geom_step(size = 1) +  -->
+<!--               xlab("Time since randomisation (months)") +  -->
+<!--               ylab(expression(hat(mu)[i](t))) + theme_bw() +  -->
+<!--               ggtitle("Subject ID: 29") + ylim(c(-1.1,3.6)) -->
+<!-- # pseudo_id29 -->
+<!-- pseudo_id10 <- ggplot(aes(x = ts, y = mu), data = id10) +  -->
+<!--               geom_step(size = 1) +  -->
+<!--               xlab("Time since randomisation (months)") +  -->
+<!--               ylab(expression(hat(mu)[i](t))) + theme_bw() +  -->
+<!--               ggtitle("Subject ID: 10") + ylim(c(-1.1,3.6)) -->
+<!-- # pseudo_id10 -->
+<!-- pseudo_id11 <- ggplot(aes(x = ts, y = mu), data = id11) +  -->
+<!--               geom_step(size = 1) +  -->
+<!--               xlab("Time since randomisation (months)") +  -->
+<!--               ylab(expression(hat(mu)[i](t))) + theme_bw() +  -->
+<!--               ggtitle("Subject ID: 11") + ylim(c(-1.1,3.6)) -->
+<!-- # pseudo_id11 -->
+<!-- pseudo_id12 <- ggplot(aes(x = ts, y = mu), data = id12) +  -->
+<!--               geom_step(size = 1) +  -->
+<!--               xlab("Time since randomisation (months)") +  -->
+<!--               ylab(expression(hat(mu)[i](t))) +  -->
+<!--               theme_bw() +  -->
+<!--               ggtitle("Subject ID: 12") + ylim(c(-1.1,3.6)) -->
+<!-- # pseudo_id12 -->
+<!-- # Display all four together -->
+<!-- allp <- grid.arrange(pseudo_id10, pseudo_id12,  -->
+<!--                      pseudo_id11, pseudo_id29,  -->
+<!--                      ncol = 2) -->
+<!-- allp -->
+<!-- ``` -->
+<!-- ## Upcoming -->
+<!-- To be added -->
+<!-- - Plot of all pseudo-observations for a given individual -->
+<!-- .. -->
 
 # Citation
 
