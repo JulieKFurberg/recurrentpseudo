@@ -1,8 +1,11 @@
 ---
-output: github_document
+title: "recurrentpseudo: An R package for analysing recurrent events in the presence of terminal events using pseudo-observations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{recurrentpseudo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -11,8 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# recurrentpseudo: An R package for analysing recurrent events in the presence of terminal events using pseudo-observations
 
+# Introduction
 
 This package computes pseudo-observations for recurrent event data in the presence of terminal events. 
 Three versions exist: One-dimensional, two-dimensional or three-dimensional pseudo-observations. 
@@ -20,6 +23,28 @@ Three versions exist: One-dimensional, two-dimensional or three-dimensional pseu
 Following the computation of pseudo-observations, the marginal mean function, survival probability and/or cumulative incidences can be modelled using generalised estimating equations.
 
 See Furberg et al. (*Bivariate pseudo-observations for recurrent event analysis with terminal events (2021)*) for technical details on the procedure.
+
+## Package and main functions
+
+```{r warning = F, error = T, message = F}
+# Development version
+#require(devtools)
+#devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
+
+require(recurrentpseudo)
+```
+
+
+```{r}
+# Main functions
+#?pseudo.onedim
+#?pseudo.twodim
+#?pseudo.threedim
+
+#?pseudo.geefit
+
+```
+
 
 ## Notation 
 Let $D^*$ denote the survival time and let $N^*(t)$ denote the number of recurrent events by time $t$. 
@@ -119,30 +144,9 @@ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen estimates of the 
 
 We assume that 
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right)
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right).
 $$
 
-# Install package from GitHub
-
-
-```{r warning = F, error = T, message = F}
-require(devtools)
-
-devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
-
-require(recurrentpseudo)
-```
-
-
-```{r}
-# Main functions
-#?pseudo.onedim
-#?pseudo.twodim
-#?pseudo.threedim
-
-#?pseudo.geefit
-
-```
 
 # Example - Bladder cancer data from survival package
 
@@ -452,7 +456,7 @@ fit3$xi[4]
 
 The following plot shows non-parametric estimates of $\mu$ and $S$ based on the bladder cancer data. 
 This is computed using the built-in function `pseudo.surv_mu_est`.
-```{r}
+```{r fig.width = 7, fig.height = 4}
 require(ggplot2)
 require(gridExtra)
 
@@ -503,15 +507,16 @@ bladsurv <- ggplot(aes(x = time, y = surv, linetype = treat), data = pdata) +
         text = element_text(size=10)) +
     guides(color=guide_legend(nrow=2,byrow=TRUE))
 # bladsurv
+```
 
+```{r fig.width = 7, fig.height = 4, message = F, echo = F, results = 'hide' }
 blad_both <- grid.arrange(bladmu, bladsurv, ncol = 2)
 blad_both
-
 ```
 
 
 Let's make a plot displaying the pseudo-observations of $\mu$ for a given individual over time,
-```{r}
+```{r fig.width = 7, fig.height = 6}
 pseudo_allt <- pseudo.twodim(tstart = bladdersub$start,
                              tstop = bladdersub$stop,
                              status = bladdersub$status3,
@@ -568,23 +573,25 @@ pseudo_id12 <- ggplot(aes(x = ts, y = mu), data = id12) +
               ggtitle("Subject ID: 12") + ylim(c(-1.1,3.6))
   
 # pseudo_id12
+```
 
+```{r fig.width = 7, fig.height = 4, message = F, echo = F, results = 'hide'}
 # Display all four together
 allp <- grid.arrange(pseudo_id10, pseudo_id12, 
                      pseudo_id11, pseudo_id29, 
                      ncol = 2)
 
 allp
-
-
 ```
+
+
 <!--
 ## Upcoming
 To be added
 
 - Plot of all pseudo-observations for a given individual
--->
 
+-->
 
 # Citation 
 To cite the `recurrentpseudo` package please use the following references,

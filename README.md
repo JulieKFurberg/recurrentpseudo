@@ -254,32 +254,19 @@ We assume that
 require(devtools)
 
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
-#> cli      (3.2.0 -> 3.3.0) [CRAN]
-#> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> package 'cli' successfully unpacked and MD5 sums checked
-#> package 'magrittr' successfully unpacked and MD5 sums checked
-#> 
-#> The downloaded binary packages are in
-#>  C:\Users\jukf\AppData\Local\Temp\RtmpG21Daz\downloaded_packages
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpG21Daz\remotesbc04c07740e\JulieKFurberg-recurrentpseudo-5ee630e/DESCRIPTION' ... OK
-#> * preparing 'recurrentpseudo':
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building 'recurrentpseudo_0.0.0.9000.tar.gz'
-#> 
+#> Error: Failed to install 'recurrentpseudo' from GitHub:
+#>   Line starting 'Generalised linear m ...' is malformed!
 
 require(recurrentpseudo)
 ```
 
 ``` r
 # Main functions
-?pseudo.onedim
-#> starting httpd help server ... done
-?pseudo.twodim
-?pseudo.threedim
+#?pseudo.onedim
+#?pseudo.twodim
+#?pseudo.threedim
 
-?pseudo.geefit
+#?pseudo.geefit
 ```
 
 # Example - Bladder cancer data from survival package
@@ -972,11 +959,12 @@ allp
 #> 4 4 (2-2,2-2) arrange gtable[layout]
 ```
 
+<!--
 ## Upcoming
-
 To be added
 
--   Plot of all pseudo-observations for a given individual
+- Plot of all pseudo-observations for a given individual
+-->
 
 # Citation
 
