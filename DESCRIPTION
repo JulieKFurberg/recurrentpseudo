@@ -1,6 +1,6 @@
 Package: recurrentpseudo
 Title: Creates pseudo-observations and analysis for recurrent event data
-Version: 1.0.1
+Version: 1.0.0
 Date: 2022-05-09
 Authors@R: 
     person("Julie Kjærulff", "Furberg", , "julie_furberg@hotmail.com", role = c("aut", "cre"),
