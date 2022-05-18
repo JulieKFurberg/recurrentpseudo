@@ -23,6 +23,8 @@ Imports:
     stringr,
     mets,
     timereg,
+    cmprsk,
+    prodlim,
     magrittr, 
     ggplot2, 
     gridExtra
