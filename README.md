@@ -256,12 +256,11 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> package 'cli' successfully unpacked and MD5 sums checked
-#> package 'magrittr' successfully unpacked and MD5 sums checked
-#> 
-#> The downloaded binary packages are in
-#>  C:\Users\jukf\AppData\Local\Temp\Rtmpqi4Asm\downloaded_packages
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\Rtmpqi4Asm\remotes5a7058565a40\JulieKFurberg-recurrentpseudo-ba5cb25/DESCRIPTION' ... OK
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
+#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
+#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpmUGFDd\remotes2fe833e31d61\JulieKFurberg-recurrentpseudo-23f5e6f/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -532,7 +531,7 @@ head(pseudo_bladder_3d$outdata_long)
 #> 1 1 30  1      mu 1.421085e-14 placebo
 #> 2 1 30  1    surv 1.421085e-14 placebo
 #> 3 1 30  1    cif1 0.000000e+00 placebo
-#> 4 1 30  1    cif2 1.364508e+01 placebo
+#> 4 1 30  1    cif2 1.000000e+00 placebo
 #> 5 1 30  2      mu 1.421085e-14 placebo
 #> 6 1 30  2    surv 1.421085e-14 placebo
 
@@ -541,29 +540,29 @@ fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
                                 covar_names = c("Z"))
 fit_bladder_3d
 #> $xi
-#>                                    
-#> esttypemu              5.103755e-01
-#> esttypemu:Zthiotepa   -4.638900e-01
-#> esttypecif1           -3.761832e+00
-#> esttypecif1:Zthiotepa  2.930357e-01
-#> esttypecif2            1.426296e+18
-#> esttypecif2:Zthiotepa  8.670644e+14
+#>                                 
+#> esttypemu              0.5103755
+#> esttypemu:Zthiotepa   -0.4638900
+#> esttypecif1           -3.7618319
+#> esttypecif1:Zthiotepa  0.2930357
+#> esttypecif2           -1.5431978
+#> esttypecif2:Zthiotepa -0.1005109
 #> 
 #> $sigma
-#>                           esttypemu esttypemu:Zthiotepa   esttypecif1
-#> esttypemu              2.646365e-02       -2.646365e-02  1.557625e-02
-#> esttypemu:Zthiotepa   -2.646365e-02        7.544189e-02 -1.557625e-02
-#> esttypecif1            1.557625e-02       -1.557625e-02  1.078399e+00
-#> esttypecif1:Zthiotepa -1.557625e-02        1.152467e-02 -1.078399e+00
-#> esttypecif2            1.592892e+12       -1.592892e+12  1.102815e+14
-#> esttypecif2:Zthiotepa -1.592892e+12        1.041862e+12 -1.102815e+14
-#>                       esttypecif1:Zthiotepa   esttypecif2 esttypecif2:Zthiotepa
-#> esttypemu                     -1.557625e-02  1.592892e+12         -1.592892e+12
-#> esttypemu:Zthiotepa            1.152467e-02 -1.592892e+12          1.041862e+12
-#> esttypecif1                   -1.078399e+00  1.102815e+14         -1.102815e+14
-#> esttypecif1:Zthiotepa          2.013052e+00 -1.102815e+14          2.373978e+14
-#> esttypecif2                   -1.102815e+14  6.782195e+31         -6.782195e+31
-#> esttypecif2:Zthiotepa          2.373978e+14 -6.782195e+31          1.535990e+32
+#>                          esttypemu esttypemu:Zthiotepa esttypecif1
+#> esttypemu              0.026463648        -0.026463648  0.01557625
+#> esttypemu:Zthiotepa   -0.026463648         0.075441889 -0.01557625
+#> esttypecif1            0.015576248        -0.015576248  1.07839851
+#> esttypecif1:Zthiotepa -0.015576248         0.011524666 -1.07839851
+#> esttypecif2           -0.006555927         0.006555927 -0.02642283
+#> esttypecif2:Zthiotepa  0.006555927        -0.002799526  0.02642283
+#>                       esttypecif1:Zthiotepa  esttypecif2 esttypecif2:Zthiotepa
+#> esttypemu                       -0.01557625 -0.006555927           0.006555927
+#> esttypemu:Zthiotepa              0.01152467  0.006555927          -0.002799526
+#> esttypecif1                     -1.07839851 -0.026422825           0.026422825
+#> esttypecif1:Zthiotepa            2.01305239  0.026422825          -0.057715255
+#> esttypecif2                      0.02642283  0.138167379          -0.138167379
+#> esttypecif2:Zthiotepa           -0.05771525 -0.138167379           0.299045959
 #> 
 #> attr(,"class")
 #> [1] "pseudo.geefit"
@@ -577,10 +576,10 @@ mslabels <- c("treat, mu", "treat, cif1", "treat, cif2")
 rownames(xi_diff_3d) <- mslabels
 colnames(xi_diff_3d) <- ""
 xi_diff_3d
-#>                          
-#> treat, mu   -4.638900e-01
-#> treat, cif1  2.930357e-01
-#> treat, cif2  8.670644e+14
+#>                       
+#> treat, mu   -0.4638900
+#> treat, cif1  0.2930357
+#> treat, cif2 -0.1005109
 
 
 # Variance matrix for differences
@@ -602,17 +601,11 @@ sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[2,2],
 
 rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
-#>                treat, mu  treat, cif1  treat, cif2
-#> treat, mu   7.544189e-02 1.152467e-02 1.041862e+12
-#> treat, cif1 1.152467e-02 2.013052e+00 2.373978e+14
-#> treat, cif2 1.041862e+12 2.373978e+14 1.535990e+32
+#>                treat, mu treat, cif1  treat, cif2
+#> treat, mu    0.075441889  0.01152467 -0.002799526
+#> treat, cif1  0.011524666  2.01305239 -0.057715255
+#> treat, cif2 -0.002799526 -0.05771525  0.299045959
 ```
-
-Please note, that the final model fit is not great (see estimates for
-the cumulative incidence for cause 1). This is due to the few number of
-deaths from bladder disease (2 in total, one per treatment). Hence the
-three-dimensional model is fitted to the bladder cancer data to
-illustrate how to fit such a model.
 
 We can compare the three model fits. Note, that the
 ![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
@@ -628,10 +621,10 @@ xi_diff_2d
 #> treat, mu   -0.46388999
 #> treat, surv -0.04800778
 xi_diff_3d
-#>                          
-#> treat, mu   -4.638900e-01
-#> treat, cif1  2.930357e-01
-#> treat, cif2  8.670644e+14
+#>                       
+#> treat, mu   -0.4638900
+#> treat, cif1  0.2930357
+#> treat, cif2 -0.1005109
 
 sigma_diff_1d
 #>            treat, mu
@@ -641,10 +634,10 @@ sigma_diff_2d
 #> treat, mu    0.075441889 -0.001491879
 #> treat, surv -0.001491879  0.260915569
 sigma_diff_3d
-#>                treat, mu  treat, cif1  treat, cif2
-#> treat, mu   7.544189e-02 1.152467e-02 1.041862e+12
-#> treat, cif1 1.152467e-02 2.013052e+00 2.373978e+14
-#> treat, cif2 1.041862e+12 2.373978e+14 1.535990e+32
+#>                treat, mu treat, cif1  treat, cif2
+#> treat, mu    0.075441889  0.01152467 -0.002799526
+#> treat, cif1  0.011524666  2.01305239 -0.057715255
+#> treat, cif2 -0.002799526 -0.05771525  0.299045959
 ```
 
 ### More covariates

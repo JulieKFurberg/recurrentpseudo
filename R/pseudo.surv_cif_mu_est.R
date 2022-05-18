@@ -7,7 +7,7 @@
 #' @param inputdata Data set which contains variables of interest
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack mets timereg
+#' @import dplyr survival geepack mets timereg cmprsk prodlim
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)
@@ -66,8 +66,9 @@ pseudo.surv_cif_mu_est <- function(inputdata,
   last <- inputdata[!duplicated(inputdata$id, fromLast = T),]
 
   tstop <- deathtype <- NULL
-  cause1 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 1)
-  cause2 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 2)
+  causes <- prodlim(Hist(tstop, deathtype) ~ 1, data = last)
+  #cause1 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 1)
+  #cause2 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 2)
 
   # Adjust hat(mu)
   mu_adj <- cumsum(KM_fit$surv * c(0, diff(NAa_fit$cumhaz)))
@@ -78,11 +79,11 @@ pseudo.surv_cif_mu_est <- function(inputdata,
   mudata <- data.frame(mu = mu_adj,
                        time = NAa_fit$time)
 
-  CIF1 <- data.frame(cif = cause1$cumhaz[,2],
-                     time = cause1$cumhaz[,1])
+  CIF1 <- data.frame(cif = causes$cuminc$`1`,
+                     time = causes$time)
 
-  CIF2 <- data.frame(cif = cause2$cumhaz[,2],
-                     time = cause2$cumhaz[,1])
+  CIF2 <- data.frame(cif = causes$cuminc$`2`,
+                     time = causes$time)
 
   # Normal surv
   survdata <- data.frame(surv = KM_fit$surv,

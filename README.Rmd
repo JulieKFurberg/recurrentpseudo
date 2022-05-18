@@ -397,7 +397,7 @@ cbind(pseudoci_$pseudo$cause2, pseudo_bladder_3d$outdata$cif1)
 # Status = 2
 all.equal(target = c(pseudoci_$pseudo$cause2), 
           current = c(pseudo_bladder_3d$outdata$cif1), 
-          tolerance = 0.1)
+          tolerance = 0.001)
 
 # Status = 3 
 all.equal(target = c(pseudoci_$pseudo$cause3), 
