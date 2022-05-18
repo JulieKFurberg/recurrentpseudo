@@ -22,7 +22,6 @@ Imports:
     stats,
     stringr,
     prodlim,
-    magrittr, 
     ggplot2, 
     gridExtra
 Suggests: 
