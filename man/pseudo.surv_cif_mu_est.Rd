@@ -26,10 +26,6 @@ Help function parsed inside pseudo.threedim()
 # Example: Bladder cancer data from survival package
 require(survival)
 
-# Make a three level status variable
-bladder1$status3 <- ifelse(bladder1$status \%in\% c(2, 3), 2, bladder1$status)
-bladder1$status <- bladder1$status3
-
 # Add one extra day for the two patients with start=stop=0
 # subset(bladder1, stop <= start)
 bladder1[bladder1$id == 1, "stop"] <- 1
@@ -47,6 +43,9 @@ head(bladdersub)
 # Deathtype = 1 (bladder disease death), deathtype = 2 (other death reason)
 bladdersub$deathtype <- with(bladdersub, ifelse(status == 2, 1, ifelse(status == 3, 2, 0)))
 table(bladdersub$deathtype, bladdersub$status)
+
+#' # Make a three level status variable
+bladdersub$status <- ifelse(bladdersub$status \%in\% c(2, 3), 2, bladdersub$status)
 
 
 bladdersub$tstart <- bladdersub$start
