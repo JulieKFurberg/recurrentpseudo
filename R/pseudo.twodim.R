@@ -13,7 +13,7 @@
 #' @import dplyr stats survival geepack
 #' @return
 #' An object of class \code{pseudo.twodim}.
-#' \code{outdata} contains the wide version of the computed pseudo-observations (one row per id).
+#' \code{outdata} contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).
 #' \code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id).
 #' \code{indata} contains the input data which the pseudo-observations are based on.
 #' \code{ts} vector with time points used for computation of pseudo-observations.

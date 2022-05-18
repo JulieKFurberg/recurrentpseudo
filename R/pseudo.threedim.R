@@ -16,7 +16,7 @@
 #' @references Furberg, J.K., Andersen, P.K., Korn, S. et al. Bivariate pseudo-observations for recurrent event analysis with terminal events. Lifetime Data Anal (2021). https://doi.org/10.1007/s10985-021-09533-5
 #' @return
 #' An object of class \code{pseudo.threedim}.
-#' \code{outdata} contains the wide version of the computed pseudo-observations (one row per id).
+#' \code{outdata} contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).
 #' \code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id).
 #' \code{indata} contains the input data which the pseudo-observations are based on.
 #' \code{ts} vector with time points used for computation of pseudo-observations.
@@ -90,8 +90,8 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
                                 deathtype = indata$deathtype)
   muest <- est$mu
   survest <- est$surv
-  cif1 <- rbind(c(0,1), est$cif1)
-  cif2 <- rbind(c(0,1), est$cif2)
+  cif1 <- rbind(c(0,0), est$cif1)
+  cif2 <- rbind(c(0,0), est$cif2)
 
   mu_ts  <- sapply(ts,  function(x) muest[which.max(muest$time[muest$time <= x]), "mu"])
   surv_ts  <- sapply(ts,  function(x) survest[which.max(survest$time[survest$time <= x]), "surv"])
@@ -118,8 +118,8 @@ pseudo.threedim <- function(tstart, tstop, status, covar_names, id, tk, data, de
     muesti <- esti$mu
     survesti <- esti$surv
 
-    cif1_esti <- rbind(c(0,1), esti$cif1)
-    cif2_esti <- rbind(c(0,1), esti$cif1)
+    cif1_esti <- rbind(c(0,0), esti$cif1)
+    cif2_esti <- rbind(c(0,0), esti$cif2)
 
 
     Zi <- indata[indata$id == idi,]$Z[1]

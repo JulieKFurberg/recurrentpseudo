@@ -144,7 +144,7 @@ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen estimates of the 
 
 We assume that 
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right).
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left(1- C_1( t \mid Z) \right) \\ \text{cloglog} \left(1- C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right).
 $$
 
 
@@ -332,10 +332,6 @@ rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
 
 ```
-Please note, that the final model fit is not great (see estimates for the cumulative incidence for cause 1). 
-This is due to the few number of deaths from bladder disease (2 in total, one per treatment). 
-Hence the three-dimensional model is fitted to the bladder cancer data to illustrate how to fit such a model.
-
 
 We can compare the three model fits. Note, that the $\mu$ components match each other. 
 ```{r eval = T}
@@ -408,7 +404,7 @@ $$
 $$
 Or for three-dimensional pseudo-observations, it holds that
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left(1- C_1( t \mid Z) \right) \\ \text{cloglog} \left( 1-C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
 $$
 
 These two models are fitted using the below code,

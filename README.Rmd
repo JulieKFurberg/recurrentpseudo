@@ -119,7 +119,7 @@ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen estimates of the 
 
 We assume that 
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right)
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left(1- C_1( t \mid Z) \right) \\ \text{cloglog} \left(1- C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right)
 $$
 
 # Install package from GitHub
@@ -270,6 +270,57 @@ rownames(sigma_diff_2d) <- colnames(sigma_diff_2d) <- mslabels
 sigma_diff_2d
 ```
 
+```{r eval = F, echo = F}
+## PSEUDO PACKAGE ## 
+# Check that the results match the pseudo package results for S
+require(pseudo)
+
+# Subset to last obs per id 
+bladderlast <- bladdersub[!duplicated(bladdersub$id, fromLast =T),]
+  
+bladderlast$death <- ifelse(bladderlast$status %in% c(2,3), 1, 0)
+pseudosurv_ <- pseudosurv(time = bladderlast$stop, event = bladderlast$death, tmax = c(30))
+
+head(pseudosurv_)
+
+# pseudo obs for surv from pseudo package
+pseudosurv_$pseudo
+
+# Compare with my pseudo S
+pseudo_bladder_2d$outdata$surv
+
+all.equal(target = c(pseudosurv_$pseudo), 
+          current = c(pseudo_bladder_2d$outdata$surv), 
+          tolerance = 0.00001)
+
+## EVENTGLM PAKCAGE ## 
+#install.packages("eventglm")
+require(eventglm)
+
+# Compare pseudo obs for surv 
+pseudosurv_2 <- pseudo_independent(Surv(stop, death) ~ 1, 30, cause = 1, data = bladderlast, type = "survival")
+pseudosurv_2
+
+# compare 
+all.equal(target = c(pseudosurv_2), 
+          current = c(pseudo_bladder_2d$outdata$surv), 
+          tolerance = 0.00001)
+
+# Compare GEE model fit 
+pseudofitsurv <- cumincglm(Surv(stop, death) ~ Z, time = 30, 
+                           data = bladderlast,
+                           link = "cloglog")
+summary(pseudofitsurv)
+
+xi_diff_2d; sigma_diff_2d
+
+# Same
+
+
+```
+
+
+
 Finally, one could fit the three-dimensional pseudo-observation model to the bladder cancer data. 
 
 Three-dimensional pseudo-observations and GEE fit can be computed using the following code
@@ -328,10 +379,164 @@ rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
 
 ```
-Please note, that the final model fit is not great (see estimates for the cumulative incidence for cause 1). 
-This is due to the few number of deaths from bladder disease (2 in total, one per treatment). 
-Hence the three-dimensional model is fitted to the bladder cancer data to illustrate how to fit such a model.
 
+```{r eval = F, echo = F}
+# Check that the results match the pseudo package results for CI
+require(pseudo)
+
+pseudoci_ <- pseudoci(time = bladderlast$stop, event = bladderlast$status, tmax = c(30))
+
+# pseudo obs for ci from pseudo package
+pseudoci_$pseudo$cause2
+
+# Compare with my pseudo cif1
+pseudo_bladder_3d$outdata$cif1
+
+cbind(pseudoci_$pseudo$cause2, pseudo_bladder_3d$outdata$cif1)
+
+# Status = 2
+all.equal(target = c(pseudoci_$pseudo$cause2), 
+          current = c(pseudo_bladder_3d$outdata$cif1), 
+          tolerance = 0.1)
+
+# Status = 3 
+all.equal(target = c(pseudoci_$pseudo$cause3), 
+          current = c(pseudo_bladder_3d$outdata$cif2), 
+          tolerance = 0.1)
+
+
+
+## EVENTGLM PAKCAGE ## 
+require(eventglm)
+
+# Compare pseudo obs for ci 1
+pseudoci1_2 <- pseudo_independent(Surv(stop, as.factor(status)) ~ 1, 30, data = bladderlast, type = "cuminc", cause = 2)
+pseudoci1_2
+
+# compare 
+all.equal(target = c(pseudoci1_2), 
+          current = c(pseudo_bladder_3d$outdata$cif1), 
+          tolerance = 0.0001)
+
+# Compare pseudo obs for ci 2
+pseudoci2_2 <- pseudo_independent(Surv(stop, as.factor(status)) ~ 1, 30, data = bladderlast, type = "cuminc", cause = 3)
+pseudoci2_2
+
+# compare 
+all.equal(target = c(pseudoci2_2), 
+          current = c(pseudo_bladder_3d$outdata$cif2), 
+          tolerance = 0.0001)
+
+
+# Compare GEE model fit 
+pseudofitci1 <- cumincglm(Surv(stop, as.factor(status)) ~ Z, time = 30,
+                           data = bladderlast, cause = 2,
+                           link = "cloglog")
+summary(pseudofitci1)
+
+pseudofitci2 <- cumincglm(Surv(stop, as.factor(status)) ~ Z, time = 30,
+                           data = bladderlast, cause = 3,
+                           link = "cloglog")
+summary(pseudofitci2)
+
+xi_diff_3d; sigma_diff_3d
+
+#---------------------------------------------------------------#
+## Fix 9 subjects ending with events -> treat as cens
+# with(bladderlast, table(status))
+bladdersub$lastobs <- rep(0, nrow(bladdersub))
+bladdersub[!duplicated(bladdersub$id, fromLast =T),]$lastobs <- 1
+nrow(subset(bladdersub, lastobs == 1))
+
+blad2 <- bladdersub[bladdersub$lastobs == 1 & bladdersub$status == 1,]
+
+blad2$status <- 0
+blad2$start <- blad2$stop
+blad2$stop <- blad2$stop +1
+blad2$status3 <- 0
+
+blad2
+
+with(subset(bladdersub, lastobs == 1), table(status))
+
+# Add extra censorings
+bladdersub2 <- rbind(bladdersub, blad2)
+
+
+
+# Pseudo-observations
+pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub2$start,
+                                     tstop = bladdersub2$stop,
+                                     status = bladdersub2$status3,
+                                     id = bladdersub2$id,
+                                     deathtype = bladdersub2$deathtype,
+                                     covar_names = "Z",
+                                     tk = c(30), 
+                                     data = bladdersub2)
+head(pseudo_bladder_3d$outdata_long)
+
+# GEE fit
+fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
+                                covar_names = c("Z"))
+fit_bladder_3d
+
+# Treatment differences
+xi_diff_3d <- as.matrix(c(fit_bladder_3d$xi[2],
+                          fit_bladder_3d$xi[4],
+                          fit_bladder_3d$xi[6]), ncol = 1)
+
+mslabels <- c("treat, mu", "treat, cif1", "treat, cif2")
+rownames(xi_diff_3d) <- mslabels
+colnames(xi_diff_3d) <- ""
+xi_diff_3d
+
+
+# Variance matrix for differences
+sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[2,2],
+                          fit_bladder_3d$sigma[2,4],
+                          fit_bladder_3d$sigma[2,6],
+
+                          fit_bladder_3d$sigma[2,4],
+                          fit_bladder_3d$sigma[4,4],
+                          fit_bladder_3d$sigma[4,6],
+
+                          fit_bladder_3d$sigma[2,6],
+                          fit_bladder_3d$sigma[4,6],
+                          fit_bladder_3d$sigma[6,6]
+
+                          ),
+                        ncol = 3, nrow = 3,
+                        byrow = T)
+
+rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
+sigma_diff_3d
+
+## -------------------------------------------------------- ## 
+
+# lad os prøve at fitte det direkte med mets
+last <- subset(bladdersub, lastobs == 1)
+require(mets)
+cause1 <- cif(Event(stop, deathtype) ~ 1, data = last, cause = 1)
+cause2 <- cif(Event(stop, deathtype) ~ 1, data = last, cause = 2)
+
+cause1$cumhaz
+cause2$cumhaz
+
+## tjek 
+
+bladdersub$tstart <- bladdersub$start
+bladdersub$tstop <- bladdersub$stop
+
+# Estimate mu and cif1 and cif2 on data
+pseudo.surv_cif_mu_est(inputdata = bladdersub,
+                        tstart = bladdersub$start,
+                        tstop = bladdersub$stop,
+                        status = bladdersub$status,
+                        deathtype = bladdersub$deathtype,
+                        id = bladdersub$id)
+
+
+```
 
 We can compare the three model fits. Note, that the $\mu$ components match each other. 
 ```{r eval = T}
@@ -404,7 +609,7 @@ $$
 $$
 Or for three-dimensional pseudo-observations, it holds that
 $$
- \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( C_1( t \mid Z) \right) \\ \text{cloglog} \left( C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
+ \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( 1-C_1( t \mid Z) \right) \\ \text{cloglog} \left( 1-C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
 $$
 
 These two models are fitted using the below code,

@@ -64,6 +64,7 @@ pseudo.surv_cif_mu_est <- function(inputdata,
 
   # CIF - cause 1 & 2
   last <- inputdata[!duplicated(inputdata$id, fromLast = T),]
+
   tstop <- deathtype <- NULL
   cause1 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 1)
   cause2 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 2)
