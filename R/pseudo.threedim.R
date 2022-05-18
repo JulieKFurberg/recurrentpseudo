@@ -12,7 +12,7 @@
 #' @param data Data set which contains variables of interest
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
-#' @import dplyr stats survival geepack mets
+#' @import dplyr stats survival geepack
 #' @references Furberg, J.K., Andersen, P.K., Korn, S. et al. Bivariate pseudo-observations for recurrent event analysis with terminal events. Lifetime Data Anal (2021). https://doi.org/10.1007/s10985-021-09533-5
 #' @return
 #' An object of class \code{pseudo.threedim}.

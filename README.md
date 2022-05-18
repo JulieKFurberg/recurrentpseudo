@@ -256,11 +256,12 @@ require(devtools)
 devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 #> cli      (3.2.0 -> 3.3.0) [CRAN]
 #> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/cli_3.3.0.zip'
-#> Error in download.file(url, destfile, method, mode = "wb", ...) : 
-#>   kan ikke åbne adresse 'https://cloud.r-project.org/bin/windows/contrib/4.1/magrittr_2.0.3.zip'
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpmUGFDd\remotes2fe833e31d61\JulieKFurberg-recurrentpseudo-23f5e6f/DESCRIPTION' ... OK
+#> package 'cli' successfully unpacked and MD5 sums checked
+#> package 'magrittr' successfully unpacked and MD5 sums checked
+#> 
+#> The downloaded binary packages are in
+#>  C:\Users\jukf\AppData\Local\Temp\RtmpiYYUNk\downloaded_packages
+#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpiYYUNk\remotes46c2b5728d8\JulieKFurberg-recurrentpseudo-638e3df/DESCRIPTION' ... OK
 #> * preparing 'recurrentpseudo':
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
