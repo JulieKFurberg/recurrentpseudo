@@ -85,8 +85,8 @@ pseudo-observations, which the methods of this package is based on.
 
 For more detailed information, please see
 
--   Andersen and Perme (*Pseudo-observations in survival
-    analysis (2010)*) or
+-   Andersen and Perme (*Pseudo-observations in survival analysis
+    (2010)*) or
 
 -   Andersen, Klein and Rosthøj (*Generalised linear models for
     correlated pseudo-observations, with applications to multi-state
@@ -253,21 +253,7 @@ We assume that
 ``` r
 require(devtools)
 
-devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
-#> cli      (3.2.0 -> 3.3.0) [CRAN]
-#> magrittr (2.0.2 -> 2.0.3) [CRAN]
-#> package 'cli' successfully unpacked and MD5 sums checked
-#> package 'magrittr' successfully unpacked and MD5 sums checked
-#> 
-#> The downloaded binary packages are in
-#>  C:\Users\jukf\AppData\Local\Temp\RtmpiYYUNk\downloaded_packages
-#> * checking for file 'C:\Users\jukf\AppData\Local\Temp\RtmpiYYUNk\remotes46c2b5728d8\JulieKFurberg-recurrentpseudo-638e3df/DESCRIPTION' ... OK
-#> * preparing 'recurrentpseudo':
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building 'recurrentpseudo_1.0.0.tar.gz'
-#> 
+# devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 
 require(recurrentpseudo)
 ```
@@ -367,12 +353,12 @@ pseudo_bladder_1d <- pseudo.onedim(tstart = bladdersub$start,
                                    data = bladdersub)
 head(pseudo_bladder_1d$outdata)
 #>              mu k ts id       Z
-#> 1  1.421085e-14 1 30  1 placebo
-#> 2  1.421085e-14 1 30  2 placebo
-#> 3  1.208604e+00 1 30  3 placebo
-#> 4  1.054189e+00 1 30  4 placebo
-#> 5 -1.157172e-01 1 30  5 placebo
-#> 6  9.222575e-01 1 30  6 placebo
+#> 1 -0.0004269178 1 30  1 placebo
+#> 2 -0.0004269178 1 30  2 placebo
+#> 3  1.2359654463 1 30  3 placebo
+#> 4  1.0739859010 1 30  4 placebo
+#> 5 -0.0958639918 1 30  5 placebo
+#> 6  1.0122441163 1 30  6 placebo
 
 # GEE fit
 fit_bladder_1d <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
@@ -380,13 +366,13 @@ fit_bladder_1d <- pseudo.geefit(pseudodata = pseudo_bladder_1d,
 fit_bladder_1d
 #> $xi
 #>                       
-#> (Intercept)  0.5103755
-#> Zthiotepa   -0.4638900
+#> (Intercept)  0.5590869
+#> Zthiotepa   -0.4359054
 #> 
 #> $sigma
 #>             (Intercept)   Zthiotepa
-#> (Intercept)  0.02646365 -0.02646365
-#> Zthiotepa   -0.02646365  0.07544189
+#> (Intercept)  0.02662095 -0.02662095
+#> Zthiotepa   -0.02662095  0.07934314
 #> 
 #> attr(,"class")
 #> [1] "pseudo.geefit"
@@ -398,8 +384,8 @@ mslabels <- c("treat, mu")
 rownames(xi_diff_1d) <- mslabels
 colnames(xi_diff_1d) <- ""
 xi_diff_1d
-#>                   
-#> treat, mu -0.46389
+#>                     
+#> treat, mu -0.4359054
 
 # Variance matrix for differences
 sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
@@ -409,12 +395,12 @@ sigma_diff_1d <- matrix(c(fit_bladder_1d$sigma[2,2]),
 rownames(sigma_diff_1d) <- colnames(sigma_diff_1d) <- mslabels
 sigma_diff_1d
 #>            treat, mu
-#> treat, mu 0.07544189
+#> treat, mu 0.07934314
 ```
 
 Thus, the estimated mean ratio is
 ![\\exp(\\hat{\\beta})=](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cexp%28%5Chat%7B%5Cbeta%7D%29%3D "\exp(\hat{\beta})=")
-0.6288327 (standard error and confidence intervals can be found using
+0.6466789 (standard error and confidence intervals can be found using
 the Delta method).
 
 Alternatively, the bivariate pseudo-observation model using the binary
@@ -440,12 +426,12 @@ pseudo_bladder_2d <- pseudo.twodim(tstart = bladdersub$start,
                                    data = bladdersub)
 head(pseudo_bladder_2d$outdata)
 #>              mu          surv k ts id       Z
-#> 1  1.421085e-14  1.421085e-14 1 30  1 placebo
-#> 2  1.421085e-14  1.421085e-14 1 30  2 placebo
-#> 3  1.208604e+00  8.170875e-01 1 30  3 placebo
-#> 4  1.054189e+00  8.170875e-01 1 30  4 placebo
-#> 5 -1.157172e-01 -5.305763e-02 1 30  5 placebo
-#> 6  9.222575e-01 -5.305763e-02 1 30  6 placebo
+#> 1 -0.0004269178  1.421085e-14 1 30  1 placebo
+#> 2 -0.0004269178  1.421085e-14 1 30  2 placebo
+#> 3  1.2359654463  8.170875e-01 1 30  3 placebo
+#> 4  1.0739859010  8.170875e-01 1 30  4 placebo
+#> 5 -0.0958639918 -5.305763e-02 1 30  5 placebo
+#> 6  1.0122441163 -5.305763e-02 1 30  6 placebo
 
 # GEE fit
 fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
@@ -453,20 +439,20 @@ fit_bladder_2d <- pseudo.geefit(pseudodata = pseudo_bladder_2d,
 fit_bladder_2d
 #> $xi
 #>                                  
-#> esttypemu              0.51037550
-#> esttypemu:Zthiotepa   -0.46388999
+#> esttypemu              0.55908687
+#> esttypemu:Zthiotepa   -0.43590539
 #> esttypesurv           -1.41652478
 #> esttypesurv:Zthiotepa -0.04800778
 #> 
 #> $sigma
 #>                          esttypemu esttypemu:Zthiotepa  esttypesurv
-#> esttypemu              0.026463648        -0.026463648 -0.004086557
-#> esttypemu:Zthiotepa   -0.026463648         0.075441889  0.004086557
-#> esttypesurv           -0.004086557         0.004086557  0.123251791
-#> esttypesurv:Zthiotepa  0.004086557        -0.001491879 -0.123251791
+#> esttypemu              0.026620952        -0.026620952 -0.003481085
+#> esttypemu:Zthiotepa   -0.026620952         0.079343139  0.003481085
+#> esttypesurv           -0.003481085         0.003481085  0.123251791
+#> esttypesurv:Zthiotepa  0.003481085         0.002758847 -0.123251791
 #>                       esttypesurv:Zthiotepa
-#> esttypemu                       0.004086557
-#> esttypemu:Zthiotepa            -0.001491879
+#> esttypemu                       0.003481085
+#> esttypemu:Zthiotepa             0.002758847
 #> esttypesurv                    -0.123251791
 #> esttypesurv:Zthiotepa           0.260915569
 #> 
@@ -482,9 +468,8 @@ rownames(xi_diff_2d) <- mslabels
 colnames(xi_diff_2d) <- ""
 xi_diff_2d
 #>                        
-#> treat, mu   -0.46388999
+#> treat, mu   -0.43590539
 #> treat, surv -0.04800778
-
 
 # Variance matrix for differences
 sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[2,2],
@@ -496,9 +481,9 @@ sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[2,2],
 
 rownames(sigma_diff_2d) <- colnames(sigma_diff_2d) <- mslabels
 sigma_diff_2d
-#>                treat, mu  treat, surv
-#> treat, mu    0.075441889 -0.001491879
-#> treat, surv -0.001491879  0.260915569
+#>               treat, mu treat, surv
+#> treat, mu   0.079343139 0.002758847
+#> treat, surv 0.002758847 0.260915569
 ```
 
 Finally, one could fit the three-dimensional pseudo-observation model to
@@ -528,13 +513,13 @@ pseudo_bladder_3d <- pseudo.threedim(tstart = bladdersub$start,
                                      tk = c(30), 
                                      data = bladdersub)
 head(pseudo_bladder_3d$outdata_long)
-#>   k ts id esttype            y       Z
-#> 1 1 30  1      mu 1.421085e-14 placebo
-#> 2 1 30  1    surv 1.421085e-14 placebo
-#> 3 1 30  1    cif1 0.000000e+00 placebo
-#> 4 1 30  1    cif2 1.000000e+00 placebo
-#> 5 1 30  2      mu 1.421085e-14 placebo
-#> 6 1 30  2    surv 1.421085e-14 placebo
+#>   k ts id esttype             y       Z
+#> 1 1 30  1      mu -4.269178e-04 placebo
+#> 2 1 30  1    surv  1.421085e-14 placebo
+#> 3 1 30  1    cif1  0.000000e+00 placebo
+#> 4 1 30  1    cif2  1.000000e+00 placebo
+#> 5 1 30  2      mu -4.269178e-04 placebo
+#> 6 1 30  2    surv  1.421085e-14 placebo
 
 # GEE fit
 fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
@@ -542,8 +527,8 @@ fit_bladder_3d <- pseudo.geefit(pseudodata = pseudo_bladder_3d,
 fit_bladder_3d
 #> $xi
 #>                                 
-#> esttypemu              0.5103755
-#> esttypemu:Zthiotepa   -0.4638900
+#> esttypemu              0.5590869
+#> esttypemu:Zthiotepa   -0.4359054
 #> esttypecif1           -3.7618319
 #> esttypecif1:Zthiotepa  0.2930357
 #> esttypecif2           -1.5431978
@@ -551,15 +536,15 @@ fit_bladder_3d
 #> 
 #> $sigma
 #>                          esttypemu esttypemu:Zthiotepa esttypecif1
-#> esttypemu              0.026463648        -0.026463648  0.01557625
-#> esttypemu:Zthiotepa   -0.026463648         0.075441889 -0.01557625
-#> esttypecif1            0.015576248        -0.015576248  1.07839851
-#> esttypecif1:Zthiotepa -0.015576248         0.011524666 -1.07839851
-#> esttypecif2           -0.006555927         0.006555927 -0.02642283
-#> esttypecif2:Zthiotepa  0.006555927        -0.002799526  0.02642283
+#> esttypemu              0.026620952        -0.026620952  0.01663610
+#> esttypemu:Zthiotepa   -0.026620952         0.079343139 -0.01663610
+#> esttypecif1            0.016636098        -0.016636098  1.07839851
+#> esttypecif1:Zthiotepa -0.016636098         0.013359996 -1.07839851
+#> esttypecif2           -0.006027688         0.006027688 -0.02642283
+#> esttypecif2:Zthiotepa  0.006027688         0.001779996  0.02642283
 #>                       esttypecif1:Zthiotepa  esttypecif2 esttypecif2:Zthiotepa
-#> esttypemu                       -0.01557625 -0.006555927           0.006555927
-#> esttypemu:Zthiotepa              0.01152467  0.006555927          -0.002799526
+#> esttypemu                       -0.01663610 -0.006027688           0.006027688
+#> esttypemu:Zthiotepa              0.01336000  0.006027688           0.001779996
 #> esttypecif1                     -1.07839851 -0.026422825           0.026422825
 #> esttypecif1:Zthiotepa            2.01305239  0.026422825          -0.057715255
 #> esttypecif2                      0.02642283  0.138167379          -0.138167379
@@ -578,7 +563,7 @@ rownames(xi_diff_3d) <- mslabels
 colnames(xi_diff_3d) <- ""
 xi_diff_3d
 #>                       
-#> treat, mu   -0.4638900
+#> treat, mu   -0.4359054
 #> treat, cif1  0.2930357
 #> treat, cif2 -0.1005109
 
@@ -602,10 +587,10 @@ sigma_diff_3d <- matrix(c(fit_bladder_3d$sigma[2,2],
 
 rownames(sigma_diff_3d) <- colnames(sigma_diff_3d) <- mslabels
 sigma_diff_3d
-#>                treat, mu treat, cif1  treat, cif2
-#> treat, mu    0.075441889  0.01152467 -0.002799526
-#> treat, cif1  0.011524666  2.01305239 -0.057715255
-#> treat, cif2 -0.002799526 -0.05771525  0.299045959
+#>               treat, mu treat, cif1  treat, cif2
+#> treat, mu   0.079343139  0.01336000  0.001779996
+#> treat, cif1 0.013359996  2.01305239 -0.057715255
+#> treat, cif2 0.001779996 -0.05771525  0.299045959
 ```
 
 We can compare the three model fits. Note, that the
@@ -615,30 +600,30 @@ components match each other.
 ``` r
 # Compare - should match for mu elements 
 xi_diff_1d
-#>                   
-#> treat, mu -0.46389
+#>                     
+#> treat, mu -0.4359054
 xi_diff_2d
 #>                        
-#> treat, mu   -0.46388999
+#> treat, mu   -0.43590539
 #> treat, surv -0.04800778
 xi_diff_3d
 #>                       
-#> treat, mu   -0.4638900
+#> treat, mu   -0.4359054
 #> treat, cif1  0.2930357
 #> treat, cif2 -0.1005109
 
 sigma_diff_1d
 #>            treat, mu
-#> treat, mu 0.07544189
+#> treat, mu 0.07934314
 sigma_diff_2d
-#>                treat, mu  treat, surv
-#> treat, mu    0.075441889 -0.001491879
-#> treat, surv -0.001491879  0.260915569
+#>               treat, mu treat, surv
+#> treat, mu   0.079343139 0.002758847
+#> treat, surv 0.002758847 0.260915569
 sigma_diff_3d
-#>                treat, mu treat, cif1  treat, cif2
-#> treat, mu    0.075441889  0.01152467 -0.002799526
-#> treat, cif1  0.011524666  2.01305239 -0.057715255
-#> treat, cif2 -0.002799526 -0.05771525  0.299045959
+#>               treat, mu treat, cif1  treat, cif2
+#> treat, mu   0.079343139  0.01336000  0.001779996
+#> treat, cif1 0.013359996  2.01305239 -0.057715255
+#> treat, cif2 0.001779996 -0.05771525  0.299045959
 ```
 
 ### More covariates
@@ -713,34 +698,34 @@ fit1 <- pseudo.geefit(pseudodata = pseudo_bladder_1d_3t,
                       covar_names = c("Z1_", "Z2_", "Z3_"))
 
 fit1$xi
-#>                         
-#> (Intercept)  0.345951102
-#> Ztime30      0.431056408
-#> Ztime40      0.611688331
-#> Z1_thiotepa -0.321582092
-#> Z2_         -0.081130521
-#> Z3_B         0.005175893
-#> Z3_C        -0.402507383
+#>                        
+#> (Intercept)  0.39412273
+#> Ztime30      0.42336922
+#> Ztime40      0.59966454
+#> Z1_thiotepa -0.29479824
+#> Z2_         -0.08253287
+#> Z3_B         0.01965615
+#> Z3_C        -0.38332247
 fit1$sigma
 #>              (Intercept)       Ztime30       Ztime40  Z1_thiotepa           Z2_
-#> (Intercept)  0.132980221 -0.0065866217 -0.0112534066 -0.032242723 -0.0249814696
-#> Ztime30     -0.006586622  0.0045161549  0.0059299656  0.002036616  0.0002445982
-#> Ztime40     -0.011253407  0.0059299656  0.0099140233  0.007026482 -0.0005924362
-#> Z1_thiotepa -0.032242723  0.0020366159  0.0070264822  0.085690126 -0.0084327530
-#> Z2_         -0.024981470  0.0002445982 -0.0005924362 -0.008432753  0.0112807578
-#> Z3_B        -0.052194282  0.0011008023  0.0060232719  0.033814454 -0.0035167291
-#> Z3_C        -0.038765856  0.0075345473  0.0144721351  0.022353061 -0.0086161477
-#>                     Z3_B         Z3_C
-#> (Intercept) -0.052194282 -0.038765856
-#> Ztime30      0.001100802  0.007534547
-#> Ztime40      0.006023272  0.014472135
-#> Z1_thiotepa  0.033814454  0.022353061
-#> Z2_         -0.003516729 -0.008616148
-#> Z3_B         0.082912873  0.048768378
-#> Z3_C         0.048768378  0.199350200
+#> (Intercept)  0.136673486 -0.0061702979 -0.0109943095 -0.036100986 -0.0247560186
+#> Ztime30     -0.006170298  0.0046658382  0.0061013009  0.001167246  0.0002746085
+#> Ztime40     -0.010994310  0.0061013009  0.0100442253  0.005504053 -0.0004015364
+#> Z1_thiotepa -0.036100986  0.0011672458  0.0055040527  0.090063224 -0.0078557067
+#> Z2_         -0.024756019  0.0002746085 -0.0004015364 -0.007855707  0.0109918233
+#> Z3_B        -0.055441417  0.0005892506  0.0051883496  0.037829933 -0.0035769385
+#> Z3_C        -0.041748863  0.0075014896  0.0141048652  0.023020550 -0.0082026411
+#>                      Z3_B         Z3_C
+#> (Intercept) -0.0554414168 -0.041748863
+#> Ztime30      0.0005892506  0.007501490
+#> Ztime40      0.0051883496  0.014104865
+#> Z1_thiotepa  0.0378299330  0.023020550
+#> Z2_         -0.0035769385 -0.008202641
+#> Z3_B         0.0869004239  0.050773663
+#> Z3_C         0.0507736625  0.200303239
 
 fit1$xi[4]
-#> [1] -0.3215821
+#> [1] -0.2947982
 ```
 
 Or for two-dimensional pseudo-observations, it holds that
@@ -797,11 +782,11 @@ fit3 <- pseudo.geefit(pseudodata = pseudo_bladder_3d_3t,
 
 ## Compare for mu
 fit1$xi[4]
-#> [1] -0.3215821
+#> [1] -0.2947982
 fit2$xi[4]
-#> [1] -0.3215725
+#> [1] -0.2947982
 fit3$xi[4]
-#> [1] -0.3215754
+#> [1] -0.2948043
 ```
 
 <!-- ## Plots  -->

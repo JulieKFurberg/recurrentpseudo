@@ -6,7 +6,7 @@
 #' @param id ID variable for subject
 #' @param inputdata Data set which contains variables of interest
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack
+#' @import dplyr survival geepack stats
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)
@@ -50,20 +50,26 @@ pseudo.surv_mu_est <- function(inputdata,
   # Binding variables locally
   status <- NULL
 
-  NAa_fit <- survfit(Surv(tstart, tstop, status == 1) ~ 1,
-                     data = inputdata, id = id,
-                     ctype = 1, timefix = FALSE)
+  # NAa_fit1 <- survfit(Surv(tstart, tstop, status == 1) ~ 1,
+  #                    data = inputdata, id = id,
+  #                    ctype = 1, timefix = FALSE)
+  NAa_fit2 <- basehaz(coxph(Surv(tstart, tstop, status == 1) ~ 1,
+                           data = inputdata, id = id,
+                           timefix = FALSE))
 
   KM_fit <- survfit(Surv(tstart, tstop, status == 2) ~ 1,
                     data = inputdata, id = id, timefix = FALSE)
 
   # Adjust hat(mu)
-  mu_adj <- cumsum(KM_fit$surv * c(0, diff(NAa_fit$cumhaz)))
+  lS <- c(1, na.omit(stats::lag(KM_fit$surv))[-length(KM_fit$surv)])
+  dA <- diff(c(0, NAa_fit2$hazard))
+  mu_adj <- cumsum(lS * dA)
+
   surv <- KM_fit$surv
 
 
   mudata <- data.frame(mu = mu_adj,
-                       time = NAa_fit$time)
+                       time = NAa_fit2$time)
   survdata <- data.frame(surv = surv,
                          time = KM_fit$time)
 

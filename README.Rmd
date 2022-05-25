@@ -128,7 +128,7 @@ $$
 ```{r warning = F, error = T, message = F}
 require(devtools)
 
-devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
+# devtools::install_github("JulieKFurberg/recurrentpseudo", force = TRUE)
 
 require(recurrentpseudo)
 ```
@@ -256,7 +256,6 @@ mslabels <- c("treat, mu", "treat, surv")
 rownames(xi_diff_2d) <- mslabels
 colnames(xi_diff_2d) <- ""
 xi_diff_2d
-
 
 # Variance matrix for differences
 sigma_diff_2d <- matrix(c(fit_bladder_2d$sigma[2,2],

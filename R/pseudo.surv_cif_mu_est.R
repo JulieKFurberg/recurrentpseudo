@@ -54,9 +54,12 @@ pseudo.surv_cif_mu_est <- function(inputdata,
                                    deathtype,
                                    id){
 
-  NAa_fit <- survfit(Surv(tstart, tstop, status == 1) ~ 1,
-                     data = inputdata, id = id,
-                     ctype = 1, timefix = FALSE)
+  # NAa_fit1 <- survfit(Surv(tstart, tstop, status == 1) ~ 1,
+  #                    data = inputdata, id = id,
+  #                    ctype = 1, timefix = FALSE)
+  NAa_fit2 <- basehaz(coxph(Surv(tstart, tstop, status == 1) ~ 1,
+                            data = inputdata, id = id,
+                            timefix = FALSE))
 
   KM_fit <- survfit(Surv(tstart, tstop, status == 2) ~ 1,
                     data = inputdata, id = id, timefix = FALSE)
@@ -70,13 +73,15 @@ pseudo.surv_cif_mu_est <- function(inputdata,
   #cause2 <- cif(Event(tstop, deathtype) ~ 1, data = last, cause = 2)
 
   # Adjust hat(mu)
-  mu_adj <- cumsum(KM_fit$surv * c(0, diff(NAa_fit$cumhaz)))
-  surv <- KM_fit$surv
+  lS <- c(1, na.omit(stats::lag(KM_fit$surv))[-length(KM_fit$surv)])
+  dA <- diff(c(0, NAa_fit2$hazard))
+  mu_adj <- cumsum(lS * dA)
 
+  surv <- KM_fit$surv
 
   # Save
   mudata <- data.frame(mu = mu_adj,
-                       time = NAa_fit$time)
+                       time = NAa_fit2$time)
 
   CIF1 <- data.frame(cif = causes$cuminc$`1`,
                      time = causes$time)
