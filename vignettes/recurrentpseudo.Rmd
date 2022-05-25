@@ -194,8 +194,6 @@ $$
 One-dimensional pseudo-observations and GEE fit can be computed using the following code,
 
 ```{r cache = F}
-require(recurrentpseudo)
-
 # Pseudo observations at t = 30
 pseudo_bladder_1d <- pseudo.onedim(tstart = bladdersub$start,
                                    tstop = bladdersub$stop,
