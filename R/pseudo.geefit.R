@@ -74,7 +74,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   # Make time point variable
   pseudo_l_o$Ztime <- as.factor(pseudo_l_o$ts)
 
-  if (class(pseudodata) == "pseudo.onedim"){
+  if (inherits(pseudodata, "pseudo.onedim")){
     size <- 1
     pseudo_l_o2 <- pseudo_l_o
 
@@ -85,7 +85,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     link <- rep("log", ksel)
   }
 
-  if (class(pseudodata) == "pseudo.twodim"){
+  if (inherits(pseudodata, "pseudo.twodim")){
     size <- 2
     # Due to geese parametrization of "cloglog" we need to fit 1 - surv instead
     # fixing this now
@@ -102,7 +102,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
   }
 
 
-  if (class(pseudodata) == "pseudo.threedim"){
+  if (inherits(pseudodata, "pseudo.threedim")){
     size <- 3
     # Subset - remove "surv"
     pseudo_l <- subset(pseudo_l_o, esttype != "surv")
@@ -125,7 +125,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
     # Add response etc
-    if (class(pseudodata) %in% c("pseudo.twodim", "pseudo.threedim")){
+    if (inherits(pseudodata, c("pseudo.twodim", "pseudo.threedim"))){
       if (ksel > 1){
         a_terms <- formula(paste0("y ~ esttype + Ztime:esttype + ", terms2, "- 1"))
       }
@@ -133,7 +133,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
         a_terms <- formula(paste0("y ~ esttype + ", terms2, "- 1"))
       }
     }
-    if (class(pseudodata) %in% c("pseudo.onedim")){
+    if (inherits(pseudodata, "pseudo.onedim")){
       if (ksel > 1){
         a_terms <- formula(paste0("y ~ Ztime +", terms2, ""))
       }
@@ -156,7 +156,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     summary(fit)
 
     # Save model estimates
-    if (class(pseudodata) == "pseudo.onedim"){
+    if (inherits(pseudodata, "pseudo.onedim")){
       # Save estimates
       xi <- fit$beta
       sigma <- fit$vbeta
@@ -170,7 +170,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
     }
 
 
-    if (class(pseudodata) == "pseudo.twodim"){
+    if (inherits(pseudodata, "pseudo.twodim")){
       # Save estimates and
       # Change to get the right parametrization
 
@@ -204,7 +204,7 @@ pseudo.geefit <- function(pseudodata, covar_names){
       colnames(xi) <- ""
   }
 
-  if (class(pseudodata) == "pseudo.threedim"){
+  if (inherits(pseudodata, "pseudo.threedim")){
       # Save estimates and
       # Change to get the right parametrization
       ## For mu, in order of covariates
