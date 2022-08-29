@@ -1,5 +1,5 @@
 Package: recurrentpseudo
-Title: Creates pseudo-observations and analysis for recurrent event data
+Title: Creates Pseudo-Observations and Analysis for Recurrent Event Data
 Version: 1.0.0
 Authors@R: 
     person("Julie Kjærulff", "Furberg", , "julie_furberg@hotmail.com", role = c("aut", "cre"),
@@ -18,11 +18,11 @@ RoxygenNote: 7.2.1
 Imports: 
     survival,
     geepack,
-    dplyr,
     stats,
     stringr,
     prodlim
 Suggests: 
+    dplyr
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
