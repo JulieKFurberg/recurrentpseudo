@@ -468,13 +468,13 @@ $$
 
 This can be fitted using the below code,
 ```{r eval = T}
-require(dplyr)
-
 ## One-dim
 # A binary variable, Z1_
 # A continuous variable, Z2_
 # A categorical variable, Z3_
 set.seed(0308)
+require(magrittr)
+require(dplyr)
 
 bladdersub <- as.data.frame(
   bladdersub %>% group_by(id) %>% 

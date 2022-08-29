@@ -511,22 +511,13 @@ $$
 This can be fitted using the below code,
 
 ``` r
-require(dplyr)
-#> Indlæser krævet pakke: dplyr
-#> 
-#> Vedhæfter pakke: 'dplyr'
-#> De følgende objekter er maskerede fra 'package:stats':
-#> 
-#>     filter, lag
-#> De følgende objekter er maskerede fra 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-
 ## One-dim
 # A binary variable, Z1_
 # A continuous variable, Z2_
 # A categorical variable, Z3_
 set.seed(0308)
+require(magrittr)
+require(dplyr)
 
 bladdersub <- as.data.frame(
   bladdersub %>% group_by(id) %>% 

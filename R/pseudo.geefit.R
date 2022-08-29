@@ -14,6 +14,11 @@
 #' \code{sigma} contains the estimated variance matrix corresponding to \code{xi}
 #' @import survival geepack stringr
 #' @importFrom dplyr left_join
+#' @importFrom dplyr ungroup
+#' @importFrom dplyr mutate
+#' @importFrom dplyr slice
+#' @importFrom dplyr group_by
+#' @importFrom magrittr %>%
 #' @examples
 #' # Bladder cancer data from survival package
 #' require(survival)

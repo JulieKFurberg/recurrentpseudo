@@ -19,15 +19,13 @@ Imports:
     survival,
     geepack,
     stringr,
-    prodlim, 
-    magrittr
+    prodlim
+Depends: 
+    magrittr,
+    dplyr
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-ImportFrom: 
-          dplyr left_join,
-          dplyr mutate,
-          dplyr ungroup
 Config/testthat/edition: 3
 VignetteBuilder: knitr
