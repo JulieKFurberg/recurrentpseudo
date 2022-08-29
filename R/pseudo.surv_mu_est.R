@@ -7,6 +7,7 @@
 #' @param inputdata Data set which contains variables of interest
 #' @keywords recurrentpseudo
 #' @import survival geepack stats
+#' @importFrom dplyr left_join
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)

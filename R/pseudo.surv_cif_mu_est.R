@@ -8,6 +8,7 @@
 #' @param deathtype Type of death (cause 1 or cause 2)
 #' @keywords recurrentpseudo
 #' @import survival geepack prodlim
+#' @importFrom dplyr left_join
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)

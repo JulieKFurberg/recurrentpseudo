@@ -10,7 +10,8 @@
 #' @param tk Vector of time points to calculate pseudo-observations at
 #' @param data Data set which contains variables of interest
 #' @keywords recurrentpseudo
-#' @import dplyr stats survival geepack
+#' @import survival geepack
+#' @importFrom dplyr left_join
 #' @return
 #' An object of class \code{pseudo.twodim}.
 #' \code{outdata} contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).

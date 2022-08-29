@@ -13,6 +13,7 @@
 #' @return An object of class \code{pseudo.geefit}. \code{xi} contains the estimated model parameters
 #' \code{sigma} contains the estimated variance matrix corresponding to \code{xi}
 #' @import survival geepack stringr
+#' @importFrom dplyr left_join
 #' @examples
 #' # Bladder cancer data from survival package
 #' require(survival)
