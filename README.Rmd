@@ -13,7 +13,6 @@ knitr::opts_chunk$set(
 
 # recurrentpseudo: An R package for analysing recurrent events in the presence of terminal events using pseudo-observations
 
-
 This package computes pseudo-observations for recurrent event data in the presence of terminal events. 
 Three versions exist: One-dimensional, two-dimensional or three-dimensional pseudo-observations. 
 

@@ -17,66 +17,28 @@ procedure.
 
 ## Notation
 
-Let
-![D^\*](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;D%5E%2A "D^*")
-denote the survival time and let
-![N^\*(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N%5E%2A%28t%29 "N^*(t)")
-denote the number of recurrent events by time
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t").
-Let
-![C](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C "C")
-denote the time of censoring. Due to right-censoring, the data consists
-of
-![X=\\lbrace N(\\cdot), D, \\delta, Z \\rbrace](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;X%3D%5Clbrace%20N%28%5Ccdot%29%2C%20D%2C%20%5Cdelta%2C%20Z%20%5Crbrace "X=\lbrace N(\cdot), D, \delta, Z \rbrace")
-where
-![N(t) = N^\*(t \\wedge C)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N%28t%29%20%3D%20N%5E%2A%28t%20%5Cwedge%20C%29 "N(t) = N^*(t \wedge C)"),
-![D=D^\* \\wedge C](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;D%3DD%5E%2A%20%5Cwedge%20C "D=D^* \wedge C"),
-![\\delta = I \\left( D^\* \\leq C \\right)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta%20%3D%20I%20%5Cleft%28%20D%5E%2A%20%5Cleq%20C%20%5Cright%29 "\delta = I \left( D^* \leq C \right)")
-and
-![Z](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z "Z")
-denotes
-![p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;p "p")
-baseline covariates.
+Let $D^*$ denote the survival time and let $N^*(t)$ denote the number of
+recurrent events by time $t$. Let $C$ denote the time of censoring. Due
+to right-censoring, the data consists of
+$X=\lbrace N(\cdot), D, \delta, Z \rbrace$ where
+$N(t) = N^*(t \wedge C)$, $D=D^* \wedge C$,
+$\delta = I \left( D^* \leq C \right)$ and $Z$ denotes $p$ baseline
+covariates.
 
-We observe
-![X_i=\\lbrace N_i(\\cdot), D_i, \\delta_i, Z_i \\rbrace](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;X_i%3D%5Clbrace%20N_i%28%5Ccdot%29%2C%20D_i%2C%20%5Cdelta_i%2C%20Z_i%20%5Crbrace "X_i=\lbrace N_i(\cdot), D_i, \delta_i, Z_i \rbrace")
-for each individual
-![i= 1,\\ldots, n](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;i%3D%201%2C%5Cldots%2C%20n "i= 1,\ldots, n").
+We observe $X_i=\lbrace N_i(\cdot), D_i, \delta_i, Z_i \rbrace$ for each
+individual $i= 1,\ldots, n$.
 
-We consider the marginal mean function,
-![\\mu (t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu%20%28t%29 "\mu (t)"),
-given by
-
-![ 
-\\mu(t) = E(N^\*(t)) = \\int_0^t S(u^-) \\, d R(u), \\quad d R(t) = E(dN^\*(t) \\mid D^\* \\geq t)
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%20%0A%5Cmu%28t%29%20%3D%20E%28N%5E%2A%28t%29%29%20%3D%20%5Cint_0%5Et%20S%28u%5E-%29%20%5C%2C%20d%20R%28u%29%2C%20%5Cquad%20d%20R%28t%29%20%3D%20E%28dN%5E%2A%28t%29%20%5Cmid%20D%5E%2A%20%5Cgeq%20t%29%0A " 
+We consider the marginal mean function, $\mu (t)$, given by $$ 
 \mu(t) = E(N^*(t)) = \int_0^t S(u^-) \, d R(u), \quad d R(t) = E(dN^*(t) \mid D^* \geq t)
-")
-
-and the survival probability,
-![S(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;S%28t%29 "S(t)"),
-given by
-
-![ 
-S(t) = P(D^\*\> t).
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%20%0AS%28t%29%20%3D%20P%28D%5E%2A%3E%20t%29.%0A " 
+$$ and the survival probability, $S(t)$, given by $$ 
 S(t) = P(D^*> t).
-")
+$$
 
 Moreover, we consider the cumulative incidences for death causes 1,
-![C_1(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C_1%28t%29 "C_1(t)"),
-and 2,
-![C_2(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C_2%28t%29 "C_2(t)")
-
-![
-C_1(t) = E(I(D^\* \\leq t, \\Delta = 1)), \\quad C_2(t) = E(I(D^\* \\leq t, \\Delta = 2))
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0AC_1%28t%29%20%3D%20E%28I%28D%5E%2A%20%5Cleq%20t%2C%20%5CDelta%20%3D%201%29%29%2C%20%5Cquad%20C_2%28t%29%20%3D%20E%28I%28D%5E%2A%20%5Cleq%20t%2C%20%5CDelta%20%3D%202%29%29%0A "
+$C_1(t)$, and 2, $C_2(t)$ $$
 C_1(t) = E(I(D^* \leq t, \Delta = 1)), \quad C_2(t) = E(I(D^* \leq t, \Delta = 2))
-")
-
-where
-![\\Delta = \\lbrace 1, 2 \\rbrace](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5CDelta%20%3D%20%5Clbrace%201%2C%202%20%5Crbrace "\Delta = \lbrace 1, 2 \rbrace")
-represents a cause-of-death indicator.
+$$ where $\Delta = \lbrace 1, 2 \rbrace$ represents a cause-of-death
+indicator.
 
 ## Introduction to pseudo-observations
 
@@ -92,77 +54,40 @@ For more detailed information, please see
     correlated pseudo-observations, with applications to multi-state
     models (2003)*)
 
-We wish to formulate a model for
-
-![ 
-\\theta = E(f(X))
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%20%0A%5Ctheta%20%3D%20E%28f%28X%29%29%0A " 
+We wish to formulate a model for $$ 
 \theta = E(f(X))
-")
+$$ where $X=X_1, \ldots, X_n$ denotes a vector of survival times (or
+other survival data) for $n$ individuals and $f$ denotes some function.
+An example would be $\theta = E(I(D^*>t)) = P(D^*>t)$.
 
-where
-![X=X_1, \\ldots, X_n](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;X%3DX_1%2C%20%5Cldots%2C%20X_n "X=X_1, \ldots, X_n")
-denotes a vector of survival times (or other survival data) for
-![n](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n "n")
-individuals and
-![f](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f "f")
-denotes some function. An example would be
-![\\theta = E(I(D^\*\>t)) = P(D^\*\>t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctheta%20%3D%20E%28I%28D%5E%2A%3Et%29%29%20%3D%20P%28D%5E%2A%3Et%29 "\theta = E(I(D^*>t)) = P(D^*>t)").
-
-Assume that a sufficiently nice estimator
-![\\hat{\\theta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7B%5Ctheta%7D "\hat{\theta}")
-of
-![\\theta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctheta "\theta")
-exists. For a fixed time,
-![t \\in \[0, \\tau\]](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%20%5Cin%20%5B0%2C%20%5Ctau%5D "t \in [0, \tau]"),
-the pseudo-observation for the i’th individual at
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-is given by
-
-![ 
-\\hat{\\theta}\_i (t)= n \\cdot \\hat{\\theta}(t) - (n-1) \\cdot \\hat{\\theta}^{-i}(t)
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%20%0A%5Chat%7B%5Ctheta%7D_i%20%28t%29%3D%20n%20%5Ccdot%20%5Chat%7B%5Ctheta%7D%28t%29%20-%20%28n-1%29%20%5Ccdot%20%5Chat%7B%5Ctheta%7D%5E%7B-i%7D%28t%29%0A " 
+Assume that a sufficiently nice estimator $\hat{\theta}$ of $\theta$
+exists. For a fixed time, $t \in [0, \tau]$, the pseudo-observation for
+the i’th individual at $t$ is given by $$ 
 \hat{\theta}_i (t)= n \cdot \hat{\theta}(t) - (n-1) \cdot \hat{\theta}^{-i}(t)
-")
-
-where
-![\\hat{\\theta}(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7B%5Ctheta%7D%28t%29 "\hat{\theta}(t)")
-denotes the estimate based on the total data set, and
-![\\hat{\\theta}^{-i}(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7B%5Ctheta%7D%5E%7B-i%7D%28t%29 "\hat{\theta}^{-i}(t)")
-denotes the estimate based on the same data set but omitting
-observations from individual i.
+$$ where $\hat{\theta}(t)$ denotes the estimate based on the total data
+set, and $\hat{\theta}^{-i}(t)$ denotes the estimate based on the same
+data set but omitting observations from individual i.
 
 Since the survival times are subject to right-censoring, standard
 inference on survival data is adjusted to accommodate this, e.g. in
 likelihood estimation.
 
 However, since all subjects has a valid pseudo-observation,
-![\\hat{\\theta}\_i (t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7B%5Ctheta%7D_i%20%28t%29 "\hat{\theta}_i (t)"),
-at one or more times, these can be used as an outcome variable in a
-generalised linear model. Note, that this is regardless of the whether a
-subject is alive, censored or died at time t.
+$\hat{\theta}_i (t)$, at one or more times, these can be used as an
+outcome variable in a generalised linear model. Note, that this is
+regardless of the whether a subject is alive, censored or died at time
+t.
 
-Assume that
-![g](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;g "g")
-denotes a link function, then we wish to fit
+Assume that $g$ denotes a link function, then we wish to fit
 
-![
-g(E(f(X) \\mid Z)) = \\xi^T Z.
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0Ag%28E%28f%28X%29%20%5Cmid%20Z%29%29%20%3D%20%5Cxi%5ET%20Z.%0A "
+$$
 g(E(f(X) \mid Z)) = \xi^T Z.
-")
+$$ Following, $f(X)$ is replaced by $\hat{\theta}_i (\cdot)$ in the
+model fit.
 
-Following,
-![f(X)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f%28X%29 "f(X)")
-is replaced by
-![\\hat{\\theta}\_i (\\cdot)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7B%5Ctheta%7D_i%20%28%5Ccdot%29 "\hat{\theta}_i (\cdot)")
-in the model fit.
-
-The model parameters,
-![\\xi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cxi "\xi"),
-are estimated using generalised estimating equations (GEE), see Liang
-and Zeger (*Longitudinal data analysis using generalized linear models
-(1986)*).
+The model parameters, $\xi$, are estimated using generalised estimating
+equations (GEE), see Liang and Zeger (*Longitudinal data analysis using
+generalized linear models (1986)*).
 
 The GEE procedure accommodates the fact that each individual can have
 several (pseudo-)observations.
@@ -170,83 +95,38 @@ several (pseudo-)observations.
 ## One-dimensional pseudo-observations
 
 The one-dimensional pseudo-observations model is based on the parameter
-![\\theta = \\mu(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctheta%20%3D%20%5Cmu%28t%29 "\theta = \mu(t)"),
-which is estimated by
-
-![
-\\hat{\\theta} = \\hat{\\mu}(t) =  \\int_0^t \\hat{S}(u^-) \\, d \\hat{R}(u),
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Chat%7B%5Ctheta%7D%20%3D%20%5Chat%7B%5Cmu%7D%28t%29%20%3D%20%20%5Cint_0%5Et%20%5Chat%7BS%7D%28u%5E-%29%20%5C%2C%20d%20%5Chat%7BR%7D%28u%29%2C%0A "
+$\theta = \mu(t)$, which is estimated by $$
 \hat{\theta} = \hat{\mu}(t) =  \int_0^t \hat{S}(u^-) \, d \hat{R}(u),
-")
+$$ where $\hat{S}(t)$ denotes the Kaplan-Meier estimator of $S(t)$ and
+$\hat{R}(t)$ denotes the Nelson-Aalen estimator of $R(t)$.
 
-where
-![\\hat{S}(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7BS%7D%28t%29 "\hat{S}(t)")
-denotes the Kaplan-Meier estimator of
-![S(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;S%28t%29 "S(t)")
-and
-![\\hat{R}(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7BR%7D%28t%29 "\hat{R}(t)")
-denotes the Nelson-Aalen estimator of
-![R(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R%28t%29 "R(t)").
-
-We assume that
-
-![
-\\log \\left( \\mu(t \\mid Z) \\right) = \\log(\\mu_0(t)) + \\beta^T Z.
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Clog%20%5Cleft%28%20%5Cmu%28t%20%5Cmid%20Z%29%20%5Cright%29%20%3D%20%5Clog%28%5Cmu_0%28t%29%29%20%2B%20%5Cbeta%5ET%20Z.%0A "
+We assume that $$
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta^T Z.
-")
+$$
 
 ## Two-dimensional pseudo-observations
 
 The two-dimensional pseudo-observations model is based on the parameter
-![\\theta = (\\mu(t), S(t))](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctheta%20%3D%20%28%5Cmu%28t%29%2C%20S%28t%29%29 "\theta = (\mu(t), S(t))"),
-which is estimated by
-
-![
-\\hat{\\theta} = \\left( \\begin{matrix} \\hat{\\mu}(t) \\\\ \\hat{S}(t) \\end{matrix} \\right).
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Chat%7B%5Ctheta%7D%20%3D%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Chat%7B%5Cmu%7D%28t%29%20%5C%5C%20%5Chat%7BS%7D%28t%29%20%5Cend%7Bmatrix%7D%20%5Cright%29.%0A "
+$\theta = (\mu(t), S(t))$, which is estimated by $$
 \hat{\theta} = \left( \begin{matrix} \hat{\mu}(t) \\ \hat{S}(t) \end{matrix} \right).
-")
+$$
 
-We assume that
-
-![
- \\left( \\begin{matrix} \\log \\left(\\mu (t \\mid Z) \\right) \\\\ \\text{cloglog} \\left( S( t \\mid Z) \\right) \\end{matrix} \\right) =  \\left( \\begin{matrix} \\log \\left(  \\mu_0(t) \\right)  + {\\beta}^T {Z} \\\\ \\log \\left(\\Lambda_0(t)\\right) + {\\gamma}^T {Z}  \\end{matrix} \\right).
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%5Cmu%20%28t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%28%20S%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5Cend%7Bmatrix%7D%20%5Cright%29%20%3D%20%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%20%20%5Cmu_0%28t%29%20%5Cright%29%20%20%2B%20%7B%5Cbeta%7D%5ET%20%7BZ%7D%20%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_0%28t%29%5Cright%29%20%2B%20%7B%5Cgamma%7D%5ET%20%7BZ%7D%20%20%5Cend%7Bmatrix%7D%20%5Cright%29.%0A "
+We assume that $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_0(t)\right) + {\gamma}^T {Z}  \end{matrix} \right).
-")
+$$
 
 ## Three-dimensional pseudo-observations
 
 The three-dimensional pseudo-observations model is based on the
-parameter
-![\\theta = (\\mu(t), C_1(t), C_2(t))](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctheta%20%3D%20%28%5Cmu%28t%29%2C%20C_1%28t%29%2C%20C_2%28t%29%29 "\theta = (\mu(t), C_1(t), C_2(t))"),
-which is estimated by
-
-![
-\\hat{\\theta} = \\left( \\begin{matrix} \\hat{\\mu}(t) \\\\ \\hat{C}\_1(t) \\\\ \\hat{C}\_2(t) \\end{matrix} \\right)
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Chat%7B%5Ctheta%7D%20%3D%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Chat%7B%5Cmu%7D%28t%29%20%5C%5C%20%5Chat%7BC%7D_1%28t%29%20%5C%5C%20%5Chat%7BC%7D_2%28t%29%20%5Cend%7Bmatrix%7D%20%5Cright%29%0A "
+parameter $\theta = (\mu(t), C_1(t), C_2(t))$, which is estimated by $$
 \hat{\theta} = \left( \begin{matrix} \hat{\mu}(t) \\ \hat{C}_1(t) \\ \hat{C}_2(t) \end{matrix} \right)
-")
+$$ where $\hat{C}_1(t)$ and $\hat{C}_2(t)$ are the Aalen-Johansen
+estimates of the cumulative incidences for causes 1, $C_1(t)$, and 2,
+$C_2(t)$, respectively.
 
-where
-![\\hat{C}\_1(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7BC%7D_1%28t%29 "\hat{C}_1(t)")
-and
-![\\hat{C}\_2(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Chat%7BC%7D_2%28t%29 "\hat{C}_2(t)")
-are the Aalen-Johansen estimates of the cumulative incidences for causes
-1,
-![C_1(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C_1%28t%29 "C_1(t)"),
-and 2,
-![C_2(t)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C_2%28t%29 "C_2(t)"),
-respectively.
-
-We assume that
-
-![
- \\left( \\begin{matrix} \\log \\left(\\mu (t \\mid Z) \\right) \\\\ \\text{cloglog} \\left(1- C_1( t \\mid Z) \\right) \\\\ \\text{cloglog} \\left(1- C_2( t \\mid Z) \\right) \\end{matrix} \\right) =  \\left( \\begin{matrix} \\log \\left(  \\mu_0(t) \\right)  + {\\beta}^T {Z} \\\\ \\log \\left(\\Lambda\_{10}(t)\\right) + {\\gamma_1}^T {Z} \\\\ \\log \\left(\\Lambda\_{20}(t)\\right) + {\\gamma_2}^T {Z}  \\end{matrix} \\right)
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%5Cmu%20%28t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%281-%20C_1%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%281-%20C_2%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5Cend%7Bmatrix%7D%20%5Cright%29%20%3D%20%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%20%20%5Cmu_0%28t%29%20%5Cright%29%20%20%2B%20%7B%5Cbeta%7D%5ET%20%7BZ%7D%20%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_%7B10%7D%28t%29%5Cright%29%20%2B%20%7B%5Cgamma_1%7D%5ET%20%7BZ%7D%20%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_%7B20%7D%28t%29%5Cright%29%20%2B%20%7B%5Cgamma_2%7D%5ET%20%7BZ%7D%20%20%5Cend%7Bmatrix%7D%20%5Cright%29%0A "
+We assume that $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left(1- C_1( t \mid Z) \right) \\ \text{cloglog} \left(1- C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right)
-")
+$$
 
 # Install package from GitHub
 
@@ -280,19 +160,15 @@ randomised to receive placebo, pyridoxine or thiotepa. After
 randomisation, information on occurrences of superficial bladder tumours
 and any deaths were collected.
 
-We focus on the comparison between placebo and thiotepa
-(![n=86](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n%3D86 "n=86")
-in total). We model recurrent bladder tumours, and adjust for death
-(cause 1: bladder cancer disease death, cause 2: other causes).
+We focus on the comparison between placebo and thiotepa ($n=86$ in
+total). We model recurrent bladder tumours, and adjust for death (cause
+1: bladder cancer disease death, cause 2: other causes).
 
 One-, two- and three-dimensional pseudo-observations are computed based
-on a single time point,
-![t=30](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%3D30 "t=30")
-months.
+on a single time point, $t=30$ months.
 
 For the comparison between placebo and thiotepa on recurrent bladder
-tumours, the effect measure of interest is the mean ratio
-![\\exp(\\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cexp%28%5Cbeta%29 "\exp(\beta)").
+tumours, the effect measure of interest is the mean ratio $\exp(\beta)$.
 
 ``` r
 # Example: Bladder cancer data from survival package
@@ -331,13 +207,9 @@ head(bladdersub)
 ```
 
 We fit the univariate pseudo-observation model using the binary
-treatment indicator as covariate, i.e. we model
-
-![
-\\log \\left( \\mu(t \\mid Z) \\right) = \\log(\\mu_0(t)) + \\beta Z
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Clog%20%5Cleft%28%20%5Cmu%28t%20%5Cmid%20Z%29%20%5Cright%29%20%3D%20%5Clog%28%5Cmu_0%28t%29%29%20%2B%20%5Cbeta%20Z%0A "
+treatment indicator as covariate, i.e. we model $$
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta Z
-")
+$$
 
 One-dimensional pseudo-observations and GEE fit can be computed using
 the following code,
@@ -398,19 +270,14 @@ sigma_diff_1d
 #> treat, mu 0.07934314
 ```
 
-Thus, the estimated mean ratio is
-![\\exp(\\hat{\\beta})=](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cexp%28%5Chat%7B%5Cbeta%7D%29%3D "\exp(\hat{\beta})=")
-0.6466789 (standard error and confidence intervals can be found using
-the Delta method).
+Thus, the estimated mean ratio is $\exp(\hat{\beta})=$ 0.6466789
+(standard error and confidence intervals can be found using the Delta
+method).
 
 Alternatively, the bivariate pseudo-observation model using the binary
-treatment indicator as covariate can be fitted, i.e. 
-
-![
- \\left( \\begin{matrix} \\log \\left(\\mu (t \\mid Z) \\right) \\\\ \\text{cloglog} \\left( S( t \\mid Z) \\right) \\end{matrix} \\right) = \\left( \\begin{matrix} \\log \\left(  \\mu_0(t) \\right)  + {\\beta} {Z} \\\\ \\log \\left(\\Lambda_0(t)\\right) + {\\gamma} {Z}  \\end{matrix} \\right)
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%5Cmu%20%28t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%28%20S%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5Cend%7Bmatrix%7D%20%5Cright%29%20%3D%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%20%20%5Cmu_0%28t%29%20%5Cright%29%20%20%2B%20%7B%5Cbeta%7D%20%7BZ%7D%20%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_0%28t%29%5Cright%29%20%2B%20%7B%5Cgamma%7D%20%7BZ%7D%20%20%5Cend%7Bmatrix%7D%20%5Cright%29%0A "
+treatment indicator as covariate can be fitted, i.e.  $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) = \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta} {Z} \\ \log \left(\Lambda_0(t)\right) + {\gamma} {Z}  \end{matrix} \right)
-")
+$$
 
 Two-dimensional pseudo-observations and GEE fit can be computed using
 the following code
@@ -593,9 +460,8 @@ sigma_diff_3d
 #> treat, cif2 0.001779996 -0.05771525  0.299045959
 ```
 
-We can compare the three model fits. Note, that the
-![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
-components match each other.
+We can compare the three model fits. Note, that the $\mu$ components
+match each other.
 
 ``` r
 # Compare - should match for mu elements 
@@ -630,29 +496,17 @@ sigma_diff_3d
 
 Assume that we wish to add extra baseline covariates to the model fit.
 For the sake of illustration, we have simulated a continuous covariate,
-![Z_2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_2 "Z_2"),
-and a categorical covariate,
-![Z_3](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_3 "Z_3").
-The covariate
-![Z_1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z_1 "Z_1")
-corresponds to the binary treatment covariate
-(![Z=1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z%3D1 "Z=1")
-is thiotepa and
-![Z=0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Z%3D0 "Z=0")
-is placebo). In order to make estimation for these models possible, the
-pseudo-observations are calculated at three time points, namely
-![t=20, 30, 40](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%3D20%2C%2030%2C%2040 "t=20, 30, 40")
-months.
+$Z_2$, and a categorical covariate, $Z_3$. The covariate $Z_1$
+corresponds to the binary treatment covariate ($Z=1$ is thiotepa and
+$Z=0$ is placebo). In order to make estimation for these models
+possible, the pseudo-observations are calculated at three time points,
+namely $t=20, 30, 40$ months.
 
-For the one-dimensional model for
-![\\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
-it holds that,
+For the one-dimensional model for $\mu$ it holds that,
 
-![
-\\log \\left( \\mu(t \\mid Z) \\right) = \\log(\\mu_0(t)) + \\beta_1 Z_1 + \\beta_2 Z_2 + \\beta_3 Z_3.
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Clog%20%5Cleft%28%20%5Cmu%28t%20%5Cmid%20Z%29%20%5Cright%29%20%3D%20%5Clog%28%5Cmu_0%28t%29%29%20%2B%20%5Cbeta_1%20Z_1%20%2B%20%5Cbeta_2%20Z_2%20%2B%20%5Cbeta_3%20Z_3.%0A "
+$$
 \log \left( \mu(t \mid Z) \right) = \log(\mu_0(t)) + \beta_1 Z_1 + \beta_2 Z_2 + \beta_3 Z_3.
-")
+$$
 
 This can be fitted using the below code,
 
@@ -730,19 +584,11 @@ fit1$xi[4]
 
 Or for two-dimensional pseudo-observations, it holds that
 
-![
- \\left( \\begin{matrix} \\log \\left(\\mu (t \\mid Z) \\right) \\\\ \\text{cloglog} \\left( S( t \\mid Z) \\right) \\end{matrix} \\right) =  \\left( \\begin{matrix} \\log \\left(  \\mu_0(t) \\right)  + \\beta_1 {Z_1} + \\beta_2 {Z_2} + \\beta_3 {Z_3} \\\\ \\log \\left(\\Lambda_0(t)\\right) + {\\gamma_1} Z_1 + {\\gamma_2} Z_2 + {\\gamma_3} Z_3 \\end{matrix} \\right).
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%5Cmu%20%28t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%28%20S%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5Cend%7Bmatrix%7D%20%5Cright%29%20%3D%20%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%20%20%5Cmu_0%28t%29%20%5Cright%29%20%20%2B%20%5Cbeta_1%20%7BZ_1%7D%20%2B%20%5Cbeta_2%20%7BZ_2%7D%20%2B%20%5Cbeta_3%20%7BZ_3%7D%20%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_0%28t%29%5Cright%29%20%2B%20%7B%5Cgamma_1%7D%20Z_1%20%2B%20%7B%5Cgamma_2%7D%20Z_2%20%2B%20%7B%5Cgamma_3%7D%20Z_3%20%5Cend%7Bmatrix%7D%20%5Cright%29.%0A "
+$$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( S( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + \beta_1 {Z_1} + \beta_2 {Z_2} + \beta_3 {Z_3} \\ \log \left(\Lambda_0(t)\right) + {\gamma_1} Z_1 + {\gamma_2} Z_2 + {\gamma_3} Z_3 \end{matrix} \right).
-")
-
-Or for three-dimensional pseudo-observations, it holds that
-
-![
- \\left( \\begin{matrix} \\log \\left(\\mu (t \\mid Z) \\right) \\\\ \\text{cloglog} \\left( 1-C_1( t \\mid Z) \\right) \\\\ \\text{cloglog} \\left( 1-C_2( t \\mid Z) \\right) \\end{matrix} \\right) =  \\left( \\begin{matrix} \\log \\left(  \\mu_0(t) \\right)  + {\\beta_1} {Z_1} + {\\beta_2} {Z_2} + {\\beta_3} Z_3\\\\ \\log \\left(\\Lambda\_{10}(t)\\right) + \\gamma\_{11} {Z_1} + \\gamma\_{12} {Z_2} + \\gamma\_{13} {Z_3} \\\\ \\log \\left(\\Lambda\_{20}(t)\\right) + \\gamma\_{21} {Z_1} + \\gamma\_{22} {Z_2}  + \\gamma\_{23} {Z_3} \\end{matrix} \\right).
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%5Cmu%20%28t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%28%201-C_1%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5C%5C%20%5Ctext%7Bcloglog%7D%20%5Cleft%28%201-C_2%28%20t%20%5Cmid%20Z%29%20%5Cright%29%20%5Cend%7Bmatrix%7D%20%5Cright%29%20%3D%20%20%5Cleft%28%20%5Cbegin%7Bmatrix%7D%20%5Clog%20%5Cleft%28%20%20%5Cmu_0%28t%29%20%5Cright%29%20%20%2B%20%7B%5Cbeta_1%7D%20%7BZ_1%7D%20%2B%20%7B%5Cbeta_2%7D%20%7BZ_2%7D%20%2B%20%7B%5Cbeta_3%7D%20Z_3%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_%7B10%7D%28t%29%5Cright%29%20%2B%20%5Cgamma_%7B11%7D%20%7BZ_1%7D%20%2B%20%5Cgamma_%7B12%7D%20%7BZ_2%7D%20%2B%20%5Cgamma_%7B13%7D%20%7BZ_3%7D%20%5C%5C%20%5Clog%20%5Cleft%28%5CLambda_%7B20%7D%28t%29%5Cright%29%20%2B%20%5Cgamma_%7B21%7D%20%7BZ_1%7D%20%2B%20%5Cgamma_%7B22%7D%20%7BZ_2%7D%20%20%2B%20%5Cgamma_%7B23%7D%20%7BZ_3%7D%20%5Cend%7Bmatrix%7D%20%5Cright%29.%0A "
+$$ Or for three-dimensional pseudo-observations, it holds that $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left( 1-C_1( t \mid Z) \right) \\ \text{cloglog} \left( 1-C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta_1} {Z_1} + {\beta_2} {Z_2} + {\beta_3} Z_3\\ \log \left(\Lambda_{10}(t)\right) + \gamma_{11} {Z_1} + \gamma_{12} {Z_2} + \gamma_{13} {Z_3} \\ \log \left(\Lambda_{20}(t)\right) + \gamma_{21} {Z_1} + \gamma_{22} {Z_2}  + \gamma_{23} {Z_3} \end{matrix} \right).
-")
+$$
 
 These two models are fitted using the below code,
 
