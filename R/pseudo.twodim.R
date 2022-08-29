@@ -126,7 +126,7 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
   # (baseline covariates - should be unchanged)
   first <- as.data.frame(indata %>% group_by(id) %>% slice(1) %>% ungroup())
 
-  outdata_xZ <- left_join(x = outdata,
+  outdata_xZ <- dplyr::left_join(x = outdata,
                           y = first[,c("id", covar_names)],
                           by = c("id"  = "id"))
 
@@ -146,7 +146,7 @@ pseudo.twodim <- function(tstart, tstop, status, covar_names, id, tk, data){
   outdata_long_ord <- outdata_long[order(outdata_long$id, outdata_long$ts),]
 
   # Add covariates etc
-  outdata_long_ord_xZ <- left_join(x = outdata_long_ord,
+  outdata_long_ord_xZ <- dplyr::left_join(x = outdata_long_ord,
                                    y = first[,c("id", covar_names)],
                                    by = c("id"  = "id"))
 

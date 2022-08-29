@@ -6,7 +6,7 @@
 #' @param id ID variable for subject
 #' @param inputdata Data set which contains variables of interest
 #' @keywords recurrentpseudo
-#' @import dplyr survival geepack stats
+#' @import survival geepack stats
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)

@@ -18,11 +18,9 @@ RoxygenNote: 7.2.1
 Imports: 
     survival,
     geepack,
-    stats,
     stringr,
     prodlim
 Suggests: 
-    dplyr
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
