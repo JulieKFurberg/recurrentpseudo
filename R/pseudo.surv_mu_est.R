@@ -8,6 +8,7 @@
 #' @keywords recurrentpseudo
 #' @import survival geepack stats
 #' @importFrom dplyr left_join
+#' @noRd
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)
@@ -40,7 +41,6 @@
 
 
 # Function that computes S and mu hat
-#' @export
 pseudo.surv_mu_est <- function(inputdata,
                                tstart,
                                tstop,

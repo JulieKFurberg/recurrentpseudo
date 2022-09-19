@@ -9,6 +9,7 @@
 #' @keywords recurrentpseudo
 #' @import survival geepack prodlim
 #' @importFrom dplyr left_join
+#' @noRd
 #' @examples
 #' # Example: Bladder cancer data from survival package
 #' require(survival)
@@ -47,7 +48,6 @@
 #'                        id = bladdersub$id)
 
 # Function that computes S, CIF, mu
-#' @export
 pseudo.surv_cif_mu_est <- function(inputdata,
                                    tstart,
                                    tstop,
