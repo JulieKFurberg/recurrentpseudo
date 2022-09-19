@@ -17,6 +17,7 @@
 #' @references Furberg, J.K., Andersen, P.K., Korn, S. et al. Bivariate pseudo-observations for recurrent event analysis with terminal events. Lifetime Data Anal (2021). https://doi.org/10.1007/s10985-021-09533-5
 #' @return
 #' An object of class \code{pseudo.threedim}.
+#' \itemize{
 #' \item{\code{outdata}} {contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).}
 #' \item{\code{outdata_long}} {contains the long version of the computed pseudo-observations (one row per observation, several per id).}
 #' \item{\code{indata}} {contains the input data which the pseudo-observations are based on.}
