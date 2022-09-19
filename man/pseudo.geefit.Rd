@@ -14,11 +14,6 @@ pseudo.geefit(pseudodata, covar_names)
 \value{
 An object of class \code{pseudo.geefit}. \code{xi} contains the estimated model parameters
 \code{sigma} contains the estimated variance matrix corresponding to \code{xi}
-
-\itemize{
-\item outdata - Data with pseudo-observations in wide format
-\item outdata_long - Data with pseudo-observations in semi-long format
-}
 }
 \description{
 This function fits a GEE model based on pseudo-observations of the marginal mean function, and
