@@ -25,11 +25,12 @@ pseudo.threedim(tstart, tstop, status, covar_names, id, tk, data, deathtype)
 }
 \value{
 An object of class \code{pseudo.threedim}.
-\code{outdata} contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).
-\code{outdata_long} contains the long version of the computed pseudo-observations (one row per observation, several per id).
-\code{indata} contains the input data which the pseudo-observations are based on.
-\code{ts} vector with time points used for computation of pseudo-observations.
-\code{k} number of time points used for computation of pseudo-observations (length(ts)).
+\item{\code{outdata}} {contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).}
+\item{\code{outdata_long}} {contains the long version of the computed pseudo-observations (one row per observation, several per id).}
+\item{\code{indata}} {contains the input data which the pseudo-observations are based on.}
+\item{\code{ts}} {vector with time points used for computation of pseudo-observations.}
+\item{\code{k}} {number of time points used for computation of pseudo-observations (length(ts)).}
+}
 }
 \description{
 This function computes 3-dimensional pseudo-observations of the marginal mean function

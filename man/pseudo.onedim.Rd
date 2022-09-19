@@ -24,11 +24,11 @@ pseudo.onedim(tstart, tstop, status, covar_names, id, tk, data)
 \value{
 An object of class \code{pseudo.onedim}.
 \itemize{
-\item{outdata} {contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).}
-\item{outdata_long} {contains the long version of the computed pseudo-observations (one row per observation, several per id).}
-\item{indata} {contains the input data which the pseudo-observations are based on.}
-\item{ts} {vector with time points used for computation of pseudo-observations.}
-\item{k} {number of time points used for computation of pseudo-observations (length(ts)).}
+\item{\code{outdata}} {contains the semi-wide version of the computed pseudo-observations (one row per time, tk, per id).}
+\item{\code{outdata_long}} {contains the long version of the computed pseudo-observations (one row per observation, several per id).}
+\item{\code{indata}} {contains the input data which the pseudo-observations are based on.}
+\item{\code{ts}} {vector with time points used for computation of pseudo-observations.}
+\item{\code{k}} {number of time points used for computation of pseudo-observations (length(ts)).}
 }
 }
 \description{

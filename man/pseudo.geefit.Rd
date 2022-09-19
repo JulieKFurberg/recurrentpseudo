@@ -12,8 +12,11 @@ pseudo.geefit(pseudodata, covar_names)
 \item{covar_names}{Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")}
 }
 \value{
-An object of class \code{pseudo.geefit}. \code{xi} contains the estimated model parameters
-\code{sigma} contains the estimated variance matrix corresponding to \code{xi}
+An object of class \code{pseudo.geefit}.
+\itemize{
+\item{\code{xi}} {contains the estimated model parameters}
+\item{\code{sigma}} {contains the estimated variance matrix corresponding to \code{xi}}
+}
 }
 \description{
 This function fits a GEE model based on pseudo-observations of the marginal mean function, and

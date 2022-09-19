@@ -10,8 +10,11 @@
 #' @param covar_names Vector with covariate names to be found in "pseudodata". E.g. covar_names = c("Z", "Z1")
 #' @keywords recurrentpseudo
 #' @references Furberg, J.K., Andersen, P.K., Korn, S. et al. Bivariate pseudo-observations for recurrent event analysis with terminal events. Lifetime Data Anal (2021). https://doi.org/10.1007/s10985-021-09533-5
-#' @return An object of class \code{pseudo.geefit}. \code{xi} contains the estimated model parameters
-#' \code{sigma} contains the estimated variance matrix corresponding to \code{xi}
+#' @return An object of class \code{pseudo.geefit}.
+#' \itemize{
+#' \item{\code{xi}} {contains the estimated model parameters}
+#' \item{\code{sigma}} {contains the estimated variance matrix corresponding to \code{xi}}
+#' }
 #' @import survival geepack stringr
 #' @importFrom dplyr left_join
 #' @importFrom dplyr ungroup
