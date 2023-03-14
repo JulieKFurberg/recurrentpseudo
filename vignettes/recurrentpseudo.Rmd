@@ -7,6 +7,20 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<style type="text/css">
+  body{
+  font-size: 8pt;
+}
+
+h1{
+  font-size: 12pt;
+}
+
+h2,h3,h4,h5,h6{
+  font-size: 10pt;
+}
+</style>
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -22,7 +36,7 @@ Three versions exist: One-dimensional, two-dimensional or three-dimensional pseu
 
 Following the computation of pseudo-observations, the marginal mean function, survival probability and/or cumulative incidences can be modelled using generalised estimating equations.
 
-See Furberg et al. (*Bivariate pseudo-observations for recurrent event analysis with terminal events (2021)*) for technical details on the procedure.
+See Furberg et al. (*Bivariate pseudo-observations for recurrent event analysis with terminal events (2023)*) for technical details on the procedure.
 
 ## Package and main functions
 
@@ -34,7 +48,6 @@ See Furberg et al. (*Bivariate pseudo-observations for recurrent event analysis 
 require(recurrentpseudo)
 ```
 
-
 ```{r}
 # Main functions
 #?pseudo.onedim
@@ -44,7 +57,6 @@ require(recurrentpseudo)
 #?pseudo.geefit
 
 ```
-
 
 ## Notation 
 Let $D^*$ denote the survival time and let $N^*(t)$ denote the number of recurrent events by time $t$. 
@@ -146,6 +158,11 @@ We assume that
 $$
  \left( \begin{matrix} \log \left(\mu (t \mid Z) \right) \\ \text{cloglog} \left(1- C_1( t \mid Z) \right) \\ \text{cloglog} \left(1- C_2( t \mid Z) \right) \end{matrix} \right) =  \left( \begin{matrix} \log \left(  \mu_0(t) \right)  + {\beta}^T {Z} \\ \log \left(\Lambda_{10}(t)\right) + {\gamma_1}^T {Z} \\ \log \left(\Lambda_{20}(t)\right) + {\gamma_2}^T {Z}  \end{matrix} \right).
 $$
+$$ $$ 
+
+```{r}
+
+```
 
 
 # Example - Bladder cancer data from survival package
@@ -449,7 +466,7 @@ fit3$xi[4]
 ```
 
 # Citation 
-To cite the `recurrentpseudo` package please use the following references,
+To cite the `recurrentpseudo` package please use the following reference,
 
-> Julie K. Furberg, Per K. Andersen, Sofie Korn, Morten Overgaard, Henrik Ravn: Bivariate pseudo-observations for recurrent event analysis with terminal events (Lifetime Data Analysis, 2021)
+> Julie K. Furberg, Per K. Andersen, Sofie Korn, Morten Overgaard, Henrik Ravn: Bivariate pseudo-observations for recurrent event analysis with terminal events (Lifetime Data Analysis, 2023)
 
